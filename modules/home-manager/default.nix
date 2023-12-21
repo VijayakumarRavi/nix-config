@@ -1,6 +1,15 @@
 { pkgs, ... }: {
-  # Don't change this when you change package input. Leave it alone.
-  home.stateVersion = "22.11";
+
+  imports = [
+    ./common.nix
+    ./zsh.nix
+    ./git.nix
+    ./tmux.nix
+    ./starship.nix
+    ./alacritty.nix
+    
+  ];
+
   # specify my home-manager configs
   home.packages = with pkgs; [
     fd
@@ -8,30 +17,24 @@
     less
     # pwnvim.packages."aarch64-darwin".default
   ];
+  
+  systemd.user.startServices = "sd-switch";
+  home.sessionPath = ["$HOME/.local/bin"];
   home.sessionVariables = {
     PAGER = "less";
     CLICLOLOR = 1;
     EDITOR = "nvim";
   };
-  programs.fzf.enable = true;
-  programs.fzf.enableZshIntegration = true;
-  programs.exa.enable = true;
-  programs.git.enable = true;
-  programs.zsh.enable = true;
-  programs.zsh.enableCompletion = true;
-  programs.zsh.enableAutosuggestions = true;
-  programs.zsh.enableSyntaxHighlighting = true;
-  programs.zsh.shellAliases = {
-    ls = "ls --color=auto -F";
-    nixswitch = "darwin-rebuild switch --flake ~/src/system-config/.#";
-    nixup = "pushd ~/src/system-config; nix flake update; nixswitch; popd";
-  };
-  programs.starship.enable = true;
-  programs.starship.enableZshIntegration = true;
-  programs.alacritty = {
-    enable = true;
-    settings.font.normal.family = "MesloLGS Nerd Font Mono";
-    settings.font.size = 16;
-  };
+
+  #  programs.alacritty = {
+  #    enable = true;
+  #    settings.font.normal.family = "MesloLGS Nerd Font Mono";
+  #    settings.font.size = 16;
+  #  };
+
   home.file.".inputrc".source = ./dotfiles/inputrc;
+  #home.file.".config/starship.toml".source = ./dotfiles/starship.toml;
+
+  # Don't change this when you change package input. Leave it alone.
+  home.stateVersion = "22.11";
 }

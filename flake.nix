@@ -19,22 +19,20 @@
   outputs = inputs@{ nixpkgs, home-manager, darwin, ... }: {
     darwinConfigurations = {
       Kakashi = darwin.lib.darwinSystem {
-        specialArgs = {
-          inherit inputs outputs;
-          pkgs = import nixpkgs {
+            pkgs = import nixpkgs {
             system = "aarch64-darwin";
             config.allowUnfree = true;
           };
-        };
         system = "aarch64-darwin";
         modules = [
             ./modules/darwin
             home-manager.darwinModules.home-manager {
+            users.users.vijay.home = /Users/vijay;
             home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
             # extraSpecialArgs = { inherit pwnvim; };
-            users.demo.imports = [ ./modules/home-manager ];
+            users.vijay.imports = [ ./modules/home-manager ];
             };
           }
         ];
