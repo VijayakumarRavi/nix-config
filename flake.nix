@@ -14,9 +14,9 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     # Tricked out nvim
-    # pwnvim.url = "github:zmre/pwnvim";
+    vjvim.url = "github:VijayakumarRavi/vjvim";
   };
-  outputs = inputs@{ nixpkgs, home-manager, darwin, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, darwin, vjvim, ... }: {
     darwinConfigurations = {
       Kakashi = darwin.lib.darwinSystem {
             pkgs = import nixpkgs {
@@ -31,7 +31,7 @@
             home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            # extraSpecialArgs = { inherit pwnvim; };
+            extraSpecialArgs = { inherit vjvim; };
             users.vijay.imports = [ ./hosts/kakashi/home-manager ];
             };
           }

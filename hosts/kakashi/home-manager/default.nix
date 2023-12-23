@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, vjvim, ... }: {
 
   imports = [
     ./common.nix
@@ -15,7 +15,8 @@
     fd
     curl
     less
-    # pwnvim.packages."aarch64-darwin".default
+    cachix
+    vjvim.packages."aarch64-darwin".default
   ];
   
   systemd.user.startServices = "sd-switch";
