@@ -35,6 +35,10 @@
                     HostName 10.0.0.7
                     User root
                     Port 22
+                Host nix
+                    HostName 10.0.1.5
+                    User vijay
+                    Port 22
             '';
         };
     };
