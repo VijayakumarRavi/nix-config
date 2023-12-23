@@ -11,6 +11,8 @@
     masApps = {
       "1Password for Safari" = 1569813296;
       "Tailscale" = 1475387142; 
+      "infuse video player" = 1136220934;
+      "localsend" = 1661733229;
       # "shelly ssh client" = 989642999;
     };
     casks = [
@@ -18,9 +20,18 @@
         "hpedrorodrigues/tools/dockutil" # Dockutil - Manage your dock
         "iterm2" # Terminal emulator
         "raycast" # Raycast - A better alternative to Alfred and spotlight
-        "stats" 
+        "stats" #System monitor for the menu bar
         "shottr" # Screenshot util
+        "brave-browser" # Web browser focusing on privacy
+        "arc" # Chromium based browser
         "spotify" # Music streaming service
+        "hyperkey" # Convert your caps lock key or any of your modifier keys to the hyper key
+        "appcleaner" # Application uninstaller
+        "the-unarchiver" # Unpacks archive files
+        "github" # Desktop client for GitHub repositories
+        "bartender" # Menu bar icon organizer
+        "onyx" # Verify system files structure, run miscellaneous maintenance and more
+        "beeper" # Universal chat app powered by Matrix
         "1password-cli" # 1Password manager CLI
         # "cf-terraforming" # create terraform resources from CF templates
         # "docker" # Docker - Containerization tool
