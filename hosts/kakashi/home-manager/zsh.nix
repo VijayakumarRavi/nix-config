@@ -4,6 +4,41 @@
         enableCompletion = true;
         enableAutosuggestions = true;
         syntaxHighlighting.enable = true;
+        autocd = true;
+        dotDir = ".config/zsh";
+
+        history = {
+          expireDuplicatesFirst = true;
+          ignoreDups = true;
+          ignoreSpace = true; # ignore commands starting with a space
+          save = 2000000;
+          size = 2000000;
+          share = true;
+          };
+          
+          historySubstringSearch = {
+            enable = true;
+          };
+
+          initExtra = ''
+          function cd() {
+            builtin cd $*
+            ${pkgs.lsd}/bin/lsd
+          }
+
+          function pushall() {
+            for i in `git remote`; do 
+              git push $i;
+            done;
+          }
+
+          function pullall() {
+            for i in `git remote`; do 
+              git pull $i;
+            done;
+          }
+          '';
+
         shellAliases = {
             nixswitch = "darwin-rebuild switch --flake /Users/vijay/Developer/Github/nix-config#";
             nixup = "pushd /Users/vijay/Developer/Github/nix-config; nix flake update; nixswitch; popd";
@@ -66,8 +101,6 @@
             tag="git tag";
             newtag="git tag -a";
 
-            pushall="!func(){ for i in `git remote`; do git push $i; done; };func";
-            pullall="!func(){ for i in `git remote`; do git pull $i; done; };func";
         };
     };
 }
