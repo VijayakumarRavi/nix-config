@@ -25,14 +25,14 @@
           };
         system = "aarch64-darwin";
         modules = [
-            ./hosts/kakashi/darwin
+            ./hosts/kakashi
             home-manager.darwinModules.home-manager {
             users.users.vijay.home = /Users/vijay;
             home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
             extraSpecialArgs = { inherit vjvim; };
-            users.vijay.imports = [ ./hosts/kakashi/home-manager ];
+            users.vijay.imports = [ ./home-manager ];
             };
           }
         ];
