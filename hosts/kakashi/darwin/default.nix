@@ -1,7 +1,7 @@
 { config, pkgs, ... }: {
-    imports = [
-        ./homebrew.nix
-    ];
+  imports = [
+    ./homebrew.nix
+  ];
   nix = {
     # package = lib.mkDefault pkgs.nix;
     package = pkgs.nix;
@@ -23,9 +23,6 @@
       options = "--delete-older-than 30d";
     };
   };
-#  nix.extraOptions = ''
-#    experimental-features = nix-command flakes
-#  '';
 
   # here go the darwin preferences and config items
   programs.zsh.enable = true;
@@ -100,9 +97,9 @@
 
       # Disable warning when changing a file extension
       FXEnableExtensionChangeWarning = false;
-      
+
       _FXShowPosixPathInTitle = true;
-      
+
       # Show all files and their extensions
       AppleShowAllExtensions = true;
       AppleShowAllFiles = true;
@@ -227,7 +224,7 @@
     duti -s com.colliderli.iina .mp4 all
 
     ~/.config/os/darwin/power.sh
-  '';
-  # backwards compat; don't change
+    '';
+# backwards compat; don't change
   system.stateVersion = 4;
-}
+  }
