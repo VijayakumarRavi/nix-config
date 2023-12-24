@@ -41,6 +41,7 @@
 
         shellAliases = {
             nixswitch = "darwin-rebuild switch --flake /Users/vijay/Developer/Github/nix-config#";
+            zoroswitch = "sudo nixos-rebuild switch --flake /home/vijay/git/nix-config#zoro";
             nixup = "pushd /Users/vijay/Developer/Github/nix-config; nix flake update; nixswitch; popd";
             # System Aliases
             rm="rm -vr";
@@ -49,8 +50,8 @@
             mv="mv -v";
             mkdir="mkdir -pv";
             SS="sudo systemctl";
-            ls="gls -hAN --color=auto --group-directories-first";
-            ll="gls -lhAv --color=auto --group-directories-first";
+            ls="${pkgs.lsd}/bin/lsd -hAN --color=auto --group-directories-first";
+            ll="${pkgs.lsd}/bin/lsd -lhAv --color=auto --group-directories-first";
             grep="grep --color=auto";
             h="history";
             j="jobs -l";

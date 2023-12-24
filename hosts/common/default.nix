@@ -5,6 +5,7 @@
     # package = lib.mkDefault pkgs.nix;
     package = pkgs.nix;
     settings = {
+      allowed-users = ["vijay"];
       experimental-features = ["nix-command" "flakes" "repl-flake"];
       warn-dirty = false;
       sandbox = "relaxed";
@@ -15,11 +16,12 @@
       options = "--delete-older-than 30d";
     };
   };
+  programs.zsh.enable = true;
   # users.defaultUserShell = pkgs.zsh;
   users.users.vijay.shell = pkgs.zsh;
   environment = {
     shells = with pkgs; [ zsh ];
-    loginShell = pkgs.zsh;
+    #loginShell = pkgs.zsh;
     systemPackages = with pkgs; [
     # Linux utils
     fd # Simple, fast and user-friendly alternative to find
@@ -60,6 +62,7 @@
     flyctl # Fly.io tool
     rustc # rust lang
     cargo # install rust dependencies
+    gcc # C compiler
     iperf # Network performance test
     cloudflared  # Cloudflare daemon
     terraform # terraform cli tool for managing infrastructure 

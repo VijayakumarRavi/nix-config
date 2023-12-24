@@ -37,5 +37,20 @@
         ];
       };
     };
+    nixosConfigurations.zoro = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      # makes all inputs availble in imported files
+      specialArgs = {inherit inputs;};
+      modules = [
+        ./hosts/zoro
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.extraSpecialArgs = { inherit vjvim; };
+          home-manager.users.vijay = {...}: {
+            imports = [./home-manager/zoro ];
+          };
+        }
+      ];
+    };
   };
 }
