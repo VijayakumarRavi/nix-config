@@ -1,8 +1,8 @@
 { pkgs, ... }: {
     programs ={ 
-        zoxide.enable = true;
+        zoxide.enable = true; # smarter cd command
         fzf = { 
-            enable = true;
+            enable = true; # Fuzzy finder
             enableZshIntegration = true; 
         };
         direnv = {
@@ -10,7 +10,7 @@
             nix-direnv.enable = true;
         };
         gh = {
-            enable = true;
+            enable = true; # GitHub CLI
             extensions = with pkgs; [gh-markdown-preview];
             settings = {
                 git_protocol = "ssh";

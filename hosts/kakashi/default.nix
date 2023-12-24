@@ -1,39 +1,24 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   imports = [
     ./homebrew.nix
+    ../common
   ];
-  nix = {
-    # package = lib.mkDefault pkgs.nix;
-    package = pkgs.nix;
-    settings = {
-      experimental-features = ["nix-command" "flakes" "repl-flake"];
-      warn-dirty = false;
-      sandbox = "relaxed";
-    };
 
+  environment = {
+    systemPath = [ "/opt/homebrew/bin" ];
+    pathsToLink = [ "/Applications" ];
+  };
+  nix = { 
     configureBuildUsers = true;
-
-    gc = {
-      automatic = true;
-      interval = {
+    gc.interval = {
         Weekday = 0;
         Hour = 2;
         Minute = 0;
       };
-      options = "--delete-older-than 30d";
-    };
   };
 
+  users.users.vijay.home = /Users/vijay;
   # here go the darwin preferences and config items
-  programs.zsh.enable = true;
-  users.users.vijay.shell = pkgs.zsh;
-  environment = {
-    shells = with pkgs; [ zsh ];
-    loginShell = pkgs.zsh;
-    systemPackages = [ pkgs.coreutils ];
-    systemPath = [ "/opt/homebrew/bin" ];
-    pathsToLink = [ "/Applications" ];
-  };
   system.keyboard.enableKeyMapping = true;
   #  system.keyboard.remapCapsLockToEscape = true;
   fonts.fontDir.enable = true; # DANGER
@@ -46,6 +31,9 @@
     NSGlobalDomain = {
       # Auto hide the menubar
       _HIHideMenuBar = false;
+
+      # Enable Derk mode
+      AppleInterfaceStyle = "Dark";
 
       # Enable full keyboard access for all controls
       AppleKeyboardUIMode = 3;
@@ -82,6 +70,8 @@
       tilesize = 48;
       orientation = "bottom";
 
+      # minimize windows into their application icon
+      minimize-to-application = true;
       # Set dock to auto-hide, and transparentize icons of hidden apps (⌘H)
       autohide = true;
       showhidden = true;

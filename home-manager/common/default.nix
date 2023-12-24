@@ -1,4 +1,4 @@
-{ pkgs, vjvim, ... }: {
+{ pkgs, ... }: {
 
   imports = [
     ./common.nix
@@ -11,13 +11,7 @@
   ];
 
   # specify my home-manager configs
-  home.packages = with pkgs; [
-    fd
-    curl
-    less
-    cachix
-    vjvim.packages."aarch64-darwin".default
-  ];
+  # home.packages = with pkgs; [  ];
   
   systemd.user.startServices = "sd-switch";
   home.sessionPath = ["$HOME/.local/bin"];
@@ -26,12 +20,6 @@
     CLICLOLOR = 1;
     EDITOR = "nvim";
   };
-
-  #  programs.alacritty = {
-  #    enable = true;
-  #    settings.font.normal.family = "MesloLGS Nerd Font Mono";
-  #    settings.font.size = 16;
-  #  };
 
   home.file.".inputrc".source = ../dotfiles/inputrc;
   #home.file.".config/starship.toml".source = ./dotfiles/starship.toml;
