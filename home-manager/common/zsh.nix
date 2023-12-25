@@ -39,7 +39,15 @@
           }
           '';
 
-        shellAliases = {
+          #profileExtra = ''
+          #if [[ ! $(pgrep -f Hyprland) ]]; then
+          #  Hyprland &
+          #else
+          #  echo "already running......"
+          #fi
+          #'';
+
+          shellAliases = {
             nixswitch = "darwin-rebuild switch --flake /Users/vijay/Developer/Github/nix-config#";
             zoroswitch = "sudo nixos-rebuild switch --flake /home/vijay/git/nix-config#zoro";
             nixup = "pushd /Users/vijay/Developer/Github/nix-config; nix flake update; nixswitch; popd";

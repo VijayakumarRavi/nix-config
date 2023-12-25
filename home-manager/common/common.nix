@@ -1,6 +1,9 @@
 { pkgs, ... }: {
     programs ={ 
-        zoxide.enable = true; # smarter cd command
+        zoxide = { # smarter cd command
+          enable = true;
+          enableZshIntegration = true;
+        };
         fzf = { 
             enable = true; # Fuzzy finder
             enableZshIntegration = true; 

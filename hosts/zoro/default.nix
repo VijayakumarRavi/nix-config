@@ -50,7 +50,12 @@
     xkbVariant = "";
     libinput.enable = true;
   };
-
+  console = {
+    earlySetup = true;
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
+    packages = with pkgs; [ terminus_font ];
+    keyMap = "us";
+  };
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.vijay = {
     isNormalUser = true;
@@ -61,11 +66,6 @@
   security.sudo.wheelNeedsPassword = false;
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
@@ -101,6 +101,7 @@
    wl-clipboard
    # Audio
    pavucontrol
+   pulseaudio
    audacity
    # Fonts
    font-awesome
@@ -151,21 +152,48 @@
     enableSSHSupport = true;
   };
 
+  # Display manager stuff
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --remember --time --asterisks --greeting \"Vanakkam da mapla 👻\" --cmd Hyprland";
+        user = "vijay";
+      };
+    };
+  };
+
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.fstrim.enable = true;
+
+  # Sound options
+  sound.enable = true;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+
+  # High quality BT calls
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+  services.blueman.enable = true;
+
+  # pipewire support
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
+    wireplumber.enable = true;
   };
-  hardware.pulseaudio.enable = false;
-  sound.enable = true;
-  security.rtkit.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
