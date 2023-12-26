@@ -19,39 +19,39 @@
   };
   outputs = inputs@{ nixpkgs, home-manager, darwin, vjvim, ... }: {
     darwinConfigurations.kakashi = darwin.lib.darwinSystem {
-            pkgs = import nixpkgs {
-            system = "aarch64-darwin";
-            config.allowUnfree = true;
-          };
+      pkgs = import nixpkgs {
         system = "aarch64-darwin";
-      	# makes all inputs availble in imported files
-      	specialArgs = {inherit inputs;};
-        modules = [
-            ./machines/kakashi
-            home-manager.darwinModules.home-manager {
+        config.allowUnfree = true;
+      };
+      system = "aarch64-darwin";
+      # makes all inputs availble in imported files
+      specialArgs = {inherit inputs;};
+      modules = [
+        ./machines/kakashi
+          home-manager.darwinModules.home-manager {
             home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            extraSpecialArgs = { inherit vjvim; };
-            users.vijay.imports = [ ./home-manager/kakashi ];
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = { inherit vjvim; };
+              users.vijay.imports = [ ./home-manager/kakashi ];
             };
           }
-        ];
-      };
-  
+      ];
+    };
+
     nixosConfigurations.zoro = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       # makes all inputs availble in imported files
       specialArgs = {inherit inputs;};
       modules = [
         ./machines/zoro
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.extraSpecialArgs = { inherit vjvim; };
-          home-manager.users.vijay = {...}: {
-            imports = [./home-manager/zoro ];
-          };
-        }
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.extraSpecialArgs = { inherit vjvim; };
+            home-manager.users.vijay = {...}: {
+              imports = [./home-manager/zoro ];
+            };
+          }
       ];
     };
   };
