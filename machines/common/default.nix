@@ -79,6 +79,7 @@
       pandoc # Markdown converter
       borgbackup # simple backup solution
       hugo # Static site generator
+      ncspot # ncurses Spotify client 
 
       # Containers
       kubernetes-helm # A package manager for kubernetes

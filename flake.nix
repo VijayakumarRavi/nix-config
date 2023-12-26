@@ -18,7 +18,7 @@
     vjvim.url = "github:VijayakumarRavi/vjvim";
   };
   outputs = inputs@{ nixpkgs, home-manager, darwin, vjvim, ... }: {
-    darwinConfigurations.Kakashi = darwin.lib.darwinSystem {
+    darwinConfigurations.kakashi = darwin.lib.darwinSystem {
             pkgs = import nixpkgs {
             system = "aarch64-darwin";
             config.allowUnfree = true;

@@ -32,6 +32,14 @@
             done;
           }
 
+          function nixswitch() {
+            if command -v darwin-rebuild &> /dev/null 2>&1; then
+              darwin-rebuild switch --flake /Users/vijay/Developer/Github/nix-config#kakashi
+            else
+              sudo nixos-rebuild switch --flake /home/vijay/git/nix-config#zoro              
+            fi
+          }
+
           function pullall() {
             for i in `git remote`; do 
               git pull $i;
@@ -39,22 +47,14 @@
           }
           '';
 
-          #profileExtra = ''
-          #if [[ ! $(pgrep -f Hyprland) ]]; then
-          #  Hyprland &
-          #else
-          #  echo "already running......"
-          #fi
-          #'';
-
           shellAliases = {
-            nixswitch = "darwin-rebuild switch --flake /Users/vijay/Developer/Github/nix-config#";
-            zoroswitch = "sudo nixos-rebuild switch --flake /home/vijay/git/nix-config#zoro";
+            #nixswitch = "darwin-rebuild switch --flake /Users/vijay/Developer/Github/nix-config#";
+            #zoroswitch = "sudo nixos-rebuild switch --flake /home/vijay/git/nix-config#zoro";
             nixup = "pushd /Users/vijay/Developer/Github/nix-config; nix flake update; nixswitch; popd";
             # System Aliases
             rm="rm -vr";
             cp="cp -vr";
-            rsync="rsync --progress";
+            rsync="${pkgs.rsync} --progress";
             mv="mv -v";
             mkdir="mkdir -pv";
             SS="sudo systemctl";
@@ -78,23 +78,17 @@
             n="nvim";
             sn="sudo nvim";
             vim="nvim";
-            svi="sudo vim";
-            lzd="lazydocker";
-            lzg="lazygit";
+            svi="sudo nvim";
+            lzd="${pkgs.lazydocker}";
+            lzg="${pkgs.lazygit}";
             pg="ping google.com";
             pv="ping vijayakumar.xyz";
-            ncspotd="ncspot -d ~/.config/ncspot/DEBUG";
+            ncspotd="${pkgs.ncspot} -d ~/.config/ncspot/DEBUG";
             helix="/home/vijay/Downloads/helix.AppImage";
             tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale";
             ping="prettyping";
-            preview="fzf --preview 'cat {}'";
-            # Edit configs
-            nrc="vim ~/.config/nvim/init.lua";
-            vimrc="vim ~/.vimrc";
-            bashrc="vim ~/.bashrc";
-            i3con="vim ~/.config/i3/config";
-            loadbash="source ~/.bashrc";
-            notes="vim ~/.notes.txt";
+            preview="${pkgs.fzf} --preview 'cat {}'";
+            notes="nvim ~/.notes.txt";
             # Git
             gs="git status";
             gc="git clone --depth=1 --recursive";
@@ -105,7 +99,7 @@
             branch="git branch";
             checkout="git checkout";
             clone="git clone";
-            commit="git cz --name cz_commitizen_emoji commit -s";
+            commit="git cz --name cz_emoji commit -s";
             fetch="git fetch";
             tag="git tag";
             newtag="git tag -a";
