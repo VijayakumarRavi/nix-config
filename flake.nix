@@ -27,7 +27,7 @@
       	# makes all inputs availble in imported files
       	specialArgs = {inherit inputs;};
         modules = [
-            ./hosts/kakashi
+            ./machines/kakashi
             home-manager.darwinModules.home-manager {
             home-manager = {
             useGlobalPkgs = true;
@@ -44,7 +44,7 @@
       # makes all inputs availble in imported files
       specialArgs = {inherit inputs;};
       modules = [
-        ./hosts/zoro
+        ./machines/zoro
         home-manager.nixosModules.home-manager
         {
           home-manager.extraSpecialArgs = { inherit vjvim; };
