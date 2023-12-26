@@ -42,11 +42,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1703368619,
-        "narHash": "sha256-ZGPMYL7FMA6enhuwby961bBANmoFX14EA86m2/Jw5Jo=",
+        "lastModified": 1703499046,
+        "narHash": "sha256-A6wclPJCOMEYuD28KBOBTwHEVOKy3f9yvuMFAJ55dco=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "a2523ea0343b056ba240abbac90ab5f116a7aa7b",
+        "rev": "d5a917bab40daf4e5f82cd27162b8a6656d3beab",
         "type": "github"
       },
       "original": {
@@ -99,11 +99,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1703259726,
-        "narHash": "sha256-b8pmPOTj1X2+ivVE0HHOh8GZmjtxTHS8N0zMykC1Dkk=",
+        "lastModified": 1703337166,
+        "narHash": "sha256-4XycKNzywLEmS2k6YqqbQ6APDiF0lOjM4AYXAkPYE0A=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "ea8bb2df93b9b8db2619328e690da962eaf99862",
+        "rev": "ee8bccb508e962a8c6065fe2aca1beefc82a116e",
         "type": "github"
       },
       "original": {
@@ -126,11 +126,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1703312026,
-        "narHash": "sha256-HtAovteGOddH8aidWYbS88X8MKLEXd2EA14UdX7c/T8=",
+        "lastModified": 1703515582,
+        "narHash": "sha256-B577d6FnLsHgd0oqw80OPY6JED0etL658FjOIqbLETs=",
         "owner": "VijayakumarRavi",
         "repo": "vjvim",
-        "rev": "eb9ae31f5bf80341af18371a0cf029b3157a6419",
+        "rev": "3b7228ba62df21c85cd26936becc5f6fd0519210",
         "type": "github"
       },
       "original": {

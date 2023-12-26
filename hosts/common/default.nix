@@ -6,9 +6,18 @@
     package = pkgs.nix;
     settings = {
       allowed-users = ["vijay"];
+      trusted-users = ["root" "vijay"];
       experimental-features = ["nix-command" "flakes" "repl-flake"];
       warn-dirty = false;
       sandbox = "relaxed";
+      extra-substituters = [
+        "https://nix-community.cachix.org"
+        "https://vjvim.cachix.org"
+      ];
+      extra-trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "vjvim.cachix.org-1:AF3grdItpExuZ95D16gb7DN/9kYhf91OwZoNBCfHW98="
+      ];
     };
 
     gc = {
