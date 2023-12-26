@@ -50,9 +50,9 @@
     brews = [
       # Utils
       "pinentry-mac" # GPG key entry utility
-      "kubernetes-cli" # Kubernetes CLI tool
       "mas" # Mac appstore installer
       "docker-clean" # Clean Docker containers, images, networks, and volumes
+
     ];
   };
 }

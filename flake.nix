@@ -18,13 +18,14 @@
     vjvim.url = "github:VijayakumarRavi/vjvim";
   };
   outputs = inputs@{ nixpkgs, home-manager, darwin, vjvim, ... }: {
-    darwinConfigurations = {
-      Kakashi = darwin.lib.darwinSystem {
+    darwinConfigurations.Kakashi = darwin.lib.darwinSystem {
             pkgs = import nixpkgs {
             system = "aarch64-darwin";
             config.allowUnfree = true;
           };
         system = "aarch64-darwin";
+      	# makes all inputs availble in imported files
+      	specialArgs = {inherit inputs;};
         modules = [
             ./hosts/kakashi
             home-manager.darwinModules.home-manager {
@@ -37,7 +38,7 @@
           }
         ];
       };
-    };
+  
     nixosConfigurations.zoro = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       # makes all inputs availble in imported files
