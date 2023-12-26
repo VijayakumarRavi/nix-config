@@ -47,7 +47,7 @@
       gitflow # Better git flow
       lazygit # git TUI
       pre-commit # Git pre-commit hook
-      commitizen # prettier commit msg
+      git-crypt # file encryption in git
       
       # Ansible
       ansible # Ansible command line tool
