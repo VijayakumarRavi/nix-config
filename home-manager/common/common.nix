@@ -1,12 +1,12 @@
 { pkgs, ... }: {
-    programs ={ 
+    programs ={
         zoxide = { # smarter cd command
           enable = true;
           enableZshIntegration = true;
         };
-        fzf = { 
+        fzf = {
             enable = true; # Fuzzy finder
-            enableZshIntegration = true; 
+            enableZshIntegration = true;
         };
         direnv = {
             enable = true;
@@ -19,6 +19,19 @@
                 git_protocol = "ssh";
                 prompt = "enabled";
             };
+        };
+        atuin = { # sync shell history between machines
+          enable = true;
+          enableZshIntegration = true;
+          flags = [ "--disable-up-arrow" ];
+          settings = {
+            auto_sync = true;
+            sync_frequency = "0";
+            enter_accept = false;
+            invert = true;
+            inline_height = "8";
+            style = "compact";
+          };
         };
         ssh = {
             enable = true;
