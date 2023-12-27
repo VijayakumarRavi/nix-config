@@ -15,7 +15,7 @@
           size = 2000000;
           share = true;
           };
-          
+
           historySubstringSearch = {
             enable = true;
           };
@@ -27,7 +27,7 @@
           }
 
           function pushall() {
-            for i in `git remote`; do 
+            for i in `git remote`; do
               git push $i;
             done;
           }
@@ -36,12 +36,12 @@
             if command -v darwin-rebuild &> /dev/null 2>&1; then
               darwin-rebuild switch --flake /Users/vijay/Developer/Github/nix-config#kakashi
             else
-              sudo nixos-rebuild switch --flake /home/vijay/git/nix-config#zoro              
+              sudo nixos-rebuild switch --flake /home/vijay/git/nix-config#zoro
             fi
           }
 
           function pullall() {
-            for i in `git remote`; do 
+            for i in `git remote`; do
               git pull $i;
             done;
           }

@@ -34,6 +34,8 @@
       "onyx" # Verify system files structure, run miscellaneous maintenance and more
       "beeper" # Universal chat app powered by Matrix
       "visual-studio-code" # Visual Studio Code editor
+      "1password" # Best password manager imo
+      "1password-cli" # 1Password manager CLI
     ];
     taps = [
       # Homebrew

@@ -39,9 +39,10 @@
       htop # Improved top (interactive process viewer)
       btop # Resource monitor. C++ version and continuation of bashtop and bpytop
       lf # Terminal file manager
+      atuin # sync shell history between machines
 
-      _1password-gui # Best password manager imo
-      _1password # 1Password manager CLI
+      #_1password-gui # Best password manager imo
+      #_1password # 1Password manager CLI
 
       # Git
       gitflow # Better git flow
@@ -68,6 +69,7 @@
       rclone # Rsync for Cloud storage
       python3 # Python lang
       python311Packages.pip # install python dependencies
+      cachix # Command-line client for Nix binary cache hosting https://cachix.org
       flyctl # Fly.io tool
       iperf # Network performance test
       cloudflared  # Cloudflare daemon
@@ -79,7 +81,7 @@
       pandoc # Markdown converter
       borgbackup # simple backup solution
       hugo # Static site generator
-      ncspot # ncurses Spotify client 
+      ncspot # ncurses Spotify client
 
       # Containers
       kubernetes-helm # A package manager for kubernetes
