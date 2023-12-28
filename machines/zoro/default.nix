@@ -98,6 +98,9 @@
    ueberzugpp
 
    #firefox
+
+   _1password-gui # Best password manager imo
+   _1password # 1Password manager CLI
    wl-clipboard
    # Audio
    pavucontrol

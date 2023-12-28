@@ -36,21 +36,30 @@
       search.force = true;
 
       bookmarks = [
-      {
-        name = "wikipedia";
-        tags = [ "wiki" ];
-        keyword = "wiki";
-        url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
+      {    name = "wikipedia";    tags = [ "wiki" ];  keyword = "wiki";  url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go"; }
+      {    name = "kernel.org";   url = "https://www.kernel.org";  }
+
+      {   name = "Nix sites";
+          toolbar = true;
+          bookmarks = [
+            {    name = "homepage";   url = "https://nixos.org/"; }
+            {    name = "wiki";       tags = [ "wiki" "nix" ];   url = "https://nixos.wiki/"; }
+          ];
       }
       ];
 
       settings = {
         "browser.disableResetPrompt" = true;
         "browser.download.panel.shown" = true;
-        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+        "extensions.pocket.enabled" = false;
+        "browser.urlbar.suggest.pocket" = false;
         "browser.shell.checkDefaultBrowser" = false;
         "browser.shell.defaultBrowserCheckCount" = 1;
-        "browser.startup.homepage" = "https://start.duckduckgo.com";
+        "browser.startup.homepage" = "https://homer-vijay.vercel.app/";
+
+        "browser.newtabpage.activity-stream.discoverystream.enabled" = false;
+        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+        "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
 
         # taken from Misterio77's config
         "browser.uiCustomization.state" = ''{"placements":{"widget-overflow-fixed-list":[],"nav-bar":["back-button","forward-button","stop-reload-button","home-button","urlbar-container","downloads-button","library-button","ublock0_raymondhill_net-browser-action","_testpilot-containers-browser-action"],"toolbar-menubar":["menubar-items"],"TabsToolbar":["tabbrowser-tabs","new-tab-button","alltabs-button"],"PersonalToolbar":["import-button","personal-bookmarks"]},"seen":["save-to-pocket-button","developer-button","ublock0_raymondhill_net-browser-action","_testpilot-containers-browser-action"],"dirtyAreaCache":["nav-bar","PersonalToolbar","toolbar-menubar","TabsToolbar","widget-overflow-fixed-list"],"currentVersion":18,"newElementCount":4}'';
@@ -59,26 +68,16 @@
         "privacy.trackingprotection.enabled" = true;
         "signon.rememberSignons" = false;
         "browser.newtabpage.pinned" = [
+        { title = "Home";    url = "https://homer-vijay.vercel.app/";  }
         { title = "NixOS";    url = "https://nixos.org";  }
         ];
       };
 
       userChrome = ''
-        /* some css */
+
+
+
         '';
-
-      extensions = with inputs.firefox-addons.packages."x86_64-linux"; [
-        1password-x-password-manager
-        aria2-integration
-        enhancer-for-youtube
-        dracula-dark-colorscheme
-        ublock-origin
-        sponsorblock
-        darkreader
-        multi-account-containers
-        youtube-shorts-block
-      ];
-
     };
   };
 }
