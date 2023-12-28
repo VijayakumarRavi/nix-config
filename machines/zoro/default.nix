@@ -97,7 +97,7 @@
    v4l-utils
    ueberzugpp
 
-   firefox
+   #firefox
    wl-clipboard
    # Audio
    pavucontrol

@@ -30,6 +30,12 @@
 
     # Tricked out nvim
     vjvim.url = "github:VijayakumarRavi/vjvim";
+
+    # Firefox extensions support
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs@{ nixpkgs, home-manager, darwin, vjvim, ... }: {
     darwinConfigurations.kakashi = darwin.lib.darwinSystem {
@@ -61,7 +67,7 @@
         ./machines/zoro
           home-manager.nixosModules.home-manager
           {
-            home-manager.extraSpecialArgs = { inherit vjvim; };
+            home-manager.extraSpecialArgs = { inherit vjvim; inherit inputs; };
             home-manager.users.vijay = {...}: {
               imports = [./home-manager/zoro ];
             };

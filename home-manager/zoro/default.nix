@@ -1,6 +1,7 @@
 { pkgs, vjvim, ... }: {
   imports = [
   ../common
+  ./firefox.nix
   ];
    home.packages = with pkgs; [
       vjvim.packages."x86_64-linux".default
