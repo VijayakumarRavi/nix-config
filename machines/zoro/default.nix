@@ -19,7 +19,7 @@
     enable = true;
     device = "nodev";
     efiSupport = true;
-    useOSProber = true;
+    timeoutStyle = "hidden";
   };
 
   networking.hostName = "zoro"; # Define your hostname.
@@ -99,6 +99,7 @@
    killall
    v4l-utils
    ueberzugpp
+   xdg-utils
 
    vscode # code editor developed by Microsoft
    _1password-gui # Best password manager imo
