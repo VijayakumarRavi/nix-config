@@ -8,6 +8,7 @@
   imports =
     [
       ../common
+      ./docker.nix
       # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
     ];
@@ -61,7 +62,7 @@
   users.users.vijay = {
     isNormalUser = true;
     description = "Vijayakumar Ravi";
-    extraGroups = [ "networkmanager" "wheel" "disk" "power" "video" ];
+    extraGroups = [ "networkmanager" "wheel" "disk" "power" "video" "docker" ];
   };
 
   security.sudo.wheelNeedsPassword = false;
@@ -99,7 +100,7 @@
    ueberzugpp
 
    #firefox
-
+   
    _1password-gui # Best password manager imo
    _1password # 1Password manager CLI
    wl-clipboard
@@ -199,11 +200,28 @@
     wireplumber.enable = true;
   };
 
+  services.nfs.server = {
+    enable = true;
+    # fixed rpc.statd port; for firewall
+    lockdPort = 4001;
+    mountdPort = 4002;
+    statdPort = 4000;
+    exports = ''
+    /var/lib/docker/volumes/         *(rw,all_squash,no_root_squash,sync,no_subtree_check,anonuid=65534,anongid=65534,insecure)
+    /mnt/share         *(rw,all_squash,no_root_squash,sync,no_subtree_check,anonuid=65534,anongid=65534,insecure)
+    '';
+  };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+  networking.firewall = {
+    enable = true;
+      # for NFSv3; view with `rpcinfo -p`
+    allowedTCPPorts = [ 111  2049 4000 4001 4002 20048 ];
+    allowedUDPPorts = [ 111 2049 4000 4001  4002 20048 ];
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
