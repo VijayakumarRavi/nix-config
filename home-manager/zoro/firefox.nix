@@ -29,7 +29,22 @@
           }
           ];
           icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-          definedAliases = ["@n"];
+          definedAliases = ["@ni"];
+        };
+        "Home manager options" = {
+          urls = [
+          {
+            template = "https://mipmip.github.io/home-manager-option-search/";
+            params = [
+            {
+              name = "query";
+              value = "{searchTerms}";
+            }
+            ];
+          }
+          ];
+          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          definedAliases = ["@ho"];
         };
       };
 
@@ -44,6 +59,7 @@
           bookmarks = [
             {    name = "homepage";   url = "https://nixos.org/"; }
             {    name = "wiki";       tags = [ "wiki" "nix" ];   url = "https://nixos.wiki/"; }
+            {    name = "Home manager search";  url = "https://mipmip.github.io/home-manager-option-search/"; }
           ];
       }
       ];
@@ -81,4 +97,3 @@
     };
   };
 }
-

@@ -63,6 +63,7 @@
     isNormalUser = true;
     description = "Vijayakumar Ravi";
     extraGroups = [ "networkmanager" "wheel" "disk" "power" "video" "docker" ];
+    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX Mainkey" ];
   };
 
   security.sudo.wheelNeedsPassword = false;
@@ -99,8 +100,7 @@
    v4l-utils
    ueberzugpp
 
-   #firefox
-   
+   vscode # code editor developed by Microsoft
    _1password-gui # Best password manager imo
    _1password # 1Password manager CLI
    wl-clipboard
@@ -121,7 +121,7 @@
 
   # Set Environment Variables
   environment.variables={
-   NIXOS_OZONE_WL = "1";
+   # NIXOS_OZONE_WL = "1";  # vscode is not working if this is enabled
    PATH = [
      "\${HOME}/.local/bin"
      "\${HOME}/.cargo/bin"
