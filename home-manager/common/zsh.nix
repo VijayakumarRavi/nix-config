@@ -32,7 +32,7 @@
             done;
           }
 
-          function nixswitch() {
+          function switch() {
             if command -v darwin-rebuild &> /dev/null 2>&1; then
               darwin-rebuild switch --flake /Users/vijay/Developer/Github/nix-config#kakashi
             else
