@@ -1,11 +1,5 @@
-{ pkgs }:
+{pkgs, ...}:
 let
-
-prettyping = pkgs.writeShellScriptBin "prettyping" builtins.readFile(builtins.fetchurl {
-    url = "https://raw.githubusercontent.com/path/to/my/file";
-});
-
-
 task-waybar = pkgs.writeShellScriptBin "task-waybar" ''
     sleep 0.1
     ${pkgs.swaynotificationcenter}/bin/swaync-client -t &
@@ -63,8 +57,7 @@ echo "
 "
 '';
 in {
-environment.systemPackages = [
-  prettyping
+environment.systemPackages =  with pkgs; [
   task-waybar
   emopicker9000
   autohypr
