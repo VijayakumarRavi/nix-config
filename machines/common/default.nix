@@ -40,6 +40,7 @@
       btop # Resource monitor. C++ version and continuation of bashtop and bpytop
       lf # Terminal file manager
       atuin # sync shell history between machines
+      prettyping # A wrapper around the standard ping tool
 
       #_1password-gui # Best password manager imo
       #_1password # 1Password manager CLI
@@ -49,7 +50,7 @@
       lazygit # git TUI
       pre-commit # Git pre-commit hook
       git-crypt # file encryption in git
-      
+
       # Ansible
       ansible # Ansible command line tool
       yamllint # YAML linter
@@ -73,9 +74,9 @@
       flyctl # Fly.io tool
       iperf # Network performance test
       cloudflared  # Cloudflare daemon
-      terraform # terraform cli tool for managing infrastructure 
+      terraform # terraform cli tool for managing infrastructure
       terraformer # CLI tool to generate terraform files from existing infrastructure (reverse Terraform). Infrastructure to Code
-     
+
       yt-dlp # Download youtube videos
       mpv # Video player
       pandoc # Markdown converter
