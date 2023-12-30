@@ -9,6 +9,7 @@
     [
       ../common
       ./docker.nix
+      ./scripts.nix
       # Include the results of the hardware scan.
       "${inputs.hw-config}/hardware-configuration.nix"
       # /etc/nixos/hardware-configuration.nix
@@ -73,10 +74,6 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
-   (import ./emopicker9000.nix { inherit pkgs; })
-   (import ./task-waybar.nix { inherit pkgs; })
-   (import ./squirtle.nix { inherit pkgs; })
-   (import ./autohypr.nix { inherit pkgs; })
    tmux
    neovim
    git
