@@ -31,6 +31,10 @@
     # Tricked out nvim
     vjvim.url = "github:VijayakumarRavi/vjvim";
 
+    # Sops secrets encryption
+    inputs.sops-nix.url = "github:Mic92/sops-nix";
+    inputs.sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     # Hardware config
     hw-config = {
       url = "/etc/nixos";

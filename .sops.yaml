@@ -1,0 +1,8 @@
+
+keys:
+  - &primary age1zgyq9gpx5wnwt3dl5gzy2zch97khe0f78dfeed7v4gzwurvkkays0pn4nd
+creation_rules:
+  - path_regex: home-manager/dotfiles/secrets/secrets.yaml$
+    key_groups:
+    - age:
+      - *primary
