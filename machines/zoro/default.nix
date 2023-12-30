@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   imports =
@@ -10,7 +10,8 @@
       ../common
       ./docker.nix
       # Include the results of the hardware scan.
-      /etc/nixos/hardware-configuration.nix
+      "${inputs.hw-config}/hardware-configuration.nix"
+      # /etc/nixos/hardware-configuration.nix
     ];
 
   # Bootloader.

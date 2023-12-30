@@ -31,6 +31,12 @@
     # Tricked out nvim
     vjvim.url = "github:VijayakumarRavi/vjvim";
 
+    # Hardware config
+    hw-config = {
+      url = "/etc/nixos";
+      flake = false;
+    };
+
     # Firefox extensions support
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
