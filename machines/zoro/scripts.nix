@@ -33,6 +33,7 @@ autohypr = pkgs.writeShellScriptBin "autohypr" ''
     fi
     ${pkgs.xfce.thunar}/bin/thunar --daemon &
     ${pkgs.blueman}/bin/blueman-applet &
+    ${pkgs._1password-gui}/bin/1password --silent &
 '';
 
 squirtle = pkgs.writeShellScriptBin "squirtle" ''
