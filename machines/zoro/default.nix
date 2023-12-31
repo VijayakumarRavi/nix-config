@@ -2,25 +2,27 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, inputs, ... }:
+{ pkgs, lanzaboote, inputs, ... }:
 
 {
   imports = [
     ../common
     ./docker.nix
     ./scripts.nix
+
+    # Required for NixOS Secure Boot
+    lanzaboote.nixosModules.lanzaboote
+
     # Include the results of the hardware scan.
     "${inputs.hw-config}/hardware-configuration.nix"
     # /etc/nixos/hardware-configuration.nix
   ];
 
-  # Bootloader.
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub = {
+  # NixOS Secure Boot   -- refer: https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md
+  # Bootloader
+  boot.lanzaboote = {
     enable = true;
-    device = "nodev";
-    efiSupport = true;
-    timeoutStyle = "hidden";
+    pkiBundle = "/etc/secureboot";
   };
 
   networking.hostName = "zoro"; # Define your hostname.
@@ -80,6 +82,7 @@
     git
     htop
     cachix
+    sbctl
 
     libvirt
     swww

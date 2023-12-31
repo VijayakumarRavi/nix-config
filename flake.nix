@@ -42,13 +42,18 @@
       flake = false;
     };
 
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.3.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Firefox extensions support
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = inputs@{ nixpkgs, home-manager, darwin, vjvim, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, darwin, vjvim, lanzaboote, ... }: {
     darwinConfigurations.kakashi = darwin.lib.darwinSystem {
       pkgs = import nixpkgs {
         system = "aarch64-darwin";
@@ -74,7 +79,10 @@
     nixosConfigurations.zoro = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       # makes all inputs availble in imported files
-      specialArgs = { inherit inputs; };
+      specialArgs = {
+        inherit inputs;
+        inherit lanzaboote;
+      };
       modules = [
         ./machines/zoro
         home-manager.nixosModules.home-manager
