@@ -7,13 +7,15 @@
       allowed-users = [ "vijay" ];
       trusted-users = [ "root" "vijay" ];
       experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+      auto-optimise-store = true;
       warn-dirty = false;
       sandbox = false;
     };
 
     gc = {
       automatic = true;
-      options = "--delete-older-than 30d";
+      dates = "*-*-1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31 00:00:00";
+      options = "--delete-old";
     };
   };
 
