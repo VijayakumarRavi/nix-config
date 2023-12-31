@@ -54,10 +54,6 @@
     source = ../dotfiles/hypr/autostart.conf;
     recursive = true;
   };
-  home.file.".config/zaney-stinger.mov" = {
-    source = ../dotfiles/zaney-stinger.mov;
-    recursive = true;
-  };
   home.file.".local/share/fonts/UniSans-Heavy.otf" = {
     source = ../dotfiles/UniSans-Heavy.otf;
     recursive = true;

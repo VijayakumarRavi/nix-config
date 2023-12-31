@@ -1,13 +1,22 @@
-{ pkgs, inputs, config, ... }:{
-
+{ pkgs, inputs, config, ... }: {
   imports =
     [
       inputs.sops-nix.nixosModules.sops
     ];
-  sops.defaultSopsFile = ./secrets/secrets.yaml;
+  sops.defaultSopsFile = ../../secrets/secrets.yaml;
   sops.defaultSopsFormat = "yaml";
 
   sops.age.keyFile = "/home/vijay/.config/sops/age/keys.txt";
+
+  sops.secrets."containers/ariang/aria2_user" = {
+    owner = "root";
+  };
+  sops.secrets."containers/ariang/aria2_pass" = {
+    owner = "root";
+  };
+  sops.secrets."containers/ariang/rpc_secret" = {
+    owner = "root";
+  };
 
 # Enable docker
 virtualisation.docker = {
@@ -32,10 +41,10 @@ virtualisation.oci-containers = {
         PUID = "1000";
         PGID = "1000";
         ENABLE_AUTH = "true";
-        RPC_SECRET = "Hello";
         ARIA2_SSL = "false";
-        ARIA2_USER = "vijay";
-        ARIA2_PWD = "vijay";
+        ARIA2_USER = builtins.readFile config.sops.secrets."containers/ariang/aria2_user".path;
+        ARIA2_PWD = builtins.readFile config.sops.secrets."containers/ariang/aria2_pass".path;
+        RPC_SECRET = builtins.readFile config.sops.secrets."containers/ariang/rpc_secret".path;
         CADDY_LOG_LEVEL = "ERROR";
       };
       # workdir = "/home/vijay/docker/ariang";
