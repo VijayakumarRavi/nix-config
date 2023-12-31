@@ -1,20 +1,17 @@
 { pkgs, ... }: {
-  imports = [
-    ./homebrew.nix
-    ../common
-  ];
+  imports = [ ./homebrew.nix ../common ];
 
   environment = {
     systemPath = [ "/opt/homebrew/bin" ];
     pathsToLink = [ "/Applications" ];
   };
-  nix = { 
+  nix = {
     configureBuildUsers = true;
     gc.interval = {
-        Weekday = 0;
-        Hour = 2;
-        Minute = 0;
-      };
+      Weekday = 0;
+      Hour = 2;
+      Minute = 0;
+    };
   };
 
   users.users.vijay.home = /Users/vijay;
@@ -22,7 +19,8 @@
   system.keyboard.enableKeyMapping = true;
   #  system.keyboard.remapCapsLockToEscape = true;
   fonts.fontDir.enable = true; # DANGER
-  fonts.fonts = [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; }) ];
+  fonts.fonts =
+    [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; }) ];
   services.nix-daemon.enable = true;
   security.pam.enableSudoTouchIdAuth = true;
 
@@ -60,7 +58,7 @@
       NSNavPanelExpandedStateForSaveMode2 = true;
 
       # Increase window resize speed for Cocoa applications
-      NSWindowResizeTime = 0.001;
+      NSWindowResizeTime = 1.0e-3;
 
       # Save to disk (not to iCloud) by default
       NSDocumentSaveNewDocumentsToCloud = true;
@@ -139,7 +137,8 @@
         ShowMountedServersOnDesktop = false;
 
         # Show directories first
-        _FXSortFoldersFirst = true; # TODO: https://github.com/LnL7/nix-darwin/pull/594
+        _FXSortFoldersFirst =
+          true; # TODO: https://github.com/LnL7/nix-darwin/pull/594
 
         # New window use the $HOME path
         NewWindowTarget = "PfHm";
@@ -162,7 +161,8 @@
         IncludeInternalDebugMenu = true;
         WebKitDeveloperExtras = true;
         WebKitDeveloperExtrasEnabledPreferenceKey = true;
-        "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" = true;
+        "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" =
+          true;
       };
       "com.apple.universalaccess" = {
         # Set the cursor size, TODO: https://github.com/LnL7/nix-darwin/pull/671
@@ -214,7 +214,7 @@
     duti -s com.colliderli.iina .mp4 all
 
     ~/.config/os/darwin/power.sh
-    '';
-# backwards compat; don't change
+  '';
+  # backwards compat; don't change
   system.stateVersion = 4;
-  }
+}

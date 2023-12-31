@@ -5,15 +5,14 @@
 { pkgs, inputs, ... }:
 
 {
-  imports =
-    [
-      ../common
-      ./docker.nix
-      ./scripts.nix
-      # Include the results of the hardware scan.
-      "${inputs.hw-config}/hardware-configuration.nix"
-      # /etc/nixos/hardware-configuration.nix
-    ];
+  imports = [
+    ../common
+    ./docker.nix
+    ./scripts.nix
+    # Include the results of the hardware scan.
+    "${inputs.hw-config}/hardware-configuration.nix"
+    # /etc/nixos/hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.efi.canTouchEfiVariables = true;
@@ -65,7 +64,9 @@
     isNormalUser = true;
     description = "Vijayakumar Ravi";
     extraGroups = [ "networkmanager" "wheel" "disk" "power" "video" "docker" ];
-    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX Mainkey" ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX Mainkey"
+    ];
   };
 
   security.sudo.wheelNeedsPassword = false;
@@ -74,76 +75,70 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
-   tmux
-   neovim
-   git
-   htop
-   cachix
+    tmux
+    neovim
+    git
+    htop
+    cachix
 
-   libvirt
-   swww
-   polkit_gnome
-   grim
-   slurp
-   lm_sensors
-   unzip
-   unrar
-   gnome.file-roller
-   libnotify
-   swaynotificationcenter
-   tofi
-   xfce.thunar
-   imv
-   killall
-   v4l-utils
-   ueberzugpp
-   xdg-utils
+    libvirt
+    swww
+    polkit_gnome
+    grim
+    slurp
+    lm_sensors
+    unzip
+    unrar
+    gnome.file-roller
+    libnotify
+    swaynotificationcenter
+    tofi
+    xfce.thunar
+    imv
+    killall
+    v4l-utils
+    ueberzugpp
+    xdg-utils
 
-   vscode # code editor developed by Microsoft
-   _1password-gui # Best password manager imo
-   _1password # 1Password manager CLI
-   wl-clipboard
-   # Audio
-   pavucontrol
-   pulseaudio
-   audacity
-   # Fonts
-   font-awesome
-   symbola
-   noto-fonts-color-emoji
-   material-icons
+    vscode # code editor developed by Microsoft
+    _1password-gui # Best password manager imo
+    _1password # 1Password manager CLI
+    wl-clipboard
+    # Audio
+    pavucontrol
+    pulseaudio
+    audacity
+    # Fonts
+    font-awesome
+    symbola
+    noto-fonts-color-emoji
+    material-icons
   ];
 
-  fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "JetBrainsMono" "Ubuntu" ]; })
-  ];
+  fonts.packages = with pkgs;
+    [ (nerdfonts.override { fonts = [ "JetBrainsMono" "Ubuntu" ]; }) ];
 
   # Set Environment Variables
-  environment.variables={
-   # NIXOS_OZONE_WL = "1";  # vscode is not working if this is enabled
-   PATH = [
-     "\${HOME}/.local/bin"
-     "\${HOME}/.cargo/bin"
-     "\$/usr/local/bin"
-   ];
-   NIXPKGS_ALLOW_UNFREE = "1";
-   SCRIPTDIR = "\${HOME}/.local/share/scriptdeps";
-   STARSHIP_CONFIG = "\${HOME}/.config/starship/starship.toml";
-   XDG_CURRENT_DESKTOP = "Hyprland";
-   XDG_SESSION_TYPE = "wayland";
-   XDG_SESSION_DESKTOP = "Hyprland";
-   GDK_BACKEND = "wayland";
-   CLUTTER_BACKEND = "wayland";
-   SDL_VIDEODRIVER = "x11";
-   XCURSOR_SIZE = "24";
-   XCURSOR_THEME = "Bibata-Modern-Ice";
-   QT_QPA_PLATFORM = "wayland";
-   QT_QPA_PLATFORMTHEME = "qt5ct";
-   QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-   QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-   MOZ_ENABLE_WAYLAND = "1";
+  environment.variables = {
+    # NIXOS_OZONE_WL = "1";  # vscode is not working if this is enabled
+    PATH = [ "\${HOME}/.local/bin" "\${HOME}/.cargo/bin" "$/usr/local/bin" ];
+    NIXPKGS_ALLOW_UNFREE = "1";
+    SCRIPTDIR = "\${HOME}/.local/share/scriptdeps";
+    STARSHIP_CONFIG = "\${HOME}/.config/starship/starship.toml";
+    XDG_CURRENT_DESKTOP = "Hyprland";
+    XDG_SESSION_TYPE = "wayland";
+    XDG_SESSION_DESKTOP = "Hyprland";
+    GDK_BACKEND = "wayland";
+    CLUTTER_BACKEND = "wayland";
+    SDL_VIDEODRIVER = "x11";
+    XCURSOR_SIZE = "24";
+    XCURSOR_THEME = "Bibata-Modern-Ice";
+    QT_QPA_PLATFORM = "wayland";
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    MOZ_ENABLE_WAYLAND = "1";
   };
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -165,7 +160,8 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --remember --time --asterisks --greeting \"Vanakkam da mapla 👻\" --cmd Hyprland";
+        command = ''
+          ${pkgs.greetd.tuigreet}/bin/tuigreet --remember --time --asterisks --greeting "Vanakkam da mapla 👻" --cmd Hyprland'';
         user = "vijay";
       };
     };
@@ -206,8 +202,8 @@
     mountdPort = 4002;
     statdPort = 4000;
     exports = ''
-    /var/lib/docker/volumes/         *(rw,all_squash,no_root_squash,sync,no_subtree_check,anonuid=65534,anongid=65534,insecure)
-    /mnt/share         *(rw,all_squash,no_root_squash,sync,no_subtree_check,anonuid=65534,anongid=65534,insecure)
+      /var/lib/docker/volumes/         *(rw,all_squash,no_root_squash,sync,no_subtree_check,anonuid=65534,anongid=65534,insecure)
+      /mnt/share         *(rw,all_squash,no_root_squash,sync,no_subtree_check,anonuid=65534,anongid=65534,insecure)
     '';
   };
   # Open ports in the firewall.
@@ -217,9 +213,9 @@
   # networking.firewall.enable = false;
   networking.firewall = {
     enable = true;
-      # for NFSv3; view with `rpcinfo -p`
-    allowedTCPPorts = [ 111  2049 4000 4001 4002 20048 ];
-    allowedUDPPorts = [ 111 2049 4000 4001  4002 20048 ];
+    # for NFSv3; view with `rpcinfo -p`
+    allowedTCPPorts = [ 111 2049 4000 4001 4002 20048 ];
+    allowedUDPPorts = [ 111 2049 4000 4001 4002 20048 ];
   };
 
   # This value determines the NixOS release from which the default

@@ -1,16 +1,15 @@
-
 { pkgs, ... }: {
 
   nix = {
-   # package = lib.mkDefault pkgs.nix;
-   package = pkgs.nix;
-   settings = {
-      allowed-users = ["vijay"];
-      trusted-users = ["root" "vijay"];
-      experimental-features = ["nix-command" "flakes" "repl-flake"];
+    # package = lib.mkDefault pkgs.nix;
+    package = pkgs.nix;
+    settings = {
+      allowed-users = [ "vijay" ];
+      trusted-users = [ "root" "vijay" ];
+      experimental-features = [ "nix-command" "flakes" "repl-flake" ];
       warn-dirty = false;
       sandbox = false;
-   };
+    };
 
     gc = {
       automatic = true;
@@ -55,10 +54,9 @@
       ansible # Ansible command line tool
       yamllint # YAML linter
       ansible-lint # Ansible linter
-      age  # age is a simple, modern and secure file encryption tool.
+      age # age is a simple, modern and secure file encryption tool.
       sshpass # SSHPass - SSH password manager
       sops # Secret key encryption
-
 
       # Dev utils
       tree # Tree command line tool
@@ -71,9 +69,10 @@
       python3 # Python lang
       python311Packages.pip # install python dependencies
       cachix # Command-line client for Nix binary cache hosting https://cachix.org
+      nixfmt # nix lang formatter
       flyctl # Fly.io tool
       iperf # Network performance test
-      cloudflared  # Cloudflare daemon
+      cloudflared # Cloudflare daemon
       terraform # terraform cli tool for managing infrastructure
       terraformer # CLI tool to generate terraform files from existing infrastructure (reverse Terraform). Infrastructure to Code
 

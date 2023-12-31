@@ -8,14 +8,14 @@
     ./tmux.nix
     ./starship.nix
     ./alacritty.nix
-    
+
   ];
 
   # specify my home-manager configs
   # home.packages = with pkgs; [  ];
-  
+
   systemd.user.startServices = "sd-switch";
-  home.sessionPath = ["$HOME/.local/bin"];
+  home.sessionPath = [ "$HOME/.local/bin" ];
   home.sessionVariables = {
     PAGER = "less";
     CLICLOLOR = 1;

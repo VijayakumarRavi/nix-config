@@ -24,19 +24,16 @@
         multiplier = 3;
       };
 
-      mouse = {hide_when_typing = false;};
+      mouse = { hide_when_typing = false; };
 
-      key_bindings = [
-        {
-          # clear terminal
-          key = "L";
-          mods = "Control";
-          chars = "\\x0c";
-        }
-      ];
+      key_bindings = [{
+        # clear terminal
+        key = "L";
+        mods = "Control";
+        chars = "\\x0c";
+      }];
 
-      font = let
-        fontname = "JetBrainsMono Nerd Font Mono";
+      font = let fontname = "JetBrainsMono Nerd Font Mono";
       in {
         normal = {
           family = fontname;

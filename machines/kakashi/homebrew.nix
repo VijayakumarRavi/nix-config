@@ -1,4 +1,4 @@
-#{ pkgs, ... }: 
+# { pkgs, ... }:
 {
   homebrew = {
     enable = true;
@@ -11,7 +11,7 @@
     };
     masApps = {
       "1Password for Safari" = 1569813296;
-      "Tailscale" = 1475387142; 
+      "Tailscale" = 1475387142;
       "infuse video player" = 1136220934;
       "localsend" = 1661733229;
       # "shelly ssh client" = 989642999;
@@ -21,7 +21,7 @@
       "hpedrorodrigues/tools/dockutil" # Dockutil - Manage your dock
       "iterm2" # Terminal emulator
       "raycast" # Raycast - A better alternative to Alfred and spotlight
-      "stats" #System monitor for the menu bar
+      "stats" # System monitor for the menu bar
       "shottr" # Screenshot util
       "brave-browser" # Web browser focusing on privacy
       "arc" # Chromium based browser
@@ -45,7 +45,7 @@
       "homebrew/services" # Homebrew Services
 
       "1password/tap" # Best password manager
-      "hudochenkov/sshpass" # Ansible sshpass 
+      "hudochenkov/sshpass" # Ansible sshpass
       "cloudflare/cloudflare" # Cloudflare CLI tool
       "hashicorp/tap" # Hashicorp tap
     ];
