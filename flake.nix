@@ -30,6 +30,7 @@
 
     # Tricked out nvim
     vjvim.url = "github:VijayakumarRavi/vjvim";
+    vjvim.inputs.nixpkgs.follows = "nixpkgs";
 
     # Sops secrets encryption
     sops-nix.url = "github:Mic92/sops-nix";
@@ -55,33 +56,37 @@
       };
       system = "aarch64-darwin";
       # makes all inputs availble in imported files
-      specialArgs = {inherit inputs;};
+      specialArgs = { inherit inputs; };
       modules = [
         ./machines/kakashi
-          home-manager.darwinModules.home-manager {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = { inherit vjvim; };
-              users.vijay.imports = [ ./home-manager/kakashi ];
-            };
-          }
+        home-manager.darwinModules.home-manager
+        {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            extraSpecialArgs = { inherit vjvim; };
+            users.vijay.imports = [ ./home-manager/kakashi ];
+          };
+        }
       ];
     };
 
     nixosConfigurations.zoro = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       # makes all inputs availble in imported files
-      specialArgs = {inherit inputs;};
+      specialArgs = { inherit inputs; };
       modules = [
         ./machines/zoro
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.extraSpecialArgs = { inherit vjvim; inherit inputs; };
-            home-manager.users.vijay = {...}: {
-              imports = [./home-manager/zoro ];
-            };
-          }
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.extraSpecialArgs = {
+            inherit vjvim;
+            inherit inputs;
+          };
+          home-manager.users.vijay = { ... }: {
+            imports = [ ./home-manager/zoro ];
+          };
+        }
       ];
     };
   };

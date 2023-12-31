@@ -164,21 +164,6 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1704034709,
-        "narHash": "sha256-GxaU7WiPfAGEsrCNP2vv8HjPqTuNPW/pVFBRbp0avUI=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "85acb6c5f4676ed290fdcde1f55ef97a185c8032",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "darwin": "darwin",
@@ -214,14 +199,16 @@
     "vjvim": {
       "inputs": {
         "neovim": "neovim",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
-        "lastModified": 1704035669,
-        "narHash": "sha256-aXqSc3ISdv+ZnsXVTK4mABFKrCpXYJOEbLrmyFjAXeQ=",
+        "lastModified": 1704039870,
+        "narHash": "sha256-PAewLJU0wdqwVcmEXzxWVsoFhA8n9GbSdVbV30CfW+g=",
         "owner": "VijayakumarRavi",
         "repo": "vjvim",
-        "rev": "14437666ba9ac5f251352239e3a01230ef40073e",
+        "rev": "ae6d1b474dd71f927781ff6df2bfb64547de1b9c",
         "type": "github"
       },
       "original": {
