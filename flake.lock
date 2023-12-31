@@ -97,8 +97,8 @@
     "hw-config": {
       "flake": false,
       "locked": {
-        "lastModified": 1704036133,
-        "narHash": "sha256-pQpattmS9VmO3ZIQUFn66az8GSmB4IvYhTTCFn6SUmo=",
+        "lastModified": 1703772975,
+        "narHash": "sha256-SriM/wRVkPydP81DvrZcw9o4M67GQvIaGgw5p8GoW2Q=",
         "path": "/etc/nixos",
         "type": "path"
       },
