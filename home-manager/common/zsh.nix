@@ -43,6 +43,8 @@
           git pull $i;
         done;
       }
+
+      [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
     '';
 
     shellAliases = {
