@@ -11,12 +11,6 @@
       warn-dirty = false;
       sandbox = false;
     };
-
-    gc = {
-      automatic = true;
-      dates = "*-*-1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31 00:00:00";
-      options = "--delete-old";
-    };
   };
 
   programs.zsh.enable = true;
@@ -84,6 +78,7 @@
       borgbackup # simple backup solution
       hugo # Static site generator
       ncspot # ncurses Spotify client
+      magic-wormhole # file transfer cli
 
       # Containers
       kubernetes-helm # A package manager for kubernetes

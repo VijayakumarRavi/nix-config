@@ -7,10 +7,10 @@
   };
   nix = {
     configureBuildUsers = true;
-    gc.interval = {
-      Weekday = 0;
-      Hour = 2;
-      Minute = 0;
+    gc = {
+      automatic = true;
+      interval = { Hour = 24; };
+      options = "--delete-old";
     };
   };
 

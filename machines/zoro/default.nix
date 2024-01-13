@@ -18,6 +18,12 @@
     # /etc/nixos/hardware-configuration.nix
   ];
 
+  nix.gc = {
+    automatic = true;
+    dates = "*-*-1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31 00:00:00";
+    options = "--delete-old";
+  };
+
   # NixOS Secure Boot   -- refer: https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md
   # Bootloader
   boot.lanzaboote = {

@@ -32,7 +32,7 @@
 
       function switch() {
         if command -v darwin-rebuild &> /dev/null 2>&1; then
-          darwin-rebuild switch "$@" --accept-flake-config --flake /Users/vijay/Developer/Github/nix-config#kakashi
+          darwin-rebuild switch "$@" --flake /Users/vijay/Developer/Github/nix-config#kakashi
         else
           sudo nixos-rebuild switch "$@" --accept-flake-config --flake /home/vijay/.nix-config#zoro
         fi
