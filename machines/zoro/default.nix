@@ -8,6 +8,9 @@
   imports = [
     ../common
     ./docker.nix
+    ./ariang.nix
+    ./radarr.nix
+    ./jellyfin.nix
     ./scripts.nix
 
     # Required for NixOS Secure Boot
