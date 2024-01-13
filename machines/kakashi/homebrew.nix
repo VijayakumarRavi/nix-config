@@ -40,8 +40,6 @@
     taps = [
       # Homebrew
       "homebrew/bundle" # Homebrew Bundle
-      "homebrew/cask" # Homebrew Cask
-      "homebrew/core" # Homebrew Core
       "homebrew/services" # Homebrew Services
 
       "1password/tap" # Best password manager
