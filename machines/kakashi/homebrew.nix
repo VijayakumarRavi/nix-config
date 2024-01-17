@@ -36,6 +36,7 @@
       "visual-studio-code" # Visual Studio Code editor
       "1password" # Best password manager imo
       "1password-cli" # 1Password manager CLI
+      "floorp" # A fork of Firefox
     ];
     taps = [
       # Homebrew
