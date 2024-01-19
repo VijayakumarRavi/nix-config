@@ -24,31 +24,10 @@
     };
   };
 
-  # firewall rule to allow jellyfin
+  # firewall rule
   networking.firewall = {
     allowedTCPPorts = [ 8080 ];
     allowedUDPPorts = [ 8080 ];
-  };
-
-  systemd.timers."docker-ariang-fix" = {
-    wantedBy = [ "sysinit.target" ];
-    after = [ "docker-ariang.service" ];
-    timerConfig = {
-      OnBootSec = "2m";
-      Unit = "docker-ariang-fix.service";
-    };
-  };
-
-  systemd.services."docker-ariang-fix" = {
-    description = "NFS permission fix for ariang container";
-    script = ''
-      set -eu
-      ${pkgs.coreutils}/bin/chmod -Rv 777 var/lib/docker/volumes/
-    '';
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-    };
   };
 
   systemd.timers."docker-ariang-volume-init" = {
