@@ -33,6 +33,10 @@
     enable = true;
     pkiBundle = "/etc/secureboot";
   };
+  # boot splash screen
+  boot.plymouth.enable = true;
+  # Emulate an arm64 machine for RPI
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   networking.hostName = "zoro"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -184,6 +188,12 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.fstrim.enable = true;
+
+  # netdata log monitoring
+  services.netdata = {
+    enable = true;
+    package = pkgs.netdata.override { withCloud = true; };
+  };
 
   # Sound options
   sound.enable = true;
