@@ -8,7 +8,7 @@
     ./tmux.nix
     ./starship.nix
     ./alacritty.nix
-
+    ./nvim.nix
   ];
 
   # specify my home-manager configs

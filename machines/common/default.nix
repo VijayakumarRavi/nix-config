@@ -21,6 +21,7 @@
     #loginShell = pkgs.zsh;
     systemPackages = with pkgs; [
       # Linux utils
+      vim # a must needed text editor
       fd # Simple, fast and user-friendly alternative to find
       curl # A command line tool for transferring files with URL syntax
       less # A more advanced file pager than 'more'
@@ -72,11 +73,13 @@
       terraform # terraform cli tool for managing infrastructure
       terraformer # CLI tool to generate terraform files from existing infrastructure (reverse Terraform). Infrastructure to Code
 
+      # rpi-imager # Raspberry Pi Imaging Utility
       yt-dlp # Download youtube videos
       mpv # Video player
       pandoc # Markdown converter
       borgbackup # simple backup solution
       hugo # Static site generator
+      spotify # Music client
       ncspot # ncurses Spotify client
       magic-wormhole # file transfer cli
 

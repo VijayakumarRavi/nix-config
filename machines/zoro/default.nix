@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, lanzaboote, inputs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   imports = [
@@ -14,7 +14,7 @@
     ./scripts.nix
 
     # Required for NixOS Secure Boot
-    lanzaboote.nixosModules.lanzaboote
+    inputs.lanzaboote.nixosModules.lanzaboote
 
     # Include the results of the hardware scan.
     "${inputs.hw-config}/hardware-configuration.nix"

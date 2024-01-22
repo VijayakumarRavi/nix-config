@@ -1,7 +1,6 @@
-{ pkgs, vjvim, ... }: {
+{ pkgs, ... }: { #vjvim, 
   imports = [ ../common ./firefox.nix ];
-  home.packages = with pkgs; [ vjvim.packages."x86_64-linux".default ];
-
+  
   home.file.".config/swaync/config.json" = {
     source = ../dotfiles/swaync/config.json;
     recursive = true;
