@@ -32,9 +32,9 @@
 
       function switch() {
         if command -v darwin-rebuild &> /dev/null 2>&1; then
-          darwin-rebuild switch "$@" --flake /Users/vijay/Developer/Github/nix-config#kakashi
+          darwin-rebuild switch "$@" -L --flake /Users/vijay/.nix-config#kakashi
         else
-          sudo nixos-rebuild switch "$@" --accept-flake-config --flake /home/vijay/.nix-config#zoro
+          sudo nixos-rebuild switch "$@" -L --accept-flake-config --flake /home/vijay/.nix-config#zoro
         fi
       }
 
@@ -48,10 +48,7 @@
     '';
 
     shellAliases = {
-      #nixswitch = "darwin-rebuild switch --flake /Users/vijay/Developer/Github/nix-config#";
-      #zoroswitch = "sudo nixos-rebuild switch --flake /home/vijay/git/nix-config#zoro";
-      nixup =
-        "pushd /Users/vijay/Developer/Github/nix-config; nix flake update; nixswitch; popd";
+      nixup = "pushd /Users/vijay/.nix-config; nix flake update; nixswitch; popd";
       # System Aliases
       rm = "rm -vr";
       cp = "cp -vr";
@@ -59,7 +56,7 @@
       mv = "mv -v";
       mkdir = "mkdir -pv";
       SS = "sudo systemctl";
-      ls = "${pkgs.lsd}/bin/lsd -hAN --color=auto --group-directories-first";
+      ls = "${pkgs.lsd}/bin/lsd -hA --color=auto --group-directories-first";
       ll = "${pkgs.lsd}/bin/lsd -lhAv --color=auto --group-directories-first";
       grep = "grep --color=auto";
       h = "history";
@@ -78,34 +75,25 @@
       "..." = "cd ../..";
       n = "nvim";
       sn = "sudo nvim";
-      vim = "nvim";
-      svi = "sudo nvim";
+      sv = "sudo vim";
       lzd = "${pkgs.lazydocker}";
       lzg = "${pkgs.lazygit}";
-      pg = "ping google.com";
-      pv = "ping vijayakumar.xyz";
+      pg = "prettyping google.com";
+      pv = "prettyping vijayakumar.xyz";
       ncspotd = "${pkgs.ncspot} -d ~/.config/ncspot/DEBUG";
-      helix = "/home/vijay/Downloads/helix.AppImage";
-      tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
-      ping = "prettyping";
+
+     # tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
+      pping = "prettyping";
       preview = "${pkgs.fzf} --preview 'cat {}'";
       notes = "nvim ~/.notes.txt";
-      # Git
+      
+# Git
       gs = "git status";
       gc = "git clone --depth=1 --recursive";
-      dot =
-        "/usr/bin/git --git-dir=$HOME/.local/share/dotfiles/ --work-tree=$HOME";
       addup = "git add -u";
       ga = "git add";
       gall = "git add .";
-      branch = "git branch";
-      checkout = "git checkout";
-      clone = "git clone";
       commit = "git cz --name cz_emoji commit -s";
-      fetch = "git fetch";
-      tag = "git tag";
-      newtag = "git tag -a";
-
     };
   };
 }

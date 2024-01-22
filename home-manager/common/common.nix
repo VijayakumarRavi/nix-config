@@ -49,7 +49,7 @@
             User pi
             Port 22
         Host nami
-            HostName 10.0.1.2
+            HostName 10.0.0.2
             User vijay
             Port 22
         Host zoro
