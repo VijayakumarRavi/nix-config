@@ -1,5 +1,7 @@
 { pkgs, ... }: {
-  imports = [ ./homebrew.nix ../common ];
+  imports = [ ./homebrew.nix 
+  ./dock 
+  ../common ];
 
   environment = {
     systemPath = [ "/opt/homebrew/bin" ];
@@ -215,6 +217,24 @@
 
     ~/.config/os/darwin/power.sh
   '';
+
+  # Fully declarative dock using the latest from Nix Store
+   local = {
+     dock.enable = true;
+     dock.entries = [
+       { path = "/System/Applications/Launchpad.app/"; }
+       { path = "/Applications/Arc.app/"; }
+       { path = "/System/Cryptexes/App/System/Applications/Safari.app/"; }
+       { path = "/System/Applications/Messages.app/"; }
+       { path = "/System/Applications/Mail.app/"; }
+       { path = "/System/Applications/Music.app/"; }
+       { path = "${pkgs.spotify}/Applications/Spotify.app/"; }
+       { path = "/System/Applications/Photos.app/"; }
+       { path = "/System/Applications/System Settings.app/"; }
+       { path = "/Applications/iTerm.app/"; }
+     ];
+   };
+
   # backwards compat; don't change
   system.stateVersion = 4;
 }
