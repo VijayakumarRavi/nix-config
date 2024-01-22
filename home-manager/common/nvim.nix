@@ -31,6 +31,20 @@
 
     clipboard.register = "unnamedplus";
 
+    extraConfigVim = ''
+      if has("persistent_undo")
+        let target_path = expand('~/.cache/undodir')
+
+         " create the directory and any parent directories
+         " if the location does not exist.
+         if !isdirectory(target_path)
+             call mkdir(target_path, "p", 0700)
+         endif
+
+         let &undodir=target_path
+         set undofile
+      endif
+    '';
     extraConfigLua = ''
       -- last cursor position
       -- When editing a file, always jump to the last known cursor position.
