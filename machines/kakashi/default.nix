@@ -1,7 +1,5 @@
 { pkgs, ... }: {
-  imports = [ ./homebrew.nix 
-  ./dock 
-  ../common ];
+  imports = [ ./homebrew.nix ./dock ../common ];
 
   environment = {
     systemPath = [ "/opt/homebrew/bin" ];
@@ -14,6 +12,11 @@
       interval = { Hour = 24; };
       options = "--delete-old";
     };
+  };
+
+  networking = {
+    computerName = "kakashi";
+    hostName = "kakashi";
   };
 
   users.users.vijay.home = /Users/vijay;
@@ -40,7 +43,7 @@
 
       # Enable press-and-hold repeating
       ApplePressAndHoldEnabled = true;
-      InitialKeyRepeat = 10;
+      InitialKeyRepeat = 20;
       KeyRepeat = 1;
 
       # Disable "Natural" scrolling
@@ -72,6 +75,10 @@
 
       # minimize windows into their application icon
       minimize-to-application = true;
+
+      magnification = true;
+      largesize = 80;
+
       # Set dock to auto-hide, and transparentize icons of hidden apps (⌘H)
       autohide = true;
       showhidden = true;
@@ -79,6 +86,13 @@
       # Disable to show recents, and light-dot of running apps
       show-recents = false;
       show-process-indicators = true;
+
+      # Hot corner
+      wvous-tl-corner = 2; # Mission Control
+      wvous-tr-corner = 12; # Notification Center
+      wvous-bl-corner = 11; # Launchpad
+      wvous-br-corner = 4; # Show Desktop
+
     };
 
     finder = {
@@ -109,6 +123,11 @@
 
       # Enable 3-finger drag
       TrackpadThreeFingerDrag = false;
+    };
+
+    loginwindow = {
+      GuestEnabled = true;
+      LoginwindowText = "Vanakkam da mapla 👻";
     };
 
     ActivityMonitor = {
@@ -219,21 +238,21 @@
   '';
 
   # Fully declarative dock using the latest from Nix Store
-   local = {
-     dock.enable = true;
-     dock.entries = [
-       { path = "/System/Applications/Launchpad.app/"; }
-       { path = "/Applications/Arc.app/"; }
-       { path = "/System/Cryptexes/App/System/Applications/Safari.app/"; }
-       { path = "/System/Applications/Messages.app/"; }
-       { path = "/System/Applications/Mail.app/"; }
-       { path = "/System/Applications/Music.app/"; }
-       { path = "${pkgs.spotify}/Applications/Spotify.app/"; }
-       { path = "/System/Applications/Photos.app/"; }
-       { path = "/System/Applications/System Settings.app/"; }
-       { path = "/Applications/iTerm.app/"; }
-     ];
-   };
+  local = {
+    dock.enable = true;
+    dock.entries = [
+      { path = "/System/Applications/Launchpad.app/"; }
+      { path = "/Applications/Arc.app/"; }
+      { path = "/System/Cryptexes/App/System/Applications/Safari.app/"; }
+      { path = "/System/Applications/Messages.app/"; }
+      { path = "/System/Applications/Mail.app/"; }
+      { path = "/System/Applications/Music.app/"; }
+      { path = "${pkgs.spotify}/Applications/Spotify.app/"; }
+      { path = "/System/Applications/Photos.app/"; }
+      { path = "/System/Applications/System Settings.app/"; }
+      { path = "/Applications/iTerm.app/"; }
+    ];
+  };
 
   # backwards compat; don't change
   system.stateVersion = 4;
