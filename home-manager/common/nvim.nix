@@ -148,6 +148,11 @@
         key = "<C-l>";
         mode = [ "n" ];
       }
+      { # Telescope Undo history
+        action = "<cmd>Telescope undo<cr>";
+        key = "<leader>u";
+        mode = [ "n" "i" "v" ];
+      }
 
     ];
 
