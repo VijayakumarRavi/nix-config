@@ -27,6 +27,13 @@
       enable = true;
       background.dark = "macchiato";
       background.light = "macchiato";
+      transparentBackground = true;
+      integrations.telescope.enabled = true;
+      integrations.native_lsp.enabled = true;
+      integrations.harpoon = true;
+      integrations.neotree = true;
+      integrations.treesitter = true;
+      integrations.cmp = true;
     };
 
     clipboard.register = "unnamedplus";
@@ -189,6 +196,7 @@
 
       neo-tree = {
         enable = true;
+        window.width = 30;
         closeIfLastWindow = true;
       };
 
@@ -216,7 +224,6 @@
       cmp-spell.enable = true;
       cmp_luasnip.enable = true;
       cmp-nvim-lsp.enable = true;
-      friendly-snippets.enable = true;
 
       nvim-cmp = {
         enable = true;
@@ -226,6 +233,7 @@
           { name = "path"; }
           { name = "buffer"; }
           { name = "luasnip"; }
+          { name = "spell"; }
         ];
 
         mapping = {
