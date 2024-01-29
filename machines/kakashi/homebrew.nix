@@ -14,6 +14,7 @@
       "Tailscale" = 1475387142;
       "infuse video player" = 1136220934;
       "localsend" = 1661733229;
+      "shortery" = 1594183810;
       # "shelly ssh client" = 989642999;
     };
     casks = [
@@ -24,7 +25,8 @@
       "shottr" # Screenshot util
       "brave-browser" # Web browser focusing on privacy
       "arc" # Chromium based browser
-      # "spotify" # Music streaming service
+      "floorp" # A fork of Firefox
+      "utm" # Virtual machines UI using QEMU
       "hyperkey" # Convert your caps lock key or any of your modifier keys to the hyper key
       "appcleaner" # Application uninstaller
       "the-unarchiver" # Unpacks archive files
@@ -35,7 +37,7 @@
       "visual-studio-code" # Visual Studio Code editor
       "1password" # Best password manager imo
       "1password-cli" # 1Password manager CLI
-      "floorp" # A fork of Firefox
+      "google-drive" # Google cloud storage
     ];
     taps = [
       # "1password/tap" # Best password manager
