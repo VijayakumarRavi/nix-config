@@ -1,5 +1,0 @@
-# secretfile filter=git-crypt diff=git-crypt
-*.key filter=git-crypt diff=git-crypt
-*.ssh filter=git-crypt diff=git-crypt
-*.pgp filter=git-crypt diff=git-crypt
-**/secrets/** filter=git-crypt diff=git-crypt
