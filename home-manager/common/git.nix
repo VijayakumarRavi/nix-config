@@ -162,7 +162,7 @@
       ".worktrees"
     ];
     aliases = {
-      commit = "commit -S";
+      commit = "commit --signoff -S";
       a = "add";
       b = "branch";
       c = "commit -S";
