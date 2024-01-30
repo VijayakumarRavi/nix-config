@@ -48,52 +48,47 @@
     '';
 
     shellAliases = {
-      nixup =
-        "pushd /Users/vijay/.nix-config; nix flake update; nixswitch; popd";
       # System Aliases
       rm = "rm -vr";
       cp = "cp -vr";
-      rsync = "${pkgs.rsync}/bin/rsync --progress";
       mv = "mv -v";
-      mkdir = "mkdir -pv";
-      SS = "sudo systemctl";
-      ls = "${pkgs.lsd}/bin/lsd -hA --color=auto --group-directories-first";
-      ll = "${pkgs.lsd}/bin/lsd -lhAv --color=auto --group-directories-first";
-      grep = "grep --color=auto";
-      h = "history";
-      j = "jobs -l";
-      which = "type -a";
       du = "du -kh"; # Makes a more readable output.
       df = "df -kTh";
+      which = "type -a";
+      mkdir = "mkdir -pv";
+      SS = "sudo systemctl";
+      grep = "grep --color=auto";
+      rsync = "${pkgs.rsync}/bin/rsync --progress";
+      ls = "${pkgs.lsd}/bin/lsd -hA --color=auto --group-directories-first";
+      ll = "${pkgs.lsd}/bin/lsd -lhAv --color=auto --group-directories-first";
 
       # For ease of use shortcuts
       q = "exit";
       ":q" = "exit";
       c = "clear";
-      r = "ranger";
       ",," = "cd -";
       ".." = "cd ..";
       "..." = "cd ../..";
       n = "nvim";
       sn = "sudo nvim";
       sv = "sudo vim";
-      lzd = "${pkgs.lazydocker}/bin/lazydocker";
-      lzg = "${pkgs.lazygit}/bin/lazygit";
       pg = "prettyping google.com";
       pv = "prettyping vijayakumar.xyz";
+      lzg = "${pkgs.lazygit}/bin/lazygit";
+      lzd = "${pkgs.lazydocker}/bin/lazydocker";
       ncspotd = "${pkgs.ncspot}/bin/ncspot -d ~/.config/ncspot/DEBUG";
 
       # tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
       pping = "prettyping";
-      preview = "${pkgs.fzf}/bin/fzf --preview 'cat {}'";
       notes = "nvim ~/.notes.txt";
+      preview = "${pkgs.fzf}/bin/fzf --preview 'cat {}'";
 
       # Git
-      gs = "git status";
-      gc = "git clone --depth=1 --recursive";
-      addup = "git add -u";
       ga = "git add";
+      gs = "git status";
       gall = "git add .";
+      addup = "git add -u";
+      gc = "git clone --depth=1 --recursive";
       commit = "git cz --name cz_emoji commit -s";
     };
   };
