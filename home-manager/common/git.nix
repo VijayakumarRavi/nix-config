@@ -3,19 +3,24 @@
     enable = true;
     userName = "Vijayakumar Ravi";
     userEmail = "im@vijayakumar.xyz";
+    signing = {
+      key = "~/.ssh/id_ed25519.pub";
+      signByDefault = true;
+    };
     extraConfig = {
       color.ui = "auto";
       pull.rebase = true;
       credential.helper = "osxkeychain";
       difftool.prompt = false;
-      user.signingKey = "D0D2B010253E07C3";
+      # user.signingKey = "~/.ssh/id_ed25519.pub";
       push = {
         default = "simple";
         followTags = true;
         autoSetupRemote = true;
       };
+      gpg = { format = "ssh"; };
       commit = {
-        gpgsign = true;
+        # gpgsign = true;
         template = "./gitmessage";
       };
       diff = {
