@@ -2,7 +2,7 @@
   programs.git = {
     enable = true;
     userName = "Vijayakumar Ravi";
-    userEmail = "me@vijayakumar.xyz";
+    userEmail = "im@vijayakumar.xyz";
     extraConfig = {
       color.ui = "auto";
       pull.rebase = true;
