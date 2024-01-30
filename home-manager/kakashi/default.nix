@@ -1,3 +1,1 @@
-{ pkgs, ... }: { # vjvim,
-  imports = [ ../common ];
-}
+{ ... }: { imports = [ ../common ]; }

@@ -48,7 +48,8 @@
     '';
 
     shellAliases = {
-      nixup = "pushd /Users/vijay/.nix-config; nix flake update; nixswitch; popd";
+      nixup =
+        "pushd /Users/vijay/.nix-config; nix flake update; nixswitch; popd";
       # System Aliases
       rm = "rm -vr";
       cp = "cp -vr";
@@ -82,12 +83,12 @@
       pv = "prettyping vijayakumar.xyz";
       ncspotd = "${pkgs.ncspot} -d ~/.config/ncspot/DEBUG";
 
-     # tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
+      # tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
       pping = "prettyping";
       preview = "${pkgs.fzf} --preview 'cat {}'";
       notes = "nvim ~/.notes.txt";
-      
-# Git
+
+      # Git
       gs = "git status";
       gc = "git clone --depth=1 --recursive";
       addup = "git add -u";

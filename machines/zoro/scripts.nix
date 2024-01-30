@@ -58,10 +58,5 @@ let
     "
   '';
 in {
-  environment.systemPackages = with pkgs; [
-    task-waybar
-    emopicker9000
-    autohypr
-    squirtle
-  ];
+  environment.systemPackages = [ task-waybar emopicker9000 autohypr squirtle ];
 }

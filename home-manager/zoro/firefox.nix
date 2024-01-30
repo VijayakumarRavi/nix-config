@@ -1,6 +1,4 @@
-# home.nix
-
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 {
   programs.firefox = {

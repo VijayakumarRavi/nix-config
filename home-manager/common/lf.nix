@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 {
   xdg.configFile."lf/icons".source = ../dotfiles/icons;
@@ -53,7 +53,7 @@
         w=$2
         h=$3
         x=$4
-        y=$5 
+        y=$5
         ${pkgs.pistol}/bin/pistol "$file"
       '';
       cleaner = pkgs.writeShellScriptBin "clean.sh" ''
