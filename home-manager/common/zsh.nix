@@ -53,7 +53,7 @@
       # System Aliases
       rm = "rm -vr";
       cp = "cp -vr";
-      rsync = "${pkgs.rsync} --progress";
+      rsync = "${pkgs.rsync}/bin/rsync --progress";
       mv = "mv -v";
       mkdir = "mkdir -pv";
       SS = "sudo systemctl";
@@ -77,15 +77,15 @@
       n = "nvim";
       sn = "sudo nvim";
       sv = "sudo vim";
-      lzd = "${pkgs.lazydocker}";
-      lzg = "${pkgs.lazygit}";
+      lzd = "${pkgs.lazydocker}/bin/lazydocker";
+      lzg = "${pkgs.lazygit}/bin/lazygit";
       pg = "prettyping google.com";
       pv = "prettyping vijayakumar.xyz";
-      ncspotd = "${pkgs.ncspot} -d ~/.config/ncspot/DEBUG";
+      ncspotd = "${pkgs.ncspot}/bin/ncspot -d ~/.config/ncspot/DEBUG";
 
       # tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
       pping = "prettyping";
-      preview = "${pkgs.fzf} --preview 'cat {}'";
+      preview = "${pkgs.fzf}/bin/fzf --preview 'cat {}'";
       notes = "nvim ~/.notes.txt";
 
       # Git
