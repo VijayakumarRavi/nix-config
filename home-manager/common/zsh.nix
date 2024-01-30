@@ -88,8 +88,8 @@
       gs = "git status";
       gall = "git add .";
       addup = "git add -u";
+      commit = "git commit --signoff -S";
       gc = "git clone --depth=1 --recursive";
-      commit = "git cz --name cz_emoji commit -s";
     };
   };
 }
