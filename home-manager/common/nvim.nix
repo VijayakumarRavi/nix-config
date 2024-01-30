@@ -11,6 +11,7 @@
       number = true; # Show line numbers
       relativenumber = true; # Show relative line numbers
       expandtab = true;
+      tabstop = 2;
       softtabstop = 2;
       shiftwidth = 2; # Tab width should be 2
       autoindent = true;
@@ -18,6 +19,9 @@
       hlsearch = false;
       incsearch = true;
       ignorecase = true;
+      termguicolors = true;
+      # undofile = true;
+      # undodir = "/.cache/nvim/undodir";
       scrolloff = 10;
       spell = true;
       spelllang = [ "en_us" ];
@@ -158,6 +162,12 @@
 
     # plugins
     plugins = {
+      alpha = {
+        enable = true;
+        iconsEnabled = true;
+        theme = "dashboard";
+      };
+
       lualine = { enable = true; };
 
       nix.enable = true;
@@ -229,6 +239,8 @@
       cmp-spell.enable = true;
       cmp_luasnip.enable = true;
       cmp-nvim-lsp.enable = true;
+      cmp-cmdline.enable = true;
+      cmp-cmdline-history.enable = true;
 
       nvim-cmp = {
         enable = true;
@@ -236,13 +248,14 @@
         sources = [
           { name = "nvim_lsp"; }
           { name = "path"; }
+          { name = "spell"; }
           { name = "buffer"; }
           { name = "luasnip"; }
-          { name = "spell"; }
         ];
 
         mapping = {
           "<CR>" = "cmp.mapping.confirm({ select = true })";
+          "<C-Space>" = "cmp.mapping.complete()";
           "<Tab>" = {
             action = ''
               function(fallback)
