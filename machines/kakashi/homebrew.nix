@@ -35,6 +35,7 @@
       "onyx" # Verify system files structure, run miscellaneous maintenance and more
       "beeper" # Universal chat app powered by Matrix
       "visual-studio-code" # Visual Studio Code editor
+      "zed" # VS code alternative 
       "1password" # Best password manager imo
       "1password-cli" # 1Password manager CLI
       "google-drive" # Google cloud storage
