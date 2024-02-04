@@ -134,6 +134,11 @@
         key = "<leader>bf";
         mode = [ "n" ];
       }
+      { # Open oil
+        action = ":Oil<CR>";
+        key = "-";
+        mode = [ "n" ];
+      }
       # Lsp
       {
         action = "vim.lsp.buf.hover";
@@ -198,6 +203,10 @@
 
       lualine = { enable = true; };
 
+      gitsigns = { enable = true; };
+
+      leap.enable = true;
+
       nix.enable = true;
 
       harpoon = {
@@ -241,6 +250,17 @@
         enable = true;
         window.width = 30;
         closeIfLastWindow = true;
+      };
+
+      oil = {
+        enable = true;
+        promptSaveOnSelectNewEntry = false;
+        viewOptions.showHidden = true;
+        columns = {
+          icon.enable = true;
+          size.enable = true;
+          type.enable = true;
+        };
       };
 
       treesitter = {
