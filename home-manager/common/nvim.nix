@@ -8,25 +8,51 @@
     globals.mapleader = " ";
 
     options = {
+      # Enable line numbers
       number = true; # Show line numbers
       relativenumber = true; # Show relative line numbers
-      expandtab = true;
+
+      # Disable text wrap
+      wrap = false;
+
+      # Set tabs to 2 spaces
       tabstop = 2;
       softtabstop = 2;
-      shiftwidth = 2; # Tab width should be 2
+      expandtab = true;
+
+      # Enable auto indenting and set it to spaces
+      shiftwidth = 2;
       autoindent = true;
       smartindent = true;
+      # Enable smart indenting (see https://stackoverflow.com/questions/1204149/smart-wrap-in-vim)
+      breakindent = true;
+
+      # Enable the sign column to prevent the screen from jumping
+      signcolumn = "yes";
+
+      # Enable incremental searching
       hlsearch = false;
       incsearch = true;
+
+      # Enable ignorecase + smartcase for better searching
       ignorecase = true;
+      smartcase = true;
+
+      # Enable 24-bit color
       termguicolors = true;
-      # undofile = true;
-      # undodir = "/.cache/nvim/undodir";
+
+      #  Enable cursor line highlight
+      cursorline = true;
+
+      # Always keep 10 lines above/below cursor unless at start/end of file
       scrolloff = 10;
+
+      # Enable spell check
       spell = true;
       spelllang = [ "en_us" ];
     };
 
+    # Set colorschemes to catppuccin
     colorschemes.catppuccin = {
       enable = true;
       background.dark = "macchiato";
@@ -40,8 +66,10 @@
       integrations.cmp = true;
     };
 
-    clipboard.register = "unnamedplus";
+    # Enable access to System Clipboard
+    clipboard.register = [ "unnamedplus" "unnamed" ];
 
+    # Enable persistent undo history
     extraConfigVim = ''
       if has("persistent_undo")
         let target_path = expand('~/.cache/undodir')
@@ -56,14 +84,15 @@
          set undofile
       endif
     '';
+
+    # Remember last cursor position
+    # When editing a file, always jump to the last known cursor position.
+    # Don't do it when the position is invalid, when inside an event handler,
+    # for a commit or rebase message
+    # (likely a different one than last time), and when using xxd(1) to filter
+    # and edit binary files (it transforms input files back and forth, causing
+    # them to have dual nature, so to speak)
     extraConfigLua = ''
-      -- last cursor position
-      -- When editing a file, always jump to the last known cursor position.
-      -- Don't do it when the position is invalid, when inside an event handler,
-      -- for a commit or rebase message
-      -- (likely a different one than last time), and when using xxd(1) to filter
-      -- and edit binary files (it transforms input files back and forth, causing
-      -- them to have dual nature, so to speak)
       function RestoreCursorPosition()
         local line = vim.fn.line("'\"")
         if
@@ -95,8 +124,7 @@
         key = "<leader>h";
         mode = [ "n" "i" "v" ];
       }
-      {
-        # Neotree toggle
+      { # Neotree toggle
         action = ":Neotree toggle<CR>";
         key = "<C-n>";
         mode = [ "n" ];
@@ -223,10 +251,8 @@
 
       lsp = {
         enable = true;
-
         servers = {
           nil_ls.enable = true;
-
           lua-ls = {
             enable = true;
             settings.telemetry.enable = false;
@@ -235,13 +261,11 @@
       };
 
       cmp-path.enable = true;
-      # cmp-look
       cmp-spell.enable = true;
       cmp_luasnip.enable = true;
       cmp-nvim-lsp.enable = true;
       cmp-cmdline.enable = true;
       cmp-cmdline-history.enable = true;
-
       nvim-cmp = {
         enable = true;
         autoEnableSources = true;
@@ -252,7 +276,6 @@
           { name = "buffer"; }
           { name = "luasnip"; }
         ];
-
         mapping = {
           "<CR>" = "cmp.mapping.confirm({ select = true })";
           "<C-Space>" = "cmp.mapping.complete()";
@@ -276,6 +299,7 @@
           };
         };
       };
+
       conform-nvim = {
         enable = true;
         formatOnSave = {
