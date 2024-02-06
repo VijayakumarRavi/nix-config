@@ -29,7 +29,7 @@
       pkgs.vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but can work better for some applications)
       pkgs.vaapiVdpau
       # HDR tone mapping.
-      pkgs.beignet
+      # pkgs.beignet
       pkgs.intel-compute-runtime
       pkgs.ocl-icd
     ];
@@ -43,7 +43,7 @@
       pkgs.vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but can work better for some applications)
       pkgs.vaapiVdpau
       # HDR tone mapping.
-      pkgs.beignet
+      #pkgs.beignet
       pkgs.intel-compute-runtime
       pkgs.ocl-icd
     ];
