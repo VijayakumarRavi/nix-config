@@ -9,7 +9,7 @@
     ../common
     ./docker.nix
     ./ariang.nix
-    ./radarr.nix
+    ./media.nix
     ./jellyfin.nix
     ./scripts.nix
 

@@ -30,6 +30,32 @@
         volumes = [ "sonarr:/config" "ariang-data:/tv" ];
       };
 
+      # Lidarr
+      lidarr = {
+        image = "lscr.io/linuxserver/lidarr:latest";
+        ports = [ "8686:8686" ];
+        autoStart = true;
+        environment = {
+          PUID = "1000";
+          PGID = "1000";
+          TZ = "Asia/Kolkata";
+        };
+        volumes = [ "lidarr:/config" "ariang-data:/music" ];
+      };
+
+      # Prowlarr
+      Prowlarr = {
+        image = "lscr.io/linuxserver/prowlarr:latest";
+        ports = [ "9696:9696" ];
+        autoStart = true;
+        environment = {
+          PUID = "1000";
+          PGID = "1000";
+          TZ = "Asia/Kolkata";
+        };
+        volumes = [ "Prowlarr:/config" ];
+      };
+
       # Jackett
       jackett = {
         image = "lscr.io/linuxserver/jackett:latest";
@@ -47,8 +73,8 @@
 
   # firewall rule to allow Radarr
   networking.firewall = {
-    allowedTCPPorts = [ 7878 9117 8989 ];
-    allowedUDPPorts = [ 7878 9117 8989 ];
+    allowedTCPPorts = [ 7878 9117 8989 8686 9696 ];
+    allowedUDPPorts = [ 7878 9117 8989 8686 9696 ];
   };
 
   systemd.timers."docker-radarr-volume-init" = {
@@ -75,6 +101,7 @@
       checkradarr=$( ${pkgs.docker}/bin/docker volume ls | ${pkgs.gnugrep}/bin/grep  -E '(^|\s)radarr($|\s)' || true)
       checkjackett=$( ${pkgs.docker}/bin/docker volume ls | ${pkgs.gnugrep}/bin/grep  -E '(^|\s)jackett($|\s)' || true)
       checksonarr=$( ${pkgs.docker}/bin/docker volume ls | ${pkgs.gnugrep}/bin/grep -E '(^|\s)sonarr($|\s)' || true)
+      checklidarr=$( ${pkgs.docker}/bin/docker volume ls | ${pkgs.gnugrep}/bin/grep  -E '(^|\s)lidarr($|\s)' || true)
       if [ -z "$checkradarr" ]; then
         ${pkgs.docker}/bin/docker volume create radarr
       else
@@ -89,6 +116,11 @@
         ${pkgs.docker}/bin/docker volume create sonarr
       else
           echo "sonarr volume already exists in docker"
+      fi
+      if [ -z "$checklidarr" ]; then
+        ${pkgs.docker}/bin/docker volume create lidarr
+      else
+          echo "lidarr volume already exists in docker"
       fi
     '';
   };
