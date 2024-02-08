@@ -27,6 +27,9 @@
     options = "--delete-old";
   };
 
+  #disable nix documentation
+  documentation.enable = false;
+
   # NixOS Secure Boot   -- refer: https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md
   # Bootloader
   boot.lanzaboote = {
@@ -64,8 +67,8 @@
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    xkb.layout = "us";
+    xkb.variant = "";
     libinput.enable = true;
   };
   console = {

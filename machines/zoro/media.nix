@@ -14,7 +14,7 @@
           PGID = "1000";
           TZ = "Asia/Kolkata";
         };
-        volumes = [ "radarr:/config" "ariang-data:/movies" ];
+        volumes = [ "radarr:/config" "/docker/data/download:/movies" ];
       };
 
       # Sonarr for tv shows
@@ -27,7 +27,7 @@
           PGID = "1000";
           TZ = "Asia/Kolkata";
         };
-        volumes = [ "sonarr:/config" "ariang-data:/tv" ];
+        volumes = [ "sonarr:/config" "/docker/data/download:/tv" ];
       };
 
       # Lidarr
@@ -40,7 +40,7 @@
           PGID = "1000";
           TZ = "Asia/Kolkata";
         };
-        volumes = [ "lidarr:/config" "ariang-data:/music" ];
+        volumes = [ "lidarr:/config" "/docker/data/download:/music" ];
       };
 
       # Prowlarr

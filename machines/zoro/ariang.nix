@@ -19,7 +19,7 @@
           CADDY_LOG_LEVEL = "ERROR";
         };
         # workdir = "/home/vijay/docker/ariang";
-        volumes = [ "ariang:/app" "ariang-data:/data" ];
+        volumes = [ "ariang:/app" "/docker/data/download:/data" ];
       };
     };
   };
@@ -48,17 +48,17 @@
     script = ''
       # Put a true at the end to prevent getting non-zero return code, which will crash the whole service.
       checkariang=$( ${pkgs.docker}/bin/docker volume ls | ${pkgs.gnugrep}/bin/grep  -E '(^|\s)ariang($|\s)' || true)
-      checkariangdata=$( ${pkgs.docker}/bin/docker volume ls | ${pkgs.gnugrep}/bin/grep -E '(^|\s)ariang-data($|\s)' || true)
+      # checkariangdata=$( ${pkgs.docker}/bin/docker volume ls | ${pkgs.gnugrep}/bin/grep -E '(^|\s)ariang-data($|\s)' || true)
       if [ -z "$checkariang" ]; then
         ${pkgs.docker}/bin/docker volume create ariang
       else
           echo "ariang volume already exists in docker"
       fi
-      if [ -z "$checkariangdata" ]; then
-        ${pkgs.docker}/bin/docker volume create ariang-data
-      else
-          echo "ariang-data volume already exists in docker"
-      fi
+      # if [ -z "$checkariangdata" ]; then
+      #  ${pkgs.docker}/bin/docker volume create ariang-data
+      #else
+      #    echo "ariang-data volume already exists in docker"
+      #fi
     '';
   };
 }
