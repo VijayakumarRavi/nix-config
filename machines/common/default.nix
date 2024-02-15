@@ -40,6 +40,7 @@
 
       #_1password-gui # Best password manager imo
       #_1password # 1Password manager CLI
+      telegram-desktop
 
       # Git
       gitflow # Better git flow

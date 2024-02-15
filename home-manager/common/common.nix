@@ -3,6 +3,7 @@
     zoxide = { # smarter cd command
       enable = true;
       enableZshIntegration = true;
+      options = [ "--cmd cd" ];
     };
     fzf = {
       enable = true; # Fuzzy finder

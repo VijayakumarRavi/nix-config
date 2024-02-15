@@ -19,11 +19,6 @@
     historySubstringSearch = { enable = true; };
 
     initExtra = ''
-      function cd() {
-        builtin cd $*
-        ${pkgs.lsd}/bin/lsd
-      }
-
       function pushall() {
         for i in `git remote`; do
           git push $i;
@@ -74,8 +69,8 @@
       sv = "sudo vim";
       pg = "prettyping google.com";
       pv = "prettyping vijayakumar.xyz";
-      lzg = "${pkgs.lazygit}/bin/lazygit";
-      lzd = "${pkgs.lazydocker}/bin/lazydocker";
+      lg = "${pkgs.lazygit}/bin/lazygit";
+      ld = "${pkgs.lazydocker}/bin/lazydocker";
       ncspotd = "${pkgs.ncspot}/bin/ncspot -d ~/.config/ncspot/DEBUG";
 
       # tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
