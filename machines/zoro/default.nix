@@ -7,9 +7,7 @@
 {
   imports = [
     ../common
-    ./docker.nix
-    ./ariang.nix
-    ./media.nix
+    ./docker
     ./jellyfin.nix
     ./scripts.nix
 
@@ -118,6 +116,7 @@
     v4l-utils
     ueberzugpp
     xdg-utils
+    gparted
 
     vscode # code editor developed by Microsoft
     _1password-gui # Best password manager imo

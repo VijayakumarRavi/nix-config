@@ -1,5 +1,7 @@
 { pkgs, ... }: {
 
+  imports = [ ./media.nix ./qBittorrent.nix ];
+
   # Enable docker
   virtualisation.docker = {
     enable = true;
@@ -26,8 +28,7 @@
     description = "NFS & Jellyfin permission fix for ariang container";
     script = ''
       set -eu
-      ${pkgs.coreutils}/bin/chmod -Rv 777 /var/lib/docker/volumes/
-      ${pkgs.coreutils}/bin/chmod -v 777 /var/lib/docker
+      ${pkgs.coreutils}/bin/chmod -Rv 777 /docker/download
     '';
     serviceConfig = {
       Type = "oneshot";
