@@ -27,10 +27,8 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     # Tricked out nvim
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixvim.url = "github:nix-community/nixvim";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
     # Sops secrets encryption
     sops-nix.url = "github:Mic92/sops-nix";
