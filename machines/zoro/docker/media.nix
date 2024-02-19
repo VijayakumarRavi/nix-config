@@ -1,8 +1,24 @@
 { ... }: {
-
   virtualisation.oci-containers = {
     backend = "docker";
     containers = {
+      #qBittorrent downloader
+      qbittorrent = {
+        image = "ghcr.io/hotio/qbittorrent:latest";
+        ports = [ "8000:8000" ];
+        autoStart = true;
+        environment = {
+          PUID = "1000";
+          PGID = "1000";
+          TZ = "Asia/Kolkata";
+          WEBUI_PORTS = "8000/tcp,8000/udp";
+          UMASK = "002";
+        };
+        volumes = [
+          "/docker/config/qbittorrent:/config"
+          "/docker/download:/downloads"
+        ];
+      };
 
       # Radarr for movies
       radarr = {
@@ -74,9 +90,9 @@
     };
   };
 
-  # firewall rule to allow Radarr
+  # firewall rule
   networking.firewall = {
-    allowedTCPPorts = [ 7878 9117 8989 8686 9696 ];
-    allowedUDPPorts = [ 7878 9117 8989 8686 9696 ];
+    allowedTCPPorts = [ 8000 7878 9117 8989 8686 9696 ];
+    allowedUDPPorts = [ 8000 7878 9117 8989 8686 9696 ];
   };
 }

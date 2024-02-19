@@ -1,12 +1,15 @@
 { pkgs, ... }: {
 
-  imports = [ ./media.nix ./qBittorrent.nix ];
+  imports = [ ./media.nix ./general.nix ];
 
   # Enable docker
   virtualisation.docker = {
     enable = true;
-    autoPrune.enable = true; # periodically prune Docker resources.
-    autoPrune.dates = "daily";
+    autoPrune = {
+      enable = true; # periodically prune Docker resources.
+      flags = [ "--force" "--all" ];
+      dates = "daily";
+    };
     rootless = {
       enable = true;
       setSocketVariable = true;
