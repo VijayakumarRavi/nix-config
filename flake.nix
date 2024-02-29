@@ -30,46 +30,32 @@
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Sops secrets encryption
-    sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-
     # Hardware config
-    hw-config = {
-      url = "/etc/nixos";
-      flake = false;
-    };
+    hw-config.url = "/etc/nixos";
+    hw-config.flake = false;
 
     # Homebrew
-    nix-homebrew = { url = "github:zhaofengli-wip/nix-homebrew"; };
-    homebrew-bundle = {
-      url = "github:homebrew/homebrew-bundle";
-      flake = false;
-    };
-    homebrew-core = {
-      url = "github:homebrew/homebrew-core";
-      flake = false;
-    };
-    homebrew-cask = {
-      url = "github:homebrew/homebrew-cask";
-      flake = false;
-    };
-    homebrew-services = {
-      url = "github:homebrew/homebrew-services";
-      flake = false;
-    };
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+
+    homebrew-bundle.url = "github:homebrew/homebrew-bundle";
+    homebrew-bundle.flake = false;
+
+    homebrew-core.url = "github:homebrew/homebrew-core";
+    homebrew-core.flake = false;
+
+    homebrew-cask.url = "github:homebrew/homebrew-cask";
+    homebrew-cask.flake = false;
+
+    homebrew-services.url = "github:homebrew/homebrew-services";
+    homebrew-services.flake = false;
 
     # For enable secure boot
-    lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.3.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    lanzaboote.url = "github:nix-community/lanzaboote/v0.3.0";
+    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
     # Firefox extensions support
-    firefox-addons = {
-      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+    firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs = inputs@{ nixpkgs, home-manager, darwin, nixvim, lanzaboote
     , nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask
@@ -83,9 +69,7 @@
         # makes all inputs availble in imported files
         specialArgs = { inherit inputs; };
         modules = [
-
           ./machines/kakashi
-
           nix-homebrew.darwinModules.nix-homebrew
           {
             nix-homebrew = {
@@ -119,7 +103,6 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./machines/zoro
-
           home-manager.nixosModules.home-manager
           {
             home-manager.extraSpecialArgs = { inherit inputs; };
