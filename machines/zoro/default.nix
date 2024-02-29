@@ -213,12 +213,6 @@
   services.openssh.enable = true;
   services.fstrim.enable = true;
 
-  # netdata log monitoring
-  services.netdata = {
-    enable = true;
-    package = pkgs.netdata.override { withCloud = true; };
-  };
-
   # Sound options
   sound.enable = true;
   hardware.pulseaudio.enable = false;
