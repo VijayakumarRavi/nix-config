@@ -39,11 +39,33 @@
   # Emulate an arm64 machine for RPI
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  networking.hostName = "zoro"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking = {
+    # Hostname
+    hostName = "zoro";
+    # Enabling WIFI
+    wireless.enable = true;
+    wireless.interfaces = [ "wlo1" ];
+    wireless.networks."vijay wifi".pskRaw =
+      "9559e5edeed089f6c2834257d9f4de0cb442da4ddbee3a09e17707a9223f8958";
+    # Default nameservers
+    nameservers = [ "10.0.0.2" "45.90.28.215" "1.1.1.1" ];
+    # Default gateway
+    defaultGateway = {
+      address = "10.0.0.1";
+      interface = "wlo1";
+    };
+    # Static IP
+    useDHCP = false;
+    interfaces.eno2 = { useDHCP = true; };
+    interfaces.wlo1 = {
+      ipv4.addresses = [{
+        address = "10.0.0.4";
+        prefixLength = 16;
+      }];
+    };
+
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Kolkata";
