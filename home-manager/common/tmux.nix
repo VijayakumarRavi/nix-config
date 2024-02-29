@@ -1,12 +1,12 @@
-{ ... }: {
+{ pkgs, ... }: {
   programs.tmux = {
     enable = true;
     terminal = "tmux-256color";
     aggressiveResize = true;
     baseIndex = 1;
     historyLimit = 100000000;
-    escapeTime =
-      0; # fix accidently typing accent characters, etc. by forcing the terminal to not wait around
+    # fix accidently typing accent characters, etc. by forcing the terminal to not wait around
+    escapeTime = 0;
     keyMode = "vi";
     mouse = false; # set to true if you like pain
     newSession = true;
@@ -93,7 +93,7 @@
 
       set -g status-right-length 50
       set -g status-right "#(z pomo)"
-      set -g status-right '#(gitmux "#{pane_current_path}")'
+      set -g status-right '#(${pkgs.gitmux}/bin/gitmux "#{pane_current_path}")'
 
       set -g message-style "fg=red"
 

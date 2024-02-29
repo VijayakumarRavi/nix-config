@@ -7,7 +7,7 @@
         add_newline = false;
         command_timeout = 1000;
         format = ''
-          $os$username$hostname$kubernetes$directory$git_branch$git_status
+          $os$username$hostname$directory$cmd_duration
           [  └─>](bold green) '';
         status.disabled = false;
         username = {
@@ -63,7 +63,13 @@
         };
         ocaml.disabled = true;
         perl.disabled = true;
-        cmd_duration = { format = "took [$duration]($style) "; };
+
+        cmd_duration = {
+          min_time = 500;
+          show_notifications = true;
+          min_time_to_notify = 600000;
+          format = "took [$duration]($style) ";
+        };
 
         directory = {
           truncation_length = 1;
