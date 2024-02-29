@@ -355,11 +355,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1709232676,
-        "narHash": "sha256-Wnj7ZQYM0cyvmfDoOZ0LqOwuXXMBtFjKXOSP9NAlyqE=",
+        "lastModified": 1709241792,
+        "narHash": "sha256-xAqrzwQi0UYqACZnsa6sbuHHH7pAXcelRG8/MAwjfso=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "632a14f8ed70a52cf5d3ca662ab8508f3cbfd5af",
+        "rev": "f5ba8d29c93e26d26c7058be48f8b7d173949d4b",
         "type": "github"
       },
       "original": {
@@ -371,11 +371,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1709232061,
-        "narHash": "sha256-z1pZgEblbD34FdPL8sem3r2+iD7A43qzvLnB7Ufq6ew=",
+        "lastModified": 1709241475,
+        "narHash": "sha256-oRjuAG3bKO9iJ55C2bCiL3RSmMA7czGs19taQBFYaAE=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "05e11fc374c0d6fbd229c1791b2ae166c6fe9768",
+        "rev": "9bfe65c9122f6e161791be8e8713f663a2661da8",
         "type": "github"
       },
       "original": {
@@ -529,22 +529,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-stable_2": {
-      "locked": {
-        "lastModified": 1708819810,
-        "narHash": "sha256-1KosU+ZFXf31GPeCBNxobZWMgHsSOJcrSFA6F2jhzdE=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "89a2a12e6c8c6a56c72eb3589982c8e2f89c70ea",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "release-23.11",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1688049487,
@@ -674,8 +658,7 @@
         "lanzaboote": "lanzaboote",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_3",
-        "nixvim": "nixvim",
-        "sops-nix": "sops-nix"
+        "nixvim": "nixvim"
       }
     },
     "rust-overlay": {
@@ -700,27 +683,6 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "type": "github"
-      }
-    },
-    "sops-nix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "nixpkgs-stable": "nixpkgs-stable_2"
-      },
-      "locked": {
-        "lastModified": 1708987867,
-        "narHash": "sha256-k2lDaDWNTU5sBVHanYzjDKVDmk29RHIgdbbXu5sdzBA=",
-        "owner": "Mic92",
-        "repo": "sops-nix",
-        "rev": "a1c8de14f60924fafe13aea66b46157f0150f4cf",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Mic92",
-        "repo": "sops-nix",
         "type": "github"
       }
     },

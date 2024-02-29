@@ -19,12 +19,6 @@
     historySubstringSearch = { enable = true; };
 
     initExtra = ''
-      function pushall() {
-        for i in `git remote`; do
-          git push $i;
-        done;
-      }
-
       function switch() {
         if command -v darwin-rebuild &> /dev/null 2>&1; then
           darwin-rebuild switch "$@" -L --flake /Users/vijay/.nix-config#kakashi
@@ -33,9 +27,13 @@
         fi
       }
 
-      function pullall() {
+      function gsync() {
         for i in `git remote`; do
-          git pull $i;
+          git pull $i `git branch --show-current`;
+        done;
+
+        for i in `git remote`; do
+          git push $i `git branch --show-current`;
         done;
       }
 
