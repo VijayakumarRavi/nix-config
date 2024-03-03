@@ -23,15 +23,35 @@ let
   '';
 
   autohypr = pkgs.writeShellScriptBin "autohypr" ''
-    ${pkgs.swww}/bin/swww init &
-    ${pkgs.swww}/bin/swww img /home/vijay/.config/wallpaper.png &
-    ${pkgs.swaynotificationcenter}/bin/swaync &
+    if [[ ! $(pgrep -f swww) ]]; then
+      ${pkgs.swww}/bin/swww init &
+      ${pkgs.swww}/bin/swww img /home/vijay/.config/wallpaper.png &
+    else
+      kill `pgrep swww`
+      ${pkgs.swww}/bin/swww init &
+      ${pkgs.swww}/bin/swww img /home/vijay/.config/wallpaper.png &
+    fi
+
+    if [[ ! $(pgrep -f swaync) ]]; then
+      ${pkgs.swaynotificationcenter}/bin/swaync &
+    else
+      kill `pgrep swaync`
+      ${pkgs.swaynotificationcenter}/bin/swaync &
+    fi
+
     if [[ ! $(pgrep -f waybar) ]]; then
       ${pkgs.waybar}/bin/waybar &
     else
-      echo "already running......"
+      kill `pgrep waybar`
+      ${pkgs.waybar}/bin/waybar &
     fi
-    ${pkgs.xfce.thunar}/bin/thunar --daemon &
+
+    if [[ ! $(pgrep -f thunar) ]]; then
+      ${pkgs.xfce.thunar}/bin/thunar --daemon &
+    else
+      kill `pgrep thunar`
+      ${pkgs.xfce.thunar}/bin/thunar --daemon &
+    fi
     ${pkgs.blueman}/bin/blueman-applet &
     ${pkgs._1password-gui}/bin/1password --silent &
   '';

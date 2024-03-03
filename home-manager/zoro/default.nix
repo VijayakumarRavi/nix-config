@@ -37,20 +37,20 @@
     source = ../dotfiles/hypr/hyprland.conf;
     recursive = true;
   };
-  home.file.".config/hypr/keybindings.conf" = {
-    source = ../dotfiles/hypr/keybindings.conf;
+  home.file.".config/hypr/modules/keybindings.conf" = {
+    source = ../dotfiles/hypr/modules/keybindings.conf;
     recursive = true;
   };
-  home.file.".config/hypr/theme.conf" = {
-    source = ../dotfiles/hypr/theme.conf;
+  home.file.".config/hypr/modules/theme.conf" = {
+    source = ../dotfiles/hypr/modules/theme.conf;
     recursive = true;
   };
-  home.file.".config/hypr/animations.conf" = {
-    source = ../dotfiles/hypr/animations.conf;
+  home.file.".config/hypr/modules/animations.conf" = {
+    source = ../dotfiles/hypr/modules/animations.conf;
     recursive = true;
   };
-  home.file.".config/hypr/autostart.conf" = {
-    source = ../dotfiles/hypr/autostart.conf;
+  home.file.".config/hypr/modules/autostart.conf" = {
+    source = ../dotfiles/hypr/modules/autostart.conf;
     recursive = true;
   };
   home.file.".local/share/fonts/UniSans-Heavy.otf" = {
@@ -116,6 +116,10 @@
         window_padding_width = 6;
         confirm_os_window_close = 0;
         background_opacity = "0.85";
+      };
+      keybindings = {
+        "ctrl+c" = "copy_and_clear_or_interrupt";
+        "ctrl+v" = "paste_from_clipboard";
       };
       extraConfig = ''
         foreground #a9b1d6

@@ -54,7 +54,7 @@
             User vijay
             Port 22
         Host zoro
-            HostName 10.0.1.5
+            HostName 10.0.0.4
             User vijay
             Port 22
         Host pve
