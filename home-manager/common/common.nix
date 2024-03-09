@@ -41,9 +41,6 @@
           extraOptions = {
             IdentityAgent = ''
               "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
-            RequestTTY = "yes";
-            RemoteCommand = "tmux -u at -t ssh_mux || tmux -u new -s ssh_mux";
-
           };
         };
       };
@@ -56,10 +53,14 @@
             HostName 10.0.0.2
             User vijay
             Port 22
+            RequestTTY yes
+            RemoteCommand tmux -u at -t ssh_mux || tmux -u new -s ssh_mux
         Host zoro
             HostName 10.0.0.4
             User vijay
             Port 22
+            RequestTTY yes
+            RemoteCommand tmux -u at -t ssh_mux || tmux -u new -s ssh_mux
         Host pve
             HostName 10.0.0.7
             User root
