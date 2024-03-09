@@ -9,7 +9,7 @@
     escapeTime = 0;
     keyMode = "vi";
     mouse = false; # set to true if you like pain
-    newSession = true;
+    #    newSession = true;
     extraConfig = ''
       # change default meta key to same as screen
       unbind C-b
