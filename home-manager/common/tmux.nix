@@ -5,11 +5,10 @@
     aggressiveResize = true;
     baseIndex = 1;
     historyLimit = 100000000;
-    # fix accidently typing accent characters, etc. by forcing the terminal to not wait around
-    escapeTime = 0;
+    # fix accidentally typing accent characters, etc. by forcing the terminal to not wait around
+    #escapeTime = 0;
     keyMode = "vi";
     mouse = false; # set to true if you like pain
-    #    newSession = true;
     extraConfig = ''
       # change default meta key to same as screen
       unbind C-b
@@ -54,22 +53,16 @@
       #bind C send-keys -t.- 'tmux_session_switcher' Enter
 
       # vi keys to resize
-      bind C-k resize-pane -U 1
-      bind C-j resize-pane -D 1
-      bind C-h resize-pane -L 1
-      bind C-l resize-pane -R 1
-
-      # vi keys to navigate panes
-      bind -r k select-pane -U
-      bind -r j select-pane -D
-      bind -r h select-pane -L
-      bind -r l select-pane -R
+      bind k resize-pane -U 1
+      bind j resize-pane -D 1
+      bind h resize-pane -L 1
+      bind l resize-pane -R 1
 
       # avoid cursor movement messing with resize
       set -g repeat-time 200
 
       # colors, clock, and stuff
-      setw -g clock-mode-colour cyan
+      set -g clock-mode-colour cyan
 
       # color the pane borders nearly invisible
       # (when not using hacked tmux without them)
@@ -85,19 +78,15 @@
       # reload configuration
       bind -r r source-file ~/.config/tmux/tmux.conf \; display-message "config reloaded"
 
+      set -g status on
       set -g status-style "fg=#665c54"
       set -g status-bg default
       set -g status-position top
       set -g status-interval 1
       set -g status-left ""
-
       set -g status-right-length 50
-      set -g status-right "#(z pomo)"
-      set -g status-right '#(${pkgs.gitmux}/bin/gitmux "#{pane_current_path}")'
-
+      set -g status-right "Host: #(hostname)"
       set -g message-style "fg=red"
-
-      set -g status on
     '';
   };
 }

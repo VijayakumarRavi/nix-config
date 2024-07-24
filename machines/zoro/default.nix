@@ -7,10 +7,6 @@
 {
   imports = [
     ../common
-    ./docker
-    ./jellyfin.nix
-    ./scripts.nix
-
     # Required for NixOS Secure Boot
     inputs.lanzaboote.nixosModules.lanzaboote
 
@@ -19,52 +15,84 @@
     # /etc/nixos/hardware-configuration.nix
   ];
 
-  nix.gc = {
-    automatic = true;
-    dates = "*-*-1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31 00:00:00";
-    options = "--delete-old";
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "*-*-1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31 00:00:00";
+      options = "--delete-old";
+    };
+
   };
+
+  programs.zsh.enable = true;
 
   #disable nix documentation
   documentation.enable = false;
 
   # NixOS Secure Boot   -- refer: https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md
   # Bootloader
-  boot.lanzaboote = {
-    enable = true;
-    pkiBundle = "/etc/secureboot";
+  boot = {
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
+
+    kernelParams = [ "ip=10.0.0.4::10.0.0.1:255.255.0.0:zoro::none" ];
+    initrd = {
+      availableKernelModules = [ "e1000e" ];
+      systemd.users.root.shell = "/bin/cryptsetup-askpass";
+      network.enable = true;
+      network.ssh = {
+        enable = true;
+        port = 22;
+        hostKeys = [ "/etc/ssh/ssh_host_ed25519_key" ];
+        authorizedKeys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX Mainkey"
+        ];
+      };
+    };
+
+    # boot splash screen
+    plymouth.enable = true;
+    # Emulate an arm64 machine for RPI
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
-  # boot splash screen
-  boot.plymouth.enable = true;
-  # Emulate an arm64 machine for RPI
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Enable networking
   networking = {
     # Hostname
     hostName = "zoro";
-    # Enabling WIFI
-    wireless.enable = true;
-    wireless.interfaces = [ "wlo1" ];
-    wireless.networks."vijay wifi".pskRaw =
-      "9559e5edeed089f6c2834257d9f4de0cb442da4ddbee3a09e17707a9223f8958";
+    #    # Enabling WIFI
+    #    wireless = {
+    #      enable = true;
+    #      interfaces = [ "wlo1" ];
+    #      networks."vijay wifi".pskRaw =
+    #        "9559e5edeed089f6c2834257d9f4de0cb442da4ddbee3a09e17707a9223f8958";
+    #    };
     # Default nameservers
-    nameservers = [ "10.0.0.2" "45.90.28.215" "1.1.1.1" ];
+    nameservers = [
+      "10.0.0.2"
+      "45.90.28.215"
+      "1.1.1.1"
+    ];
     # Default gateway
     defaultGateway = {
       address = "10.0.0.1";
-      interface = "wlo1";
+      interface = "eno2";
     };
     # Static IP
     useDHCP = false;
-    interfaces.eno2 = { useDHCP = true; };
-    interfaces.wlo1 = {
-      ipv4.addresses = [{
-        address = "10.0.0.4";
-        prefixLength = 16;
-      }];
+    interfaces.eno2 = {
+      ipv4.addresses = [
+        {
+          address = "10.0.0.4";
+          prefixLength = 16;
+        }
+      ];
     };
-
+    interfaces.wlo1 = {
+      useDHCP = true;
+    };
   };
 
   # Set your time zone.
@@ -85,12 +113,6 @@
     LC_TIME = "en_IN";
   };
 
-  # Configure keymap in X11
-  services.xserver = {
-    xkb.layout = "us";
-    xkb.variant = "";
-    libinput.enable = true;
-  };
   console = {
     earlySetup = true;
     font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
@@ -101,162 +123,124 @@
   users.users.vijay = {
     isNormalUser = true;
     description = "Vijayakumar Ravi";
-    extraGroups = [ "networkmanager" "wheel" "disk" "power" "video" "docker" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "disk"
+      "power"
+      "video"
+      "docker"
+    ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX Mainkey"
     ];
   };
 
+  # Disable sudo password
   security.sudo.wheelNeedsPassword = false;
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  environment.systemPackages = with pkgs; [
-    tmux
-    neovim
-    git
-    htop
-    cachix
-    sbctl
-
-    libvirt
-    swww
-    polkit_gnome
-    grim
-    slurp
-    lm_sensors
-    unzip
-    unrar
-    gnome.file-roller
-    libnotify
-    swaynotificationcenter
-    tofi
-    xfce.thunar
-    imv
-    killall
-    v4l-utils
-    ueberzugpp
-    xdg-utils
-    gparted
-
-    vscode # code editor developed by Microsoft
-    _1password-gui # Best password manager imo
-    _1password # 1Password manager CLI
-    wl-clipboard
-    # Audio
-    pavucontrol
-    pulseaudio
-    audacity
-    # Fonts
-    font-awesome
-    symbola
-    noto-fonts-color-emoji
-    material-icons
-  ];
-
-  fonts.packages = with pkgs;
-    [ (nerdfonts.override { fonts = [ "JetBrainsMono" "Ubuntu" ]; }) ];
-
   # Set Environment Variables
   environment.variables = {
     # NIXOS_OZONE_WL = "1";  # vscode is not working if this is enabled
-    PATH = [ "\${HOME}/.local/bin" "\${HOME}/.cargo/bin" "$/usr/local/bin" ];
+    PATH = [
+      "\${HOME}/.local/bin"
+      "\${HOME}/.cargo/bin"
+      "$/usr/local/bin"
+    ];
     NIXPKGS_ALLOW_UNFREE = "1";
     SCRIPTDIR = "\${HOME}/.local/share/scriptdeps";
     STARSHIP_CONFIG = "\${HOME}/.config/starship/starship.toml";
-    XDG_CURRENT_DESKTOP = "Hyprland";
-    XDG_SESSION_TYPE = "wayland";
-    XDG_SESSION_DESKTOP = "Hyprland";
-    GDK_BACKEND = "wayland";
-    CLUTTER_BACKEND = "wayland";
-    SDL_VIDEODRIVER = "x11";
-    XCURSOR_SIZE = "24";
-    XCURSOR_THEME = "Bibata-Modern-Ice";
-    QT_QPA_PLATFORM = "wayland";
-    QT_QPA_PLATFORMTHEME = "qt5ct";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    MOZ_ENABLE_WAYLAND = "1";
   };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
-  programs.mtr.enable = true;
+  programs = {
+    mtr.enable = true;
 
-  services.pcscd.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    pinentryFlavor = "curses";
-    enableSSHSupport = true;
-  };
-
-  # Display manager stuff
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = ''
-          ${pkgs.greetd.tuigreet}/bin/tuigreet --remember --time --asterisks --greeting "Vanakkam da mapla 👻" --cmd Hyprland'';
-        user = "vijay";
-      };
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
     };
   };
 
   # List services that you want to enable:
+  services = {
+    # Enable the OpenSSH daemon.
+    openssh.enable = true;
 
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  services.fstrim.enable = true;
+    fstrim.enable = true;
 
-  # Sound options
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
+    # For bluetooth
+    blueman.enable = true;
 
-  # High quality BT calls
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
+    pcscd.enable = true;
+
+    # Configure keymap in X11
+    xserver = {
+      xkb.layout = "us";
+      xkb.variant = "";
+    };
+
+    libinput.enable = true;
+
+    nfs.server = {
+      enable = true;
+      # fixed rpc.statd port; for firewall
+      lockdPort = 4001;
+      mountdPort = 4002;
+      statdPort = 4000;
+      exports = ''
+        /mnt/share     *(rw,sync,wdelay,hide,no_subtree_check,fsid=0,sec=sys,insecure,no_root_squash,no_all_squash)
+      '';
+    };
   };
-  services.blueman.enable = true;
 
-  # pipewire support
-  services.pipewire = {
+  networking.firewall.enable = false;
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+  # List packages installed in system profile. To search, run:
+  environment.systemPackages = with pkgs; [
+    sbctl
+    lm_sensors
+    unzip
+    unrar
+    killall
+    # kubernetes
+    cifs-utils
+    nfs-utils
+  ];
+
+  fonts.packages = with pkgs; [
+    (nerdfonts.override {
+      fonts = [
+        "JetBrainsMono"
+        "Ubuntu"
+      ];
+    })
+  ];
+
+  services.k3s = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-    wireplumber.enable = true;
+    role = "server";
+    clusterInit = true;
+    token = "TemjVK4KJqlT8FFO";
+    extraFlags = toString ([
+      ''--write-kubeconfig-mode "0644"''
+      "--cluster-init"
+      "--disable servicelb"
+      "--disable traefik"
+      "--disable local-storage"
+      #      "--server https://zoro:6443"
+    ]);
   };
 
-  services.nfs.server = {
+  services.openiscsi = {
     enable = true;
-    # fixed rpc.statd port; for firewall
-    lockdPort = 4001;
-    mountdPort = 4002;
-    statdPort = 4000;
-    exports = ''
-      /var/lib/docker/volumes/         *(rw,all_squash,no_root_squash,sync,no_subtree_check,anonuid=65534,anongid=65534,insecure)
-      /mnt/share         *(rw,all_squash,no_root_squash,sync,no_subtree_check,anonuid=65534,anongid=65534,insecure)
-    '';
+    name = "iqn.2016-04.com.open-iscsi:zoro";
   };
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-  networking.firewall = {
-    enable = true;
-    # for NFSv3; view with `rpcinfo -p`
-    allowedTCPPorts = [ 111 2049 4000 4001 4002 20048 ];
-    allowedUDPPorts = [ 111 2049 4000 4001 4002 20048 ];
-  };
+
+  # Fixes for longhorn
+  systemd.tmpfiles.rules = [ "L+ /usr/local/bin - - - - /run/current-system/sw/bin/" ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

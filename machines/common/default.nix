@@ -35,15 +35,11 @@
       htop # Improved top (interactive process viewer)
       btop # Resource monitor. C++ version and continuation of bashtop and bpytop
       lf # Terminal file manager
-      atuin # sync shell history between machines
-      prettyping # A wrapper around the standard ping tool
-
-      #_1password-gui # Best password manager imo
-      #_1password # 1Password manager CLI
-      telegram-desktop
+      restic # A backup program that is fast, efficient and secure
+      rclone # Rsync for Cloud storage
+      openssl # cryptographic library
 
       # Git
-      gitflow # Better git flow
       lazygit # git TUI
       pre-commit # Git pre-commit hook
       git-crypt # file encryption in git
@@ -63,31 +59,19 @@
       rustc # rust lang
       cargo # install rust dependencies
       gcc # C compiler
-      rclone # Rsync for Cloud storage
       python3 # Python lang
       python311Packages.pip # install python dependencies
       cachix # Command-line client for Nix binary cache hosting https://cachix.org
-      nixfmt # nix lang formatter
-      flyctl # Fly.io tool
+      nixfmt-rfc-style # nix lang formatter
       iperf # Network performance test
-      cloudflared # Cloudflare daemon
       terraform # terraform cli tool for managing infrastructure
       terraformer # CLI tool to generate terraform files from existing infrastructure (reverse Terraform). Infrastructure to Code
 
-      # rpi-imager # Raspberry Pi Imaging Utility
-      yt-dlp # Download youtube videos
-      mpv # Video player
-      pandoc # Markdown converter
-      borgbackup # simple backup solution
-      hugo # Static site generator
-      spotify # Music client
-      ncspot # ncurses Spotify client
-      magic-wormhole # file transfer cli
-
       # Containers
-      kubernetes-helm # A package manager for kubernetes
-      kustomize # Customization of kubernetes YAML configurations
       kubectl # Kubernetes CLI tool
+      helm # A package manager for kubernetes
+      helmfile
+      kustomize # Customization of kubernetes YAML configurations
       lazydocker # docker TUI
     ];
   };

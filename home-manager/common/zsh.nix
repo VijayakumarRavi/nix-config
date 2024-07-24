@@ -2,7 +2,7 @@
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     autocd = true;
     dotDir = ".config/zsh";
@@ -83,6 +83,25 @@
       addup = "git add -u";
       commit = "git commit --signoff -S -m";
       gc = "git clone --depth=1 --recursive";
+
+      # Docker container
+      ds = "sudo docker start";
+      dsp = "sudo docker stop";
+      dre = "sudo docker restart";
+      dlog = "sudo docker logs -f";
+      dex = "sudo docker exec -it";
+      dps = "sudo docker ps -a";
+      dst = "sudo docker stats";
+      dprune = "sudo docker system prune -a -f";
+
+      # docker Compose up
+      dcup = "sudo docker compose up -d";
+      dcdown = "sudo docker compose down";
+      dclog = "sudo docker compose logs -f";
+      dcps = "sudo docker compose ps -a";
+      dcpull = "sudo docker compose pull";
+      dcst = "sudo docker compose stats";
+      dcprune = "sudo docker compose down --remove-orphans --volumes --rmi all";
     };
   };
 }

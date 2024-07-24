@@ -36,14 +36,6 @@
     };
     ssh = {
       enable = true;
-      matchBlocks = {
-        "*" = {
-          extraOptions = {
-            IdentityAgent = ''
-              "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
-          };
-        };
-      };
       extraConfig = ''
         Host sanji
             HostName 10.0.0.3
@@ -61,10 +53,6 @@
             Port 22
             RequestTTY yes
             RemoteCommand tmux -u at -t ssh_mux || tmux -u new -s ssh_mux
-        Host pve
-            HostName 10.0.0.7
-            User root
-            Port 22
       '';
     };
   };

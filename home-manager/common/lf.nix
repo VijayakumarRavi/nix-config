@@ -1,8 +1,6 @@
 { pkgs, ... }:
 
 {
-  xdg.configFile."lf/icons".source = ../dotfiles/icons;
-
   programs.lf = {
     enable = true;
     commands = {
