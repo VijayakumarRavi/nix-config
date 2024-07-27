@@ -1,16 +1,46 @@
-{ pkgs, ... }: {
-  imports = [ ./homebrew.nix ./dock ../common ];
+{ pkgs, ... }:
+{
+  imports = [
+    ./homebrew.nix
+    ../common
+  ]; # ./dock
 
   environment = {
     systemPath = [ "/opt/homebrew/bin" ];
     pathsToLink = [ "/Applications" ];
   };
+  environment.systemPackages = with pkgs; [
+    flyctl
+    nodejs_22
+  ];
+  documentation.enable = false;
+
   nix = {
     configureBuildUsers = true;
     gc = {
       automatic = true;
-      interval = { Hour = 24; };
+      interval = {
+        Hour = 3;
+        Minute = 15;
+        Weekday = 7;
+      };
       options = "--delete-old";
+    };
+  };
+
+  services = {
+    # A tiling window manager for macOS based on binary space partitioning
+    yabai = {
+      enable = true;
+    };
+    # Simple hotkey daemon for macOS
+    skhd = {
+      enable = true;
+    };
+    # A minimal status bar for macOS
+    spacebar = {
+      enable = true;
+      package = pkgs.spacebar;
     };
   };
 
@@ -20,9 +50,14 @@
   };
 
   users.users.vijay.home = /Users/vijay;
-  fonts.fontDir.enable = true; # DANGER
-  fonts.fonts =
-    [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; }) ];
+  fonts.packages = [
+    (pkgs.nerdfonts.override {
+      fonts = [
+        "FiraCode"
+        "JetBrainsMono"
+      ];
+    })
+  ];
   services.nix-daemon.enable = true;
   security.pam.enableSudoTouchIdAuth = true;
 
@@ -159,8 +194,7 @@
           ShowMountedServersOnDesktop = false;
 
           # Show directories first
-          _FXSortFoldersFirst =
-            true; # TODO: https://github.com/LnL7/nix-darwin/pull/594
+          _FXSortFoldersFirst = true; # TODO: https://github.com/LnL7/nix-darwin/pull/594
 
           # New window use the $HOME path
           NewWindowTarget = "PfHm";
@@ -183,8 +217,7 @@
           IncludeInternalDebugMenu = true;
           WebKitDeveloperExtras = true;
           WebKitDeveloperExtrasEnabledPreferenceKey = true;
-          "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" =
-            true;
+          "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" = true;
         };
         "com.apple.universalaccess" = {
           # Set the cursor size, TODO: https://github.com/LnL7/nix-darwin/pull/671
@@ -238,21 +271,21 @@
     '';
 
     # Fully declarative dock using the latest from Nix Store
-    local = {
-      dock.enable = true;
-      dock.entries = [
-        { path = "/System/Applications/Launchpad.app/"; }
-        { path = "/Applications/Arc.app/"; }
-        { path = "/System/Cryptexes/App/System/Applications/Safari.app/"; }
-        { path = "/System/Applications/Messages.app/"; }
-        { path = "/System/Applications/Mail.app/"; }
-        { path = "/System/Applications/Music.app/"; }
-        { path = "${pkgs.spotify}/Applications/Spotify.app/"; }
-        { path = "/System/Applications/Photos.app/"; }
-        { path = "/System/Applications/System Settings.app/"; }
-        { path = "/Applications/iTerm.app/"; }
-      ];
-    };
+    #    local = {
+    #      dock.enable = true;
+    #      dock.entries = [
+    #        { path = "/System/Applications/Launchpad.app/"; }
+    #        { path = "/Applications/Arc.app/"; }
+    #        { path = "/System/Cryptexes/App/System/Applications/Safari.app/"; }
+    #        { path = "/System/Applications/Messages.app/"; }
+    #        { path = "/System/Applications/Mail.app/"; }
+    #        { path = "/System/Applications/Music.app/"; }
+    #        { path = "${pkgs.spotify}/Applications/Spotify.app/"; }
+    #        { path = "/System/Applications/Photos.app/"; }
+    #        { path = "/System/Applications/System Settings.app/"; }
+    #        { path = "/Applications/iTerm.app/"; }
+    #      ];
+    #    };
     # backwards compat; don't change
     stateVersion = 4;
   };

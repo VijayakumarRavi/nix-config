@@ -24,7 +24,7 @@
     initExtra = ''
       function switch() {
         if command -v darwin-rebuild &> /dev/null 2>&1; then
-          darwin-rebuild switch "$@" -L --flake /Users/vijay/.nix-config#kakashi
+          darwin-rebuild switch "$@" --flake /Users/vijay/.nix-config#kakashi
         else
           sudo nixos-rebuild switch "$@" --accept-flake-config --flake /home/vijay/.nix-config#zoro
         fi
@@ -105,6 +105,15 @@
       dcpull = "sudo docker compose pull";
       dcst = "sudo docker compose stats";
       dcprune = "sudo docker compose down --remove-orphans --volumes --rmi all";
+
+      # ssh commands
+      vault-ssh = "fly ssh console -a flyvault";
+      tail-ssh = "fly ssh console -a flytailexit";
+      time-ssh = "fly ssh console -a flytime";
+      nami = "ssh nami";
+      zoro = "ssh zoro";
+      sanji = "ssh sanji";
+      robin = "ssh robin";
     };
   };
 }

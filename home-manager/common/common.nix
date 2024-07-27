@@ -1,6 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   programs = {
-    zoxide = { # smarter cd command
+    zoxide = {
+      # smarter cd command
       enable = true;
       enableZshIntegration = true;
       options = [ "--cmd cd" ];
@@ -21,7 +23,8 @@
         prompt = "enabled";
       };
     };
-    atuin = { # sync shell history between machines
+    atuin = {
+      # sync shell history between machines
       enable = true;
       enableZshIntegration = true;
       flags = [ "--disable-up-arrow" ];
@@ -37,22 +40,35 @@
     ssh = {
       enable = true;
       extraConfig = ''
+        Host unlock-zoro
+          Hostname 10.0.0.4
+          Port 22
+          User root
+          RemoteCommand /bin/cryptsetup-askpass
         Host sanji
             HostName 10.0.0.3
-            User pi
+            User vijay
             Port 22
+            RequestTTY yes
+            RemoteCommand tmux -u new-session -A -s ssh_mux
         Host nami
             HostName 10.0.0.2
             User vijay
             Port 22
             RequestTTY yes
-            RemoteCommand tmux -u at -t ssh_mux || tmux -u new -s ssh_mux
+            RemoteCommand tmux -u new-session -A -s ssh_mux
+        Host robin
+            HostName robin
+            User root
+            Port 22
+            RequestTTY yes
+            RemoteCommand tmux -u new-session -A -s ssh_mux
         Host zoro
             HostName 10.0.0.4
             User vijay
             Port 22
             RequestTTY yes
-            RemoteCommand tmux -u at -t ssh_mux || tmux -u new -s ssh_mux
+            RemoteCommand tmux -u new-session -A -s ssh_mux
       '';
     };
   };

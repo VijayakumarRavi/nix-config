@@ -19,14 +19,11 @@
     };
     casks = [
       # Better mac
-      "iterm2" # Terminal emulator
       "raycast" # Raycast - A better alternative to Alfred and spotlight
       "stats" # System monitor for the menu bar
       "shottr" # Screenshot util
       "brave-browser" # Web browser focusing on privacy
       "arc" # Chromium based browser
-      "floorp" # A fork of Firefox
-      "utm" # Virtual machines UI using QEMU
       "hyperkey" # Convert your caps lock key or any of your modifier keys to the hyper key
       "appcleaner" # Application uninstaller
       "the-unarchiver" # Unpacks archive files
@@ -35,10 +32,10 @@
       "onyx" # Verify system files structure, run miscellaneous maintenance and more
       "beeper" # Universal chat app powered by Matrix
       "visual-studio-code" # Visual Studio Code editor
-      "zed" # VS code alternative
       "1password" # Best password manager imo
       "1password-cli" # 1Password manager CLI
       "google-drive" # Google cloud storage
+      #"koekeishiya/formulae/skhd"
     ];
     taps = [
       # "1password/tap" # Best password manager
@@ -51,7 +48,6 @@
       "pinentry-mac" # GPG key entry utility
       "mas" # Mac appstore installer
       "docker-clean" # Clean Docker containers, images, networks, and volumes
-
     ];
   };
 }

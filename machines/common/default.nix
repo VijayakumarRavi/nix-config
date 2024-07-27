@@ -1,12 +1,19 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
 
   nix = {
     # package = lib.mkDefault pkgs.nix;
     package = pkgs.nix;
     settings = {
       allowed-users = [ "vijay" ];
-      trusted-users = [ "root" "vijay" ];
-      experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+      trusted-users = [
+        "root"
+        "vijay"
+      ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       auto-optimise-store = true;
       warn-dirty = false;
       sandbox = false;
@@ -69,8 +76,8 @@
 
       # Containers
       kubectl # Kubernetes CLI tool
-      helm # A package manager for kubernetes
-      helmfile
+      kubernetes-helm # A package manager for kubernetes
+      # helmfile # Declarative spec for deploying Helm charts
       kustomize # Customization of kubernetes YAML configurations
       lazydocker # docker TUI
     ];
