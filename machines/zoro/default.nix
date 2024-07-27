@@ -1,14 +1,8 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { pkgs, inputs, ... }:
 
 {
   imports = [
     ../common
-    # Required for NixOS Secure Boot
-    inputs.lanzaboote.nixosModules.lanzaboote
 
     # Include the results of the hardware scan.
     "${inputs.hw-config}/hardware-configuration.nix"
@@ -24,19 +18,16 @@
 
   };
 
-  programs.zsh.enable = true;
-
   #disable nix documentation
   documentation.enable = false;
 
-  # NixOS Secure Boot   -- refer: https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md
   # Bootloader
   boot = {
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/etc/secureboot";
-    };
+    # Use the systemd-boot EFI boot loader.
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
 
+    # Enable unlock disk encryption with ssh
     kernelParams = [ "ip=10.0.0.4::10.0.0.1:255.255.0.0:zoro::none" ];
     initrd = {
       availableKernelModules = [ "e1000e" ];
@@ -51,9 +42,6 @@
         ];
       };
     };
-
-    # boot splash screen
-    plymouth.enable = true;
     # Emulate an arm64 machine for RPI
     binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
@@ -62,18 +50,16 @@
   networking = {
     # Hostname
     hostName = "zoro";
-    #    # Enabling WIFI
-    #    wireless = {
-    #      enable = true;
-    #      interfaces = [ "wlo1" ];
-    #      networks."vijay wifi".pskRaw =
-    #        "9559e5edeed089f6c2834257d9f4de0cb442da4ddbee3a09e17707a9223f8958";
-    #    };
+    # Enabling WIFI
+    wireless = {
+      enable = true;
+      interfaces = [ "wlo1" ];
+      networks."vijay wifi".pskRaw = "9559e5edeed089f6c2834257d9f4de0cb442da4ddbee3a09e17707a9223f8958";
+    };
     # Default nameservers
     nameservers = [
       "10.0.0.2"
       "45.90.28.215"
-      "1.1.1.1"
     ];
     # Default gateway
     defaultGateway = {
@@ -140,7 +126,6 @@
   security.sudo.wheelNeedsPassword = false;
   # Set Environment Variables
   environment.variables = {
-    # NIXOS_OZONE_WL = "1";  # vscode is not working if this is enabled
     PATH = [
       "\${HOME}/.local/bin"
       "\${HOME}/.cargo/bin"
@@ -168,9 +153,6 @@
     openssh.enable = true;
 
     fstrim.enable = true;
-
-    # For bluetooth
-    blueman.enable = true;
 
     pcscd.enable = true;
 
@@ -224,14 +206,14 @@
     role = "server";
     clusterInit = true;
     token = "TemjVK4KJqlT8FFO";
-    extraFlags = toString ([
+    extraFlags = toString [
       ''--write-kubeconfig-mode "0644"''
       "--cluster-init"
       "--disable servicelb"
       "--disable traefik"
       "--disable local-storage"
-      #      "--server https://zoro:6443"
-    ]);
+      # "--server https://zoro:6443"
+    ];
   };
 
   services.openiscsi = {

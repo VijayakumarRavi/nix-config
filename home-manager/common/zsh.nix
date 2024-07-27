@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -16,14 +17,16 @@
       share = true;
     };
 
-    historySubstringSearch = { enable = true; };
+    historySubstringSearch = {
+      enable = true;
+    };
 
     initExtra = ''
       function switch() {
         if command -v darwin-rebuild &> /dev/null 2>&1; then
           darwin-rebuild switch "$@" -L --flake /Users/vijay/.nix-config#kakashi
         else
-          sudo nixos-rebuild switch "$@" -L --accept-flake-config --flake /home/vijay/.nix-config#zoro
+          sudo nixos-rebuild switch "$@" --accept-flake-config --flake /home/vijay/.nix-config#zoro
         fi
       }
 

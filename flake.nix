@@ -27,8 +27,8 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     # Tricked out nvim
-    nixvim.url = "github:nix-community/nixvim";
-    nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    # nixvim.url = "github:nix-community/nixvim";
+    # nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
     # Hardware config
     hw-config.url = "/etc/nixos";
@@ -50,24 +50,36 @@
     homebrew-services.flake = false;
 
     # For enable secure boot
-    lanzaboote.url = "github:nix-community/lanzaboote/v0.3.0";
-    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    # lanzaboote.url = "github:nix-community/lanzaboote/v0.3.0";
+    # lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
     # Firefox extensions support
-    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-    firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
+    # firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+    # firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = inputs@{ nixpkgs, home-manager, darwin, nixvim, lanzaboote
-    , nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask
-    , homebrew-services, ... }: {
+  outputs =
+    inputs@{
+      nixpkgs,
+      home-manager,
+      darwin,
+      nix-homebrew,
+      homebrew-bundle,
+      homebrew-core,
+      homebrew-cask,
+      homebrew-services,
+      ...
+    }:
+    {
       darwinConfigurations.kakashi = darwin.lib.darwinSystem {
         pkgs = import nixpkgs {
           system = "aarch64-darwin";
           config.allowUnfree = true;
         };
         system = "aarch64-darwin";
-        # makes all inputs availble in imported files
-        specialArgs = { inherit inputs; };
+        # makes all inputs available in imported files
+        specialArgs = {
+          inherit inputs;
+        };
         modules = [
           ./machines/kakashi
           nix-homebrew.darwinModules.nix-homebrew
@@ -90,7 +102,9 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = { inherit inputs; };
+              extraSpecialArgs = {
+                inherit inputs;
+              };
               users.vijay.imports = [ ./home-manager/kakashi ];
             };
           }
@@ -99,16 +113,22 @@
 
       nixosConfigurations.zoro = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        # makes all inputs availble in imported files
-        specialArgs = { inherit inputs; };
+        # makes all inputs available in imported files
+        specialArgs = {
+          inherit inputs;
+        };
         modules = [
           ./machines/zoro
           home-manager.nixosModules.home-manager
           {
-            home-manager.extraSpecialArgs = { inherit inputs; };
-            home-manager.users.vijay = { ... }: {
-              imports = [ ./home-manager/zoro ];
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
             };
+            home-manager.users.vijay =
+              { ... }:
+              {
+                imports = [ ./home-manager/zoro ];
+              };
           }
         ];
       };
