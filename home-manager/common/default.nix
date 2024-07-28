@@ -8,8 +8,6 @@
     ./git.nix
     ./tmux.nix
     ./starship.nix
-    #./alacritty.nix
-    ./wezterm.nix
     ./nvim.nix
   ];
 

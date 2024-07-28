@@ -21,8 +21,11 @@ vim.o.showmode = false
 -- Enable spell check
 vim.opt.spell = true
 vim.opt.spelllang = "en_us"
-vim.opt.spellsuggest=best,9 -- Don't show too much suggestion for spell check.
-vim.opt.spellfile="/home/vijay/.local/share/nvim/spell_add/en.utf-8.add"
+vim.opt.spellsuggest = best, 9 -- Don't show too much suggestion for spell check.
+-- Ensure the spellfile directory exists
+local spell_dir = os.getenv("HOME") .. "/.local/share/nvim/spell_add"
+vim.fn.mkdir(spell_dir, "p")
+vim.opt.spellfile = spell_dir .. "/en.utf-8.add"
 
 vim.opt.clipboard = "unnamedplus"
 

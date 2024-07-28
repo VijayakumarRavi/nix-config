@@ -11,18 +11,6 @@
       enable = true; # Fuzzy finder
       enableZshIntegration = true;
     };
-    direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
-    gh = {
-      enable = true; # GitHub CLI
-      extensions = with pkgs; [ gh-markdown-preview ];
-      settings = {
-        git_protocol = "ssh";
-        prompt = "enabled";
-      };
-    };
     atuin = {
       # sync shell history between machines
       enable = true;

@@ -37,6 +37,26 @@
         "type": "github"
       }
     },
+    "disko": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1722028105,
+        "narHash": "sha256-0ButnGQ1bCMIDblzC6NBSL71Wi6JmHGweI3scoV8CgM=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "5b01cea8b5753de9c2febd27203c530be14745ff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "disko",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -140,19 +160,6 @@
         "type": "github"
       }
     },
-    "hw-config": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1703772975,
-        "narHash": "sha256-SriM/wRVkPydP81DvrZcw9o4M67GQvIaGgw5p8GoW2Q=",
-        "path": "/etc/nixos",
-        "type": "path"
-      },
-      "original": {
-        "path": "/etc/nixos",
-        "type": "path"
-      }
-    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": "nixpkgs"
@@ -189,27 +196,6 @@
       "original": {
         "owner": "zhaofengli-wip",
         "repo": "nix-homebrew",
-        "type": "github"
-      }
-    },
-    "nixos-vscode-server": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1631782689,
-        "narHash": "sha256-/E2kuaU7IPtF2Wf1wWazjWmhmKyfpr/7h6gXZ1UCVY0=",
-        "owner": "mudrii",
-        "repo": "nixos-vscode-ssh-fix",
-        "rev": "b7886e9c046d52a1be8e907a8bdb182b60677acb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mudrii",
-        "ref": "main",
-        "repo": "nixos-vscode-ssh-fix",
         "type": "github"
       }
     },
@@ -261,14 +247,13 @@
     "root": {
       "inputs": {
         "darwin": "darwin",
+        "disko": "disko",
         "home-manager": "home-manager",
         "homebrew-bundle": "homebrew-bundle",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
         "homebrew-services": "homebrew-services",
-        "hw-config": "hw-config",
         "nix-homebrew": "nix-homebrew",
-        "nixos-vscode-server": "nixos-vscode-server",
         "nixpkgs": "nixpkgs_3"
       }
     },

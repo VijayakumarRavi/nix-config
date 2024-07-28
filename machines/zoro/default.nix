@@ -5,8 +5,10 @@
     ../common
 
     # Include the results of the hardware scan.
-    "${inputs.hw-config}/hardware-configuration.nix"
-    # /etc/nixos/hardware-configuration.nix
+    ./hardware-configuration.nix
+    # Declarative disk partitioning config
+    inputs.disko.nixosModules.disko
+    ./disko-config.nix
   ];
 
   nix = {
@@ -23,27 +25,41 @@
 
   # Bootloader
   boot = {
-    # Use the systemd-boot EFI boot loader.
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
-
-    # Enable unlock disk encryption with ssh
-    kernelParams = [ "ip=10.0.0.4::10.0.0.1:255.255.0.0:zoro::none" ];
-    initrd = {
-      availableKernelModules = [ "e1000e" ];
-      systemd.users.root.shell = "/bin/cryptsetup-askpass";
-      network.enable = true;
-      network.ssh = {
+    loader = {
+      efi = {
+        canTouchEfiVariables = true;
+      };
+      grub = {
         enable = true;
-        port = 22;
-        hostKeys = [ "/etc/ssh/ssh_host_ed25519_key" ];
-        authorizedKeys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX Mainkey"
-        ];
+        efiSupport = true;
+        devices = [ "nodev" ];
+        extraEntries = ''
+          menuentry "Reboot" {
+            reboot
+          }
+          menuentry "Poweroff" {
+            halt
+          }
+        '';
       };
     };
+    # Enable unlock disk encryption with ssh
+    #    kernelParams = [ "ip=10.0.0.4::10.0.0.1:255.255.0.0:zoro::none" ];
+    #    initrd = {
+    #      availableKernelModules = [ "e1000e" ];
+    #      systemd.users.root.shell = "/bin/cryptsetup-askpass";
+    #      network.enable = true;
+    #      network.ssh = {
+    #        enable = true;
+    #        port = 22;
+    #        hostKeys = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    #        authorizedKeys = [
+    #          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX Mainkey"
+    #        ];
+    #      };
+    #    };
     # Emulate an arm64 machine for RPI
-    binfmt.emulatedSystems = [ "aarch64-linux" ];
+    #    binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
 
   # Enable networking
@@ -67,7 +83,7 @@
       interface = "eno2";
     };
     # Static IP
-    useDHCP = false;
+    useDHCP = true;
     interfaces.eno2 = {
       ipv4.addresses = [
         {
@@ -117,6 +133,7 @@
       "video"
       "docker"
     ];
+    hashedPassword = "$6$b.0.YvdRoJj6j.WL$8epnXbbF5eplH348AMyDclGL2/CuaVX.6bWV5GY0zE1sVd1UtU7Svphp.m9DD5w0rSapXPftqJapsyVistkEJ1";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX Mainkey"
     ];
@@ -131,7 +148,6 @@
       "\${HOME}/.cargo/bin"
       "$/usr/local/bin"
     ];
-    NIXPKGS_ALLOW_UNFREE = "1";
     SCRIPTDIR = "\${HOME}/.local/share/scriptdeps";
     STARSHIP_CONFIG = "\${HOME}/.config/starship/starship.toml";
   };
@@ -183,22 +199,13 @@
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
     sbctl
+    htop
     lm_sensors
     unzip
     unrar
     killall
-    # kubernetes
     cifs-utils
     nfs-utils
-  ];
-
-  fonts.packages = with pkgs; [
-    (nerdfonts.override {
-      fonts = [
-        "JetBrainsMono"
-        "Ubuntu"
-      ];
-    })
   ];
 
   services.k3s = {

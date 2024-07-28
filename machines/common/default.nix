@@ -52,27 +52,19 @@
       git-crypt # file encryption in git
 
       # Ansible
-      ansible # Ansible command line tool
       yamllint # YAML linter
-      ansible-lint # Ansible linter
       age # age is a simple, modern and secure file encryption tool.
-      sshpass # SSHPass - SSH password manager
       sops # Secret key encryption
 
       # Dev utils
       tree # Tree command line tool
       unixtools.watch # Watch command line tool
       jq # JSON query tool
-      rustc # rust lang
-      cargo # install rust dependencies
-      gcc # C compiler
       python3 # Python lang
       python311Packages.pip # install python dependencies
       cachix # Command-line client for Nix binary cache hosting https://cachix.org
       nixfmt-rfc-style # nix lang formatter
       iperf # Network performance test
-      terraform # terraform cli tool for managing infrastructure
-      terraformer # CLI tool to generate terraform files from existing infrastructure (reverse Terraform). Infrastructure to Code
 
       # Containers
       kubectl # Kubernetes CLI tool

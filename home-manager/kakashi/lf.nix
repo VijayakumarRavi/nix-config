@@ -4,7 +4,7 @@
   programs.lf = {
     enable = true;
     commands = {
-      dragon-out = ''%${pkgs.xdragon}/bin/xdragon -a -x "$fx"'';
+      dragon-out = ''%${pkgs.xdragon}/bin/xdragon -a -x "$fx"''; # Simple drag-and-drop source
       editor-open = "$$EDITOR $f";
       mkdir = ''
         ''${{
@@ -45,22 +45,24 @@
       ignorecase = true;
     };
 
-    extraConfig = let
-      previewer = pkgs.writeShellScriptBin "pv.sh" ''
-        file=$1
-        w=$2
-        h=$3
-        x=$4
-        y=$5
-        ${pkgs.pistol}/bin/pistol "$file"
+    extraConfig =
+      let
+        previewer = pkgs.writeShellScriptBin "pv.sh" ''
+          file=$1
+          w=$2
+          h=$3
+          x=$4
+          y=$5
+          ${pkgs.pistol}/bin/pistol "$file"
+        '';
+        cleaner = pkgs.writeShellScriptBin "clean.sh" ''
+          ${pkgs.kitty}/bin/kitty +kitten icat --clear --stdin no --silent --transfer-mode file < /dev/null > /dev/tty
+        '';
+      in
+      ''
+        set cleaner ${cleaner}/bin/clean.sh
+        set previewer ${previewer}/bin/pv.sh
       '';
-      cleaner = pkgs.writeShellScriptBin "clean.sh" ''
-        ${pkgs.kitty}/bin/kitty +kitten icat --clear --stdin no --silent --transfer-mode file < /dev/null > /dev/tty
-      '';
-    in ''
-      set cleaner ${cleaner}/bin/clean.sh
-      set previewer ${previewer}/bin/pv.sh
-    '';
   };
 
   # ...

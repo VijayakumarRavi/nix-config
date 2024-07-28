@@ -26,13 +26,9 @@
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Tricked out nvim
-    # nixvim.url = "github:nix-community/nixvim";
-    # nixvim.inputs.nixpkgs.follows = "nixpkgs";
-
-    # Hardware config
-    hw-config.url = "/etc/nixos";
-    hw-config.flake = false;
+    # Disko
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
 
     # Homebrew
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
@@ -48,14 +44,6 @@
 
     homebrew-services.url = "github:homebrew/homebrew-services";
     homebrew-services.flake = false;
-
-    # For enable secure boot
-    # lanzaboote.url = "github:nix-community/lanzaboote/v0.3.0";
-    # lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
-
-    # Firefox extensions support
-    # firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-    # firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs =
     inputs@{
@@ -119,6 +107,7 @@
         };
         modules = [
           ./machines/zoro
+          # { _module.args.mode = "zap_create_mount"; } #Disko conig
           home-manager.nixosModules.home-manager
           {
             home-manager.extraSpecialArgs = {
