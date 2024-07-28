@@ -3,7 +3,6 @@
 
   imports = [
     ./common.nix
-    ./lf.nix
     ./zsh.nix
     ./git.nix
     ./tmux.nix

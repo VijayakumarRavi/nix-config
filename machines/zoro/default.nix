@@ -212,13 +212,14 @@
     enable = true;
     role = "server";
     clusterInit = true;
-    token = "TemjVK4KJqlT8FFO";
+    token = "TemjVK4KJqlT8FFO"; # demo
     extraFlags = toString [
       ''--write-kubeconfig-mode "0644"''
       "--cluster-init"
       "--disable servicelb"
       "--disable traefik"
       "--disable local-storage"
+      "--cluster-cidr 10.24.0.0/16"
       # "--server https://zoro:6443"
     ];
   };

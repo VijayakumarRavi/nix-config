@@ -26,7 +26,7 @@
         if command -v darwin-rebuild &> /dev/null 2>&1; then
           darwin-rebuild switch "$@" --flake /Users/vijay/.nix-config#kakashi
         else
-          sudo nixos-rebuild switch "$@" --accept-flake-config --flake /home/vijay/.nix-config#zoro
+          sudo nixos-rebuild switch "$@" --accept-flake-config --flake /home/vijay/.nix-config
         fi
       }
 

@@ -2,6 +2,7 @@
 {
   imports = [
     ../common
+    ./lf.nix
     ./wezterm.nix
     #./alacritty.nix
     ./wezterm.nix

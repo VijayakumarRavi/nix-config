@@ -60,6 +60,7 @@
       tree # Tree command line tool
       unixtools.watch # Watch command line tool
       jq # JSON query tool
+      gcc # c compiler
       python3 # Python lang
       python311Packages.pip # install python dependencies
       cachix # Command-line client for Nix binary cache hosting https://cachix.org
