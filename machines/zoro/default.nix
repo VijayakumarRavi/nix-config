@@ -203,6 +203,7 @@
       lower = "03:00";
       upper = "05:00";
     };
+    flags = [ "--accept-flake-config" ];
     flake = "github:VijayakumarRavi/nix-config";
   };
 
@@ -218,7 +219,6 @@
     killall
     cifs-utils
     nfs-utils
-    fastfetch
   ];
 
   services.k3s = {
