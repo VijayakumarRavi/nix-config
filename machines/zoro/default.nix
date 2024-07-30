@@ -196,7 +196,7 @@
 
   system.autoUpgrade = {
     enable = true;
-    dates = "*:0/30";
+    dates = "*:0/05";
     allowReboot = true;
     persistent = true;
     rebootWindow = {
