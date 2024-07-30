@@ -75,14 +75,15 @@
             nix-homebrew = {
               enable = true;
               user = "vijay";
+              enableRosetta = true;
+              autoMigrate = true;
+              mutableTaps = false;
               taps = {
                 "homebrew/homebrew-core" = homebrew-core;
                 "homebrew/homebrew-cask" = homebrew-cask;
                 "homebrew/homebrew-bundle" = homebrew-bundle;
                 "homebrew/homebrew-services" = homebrew-services;
               };
-              mutableTaps = true;
-              autoMigrate = true;
             };
           }
           home-manager.darwinModules.home-manager

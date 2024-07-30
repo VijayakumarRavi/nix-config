@@ -3,7 +3,6 @@
 {
   imports = [
     ../common
-
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     # Declarative disk partitioning config
@@ -17,11 +16,7 @@
       dates = "*-*-1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31 00:00:00";
       options = "--delete-old";
     };
-
   };
-
-  #disable nix documentation
-  documentation.enable = false;
 
   # Bootloader
   boot = {
@@ -141,6 +136,7 @@
 
   # Disable sudo password
   security.sudo.wheelNeedsPassword = false;
+
   # Set Environment Variables
   environment.variables = {
     PATH = [
@@ -207,8 +203,6 @@
     flake = "github:VijayakumarRavi/nix-config";
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
     sbctl
@@ -277,5 +271,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
-
 }

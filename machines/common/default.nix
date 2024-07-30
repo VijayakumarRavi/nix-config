@@ -20,59 +20,60 @@
     };
   };
 
-  programs.zsh.enable = true;
-  # users.defaultUserShell = pkgs.zsh;
-  users.users.vijay.shell = pkgs.zsh;
+  #disable nix documentation
+  documentation.enable = false;
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
   environment = {
     shells = with pkgs; [ zsh ];
     #loginShell = pkgs.zsh;
     systemPackages = with pkgs; [
       # Linux utils
-      vim # a must needed text editor
       fd # Simple, fast and user-friendly alternative to find
+      vim # a must needed text editor
       curl # A command line tool for transferring files with URL syntax
       less # A more advanced file pager than 'more'
-      coreutils # GNU core utilities for Mac
-      cowsay # ASCII cow
-      gnupg # GnuPG key management tool
-      neofetch # Fast, highly customisable system info script
       wget # Internet file retriever
-      p7zip # 7-Zip (high compression file archiver) implementation
-      pkg-config # Manage compile and link flags for libraries
       htop # Improved top (interactive process viewer)
       btop # Resource monitor. C++ version and continuation of bashtop and bpytop
-      lf # Terminal file manager
-      restic # A backup program that is fast, efficient and secure
+      gnupg # GnuPG key management tool
+      p7zip # 7-Zip (high compression file archiver) implementation
+      cowsay # ASCII cow
       rclone # Rsync for Cloud storage
+      restic # A backup program that is fast, efficient and secure
       openssl # cryptographic library
+      neofetch # Fast, highly customisable system info script
+      coreutils # GNU core utilities for Mac
+      pkg-config # Manage compile and link flags for libraries
 
       # Git
       lazygit # git TUI
-      pre-commit # Git pre-commit hook
       git-crypt # file encryption in git
+      pre-commit # Git pre-commit hook
 
       # Ansible
-      yamllint # YAML linter
       age # age is a simple, modern and secure file encryption tool.
       sops # Secret key encryption
+      yamllint # YAML linter
 
       # Dev utils
-      tree # Tree command line tool
-      unixtools.watch # Watch command line tool
       jq # JSON query tool
       gcc # c compiler
-      python3 # Python lang
-      python311Packages.pip # install python dependencies
-      cachix # Command-line client for Nix binary cache hosting https://cachix.org
-      nixfmt-rfc-style # nix lang formatter
+      tree # Tree command line tool
       iperf # Network performance test
+      cachix # Command-line client for Nix binary cache hosting https://cachix.org
+      python3 # Python lang
+      unixtools.watch # Watch command line tool
+      python311Packages.pip # install python dependencies
+      nixfmt-rfc-style # nix lang formatter
 
       # Containers
       kubectl # Kubernetes CLI tool
-      kubernetes-helm # A package manager for kubernetes
-      # helmfile # Declarative spec for deploying Helm charts
+      helmfile # Declarative spec for deploying Helm charts
       kustomize # Customization of kubernetes YAML configurations
       lazydocker # docker TUI
+      kubernetes-helm # A package manager for kubernetes
     ];
   };
 }

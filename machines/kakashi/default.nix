@@ -3,17 +3,7 @@
   imports = [
     ./homebrew.nix
     ../common
-  ]; # ./dock
-
-  environment = {
-    systemPath = [ "/opt/homebrew/bin" ];
-    pathsToLink = [ "/Applications" ];
-  };
-  environment.systemPackages = with pkgs; [
-    flyctl
-    nodejs_22
   ];
-  documentation.enable = false;
 
   nix = {
     configureBuildUsers = true;
@@ -28,7 +18,26 @@
     };
   };
 
+  environment = {
+    systemPath = [ "/opt/homebrew/bin" ];
+    pathsToLink = [ "/Applications" ];
+    systemPackages = with pkgs; [
+      flyctl # fly.io cli tool
+      vscode # Visual Studio Code editor
+      nodejs_22 # Node js version 22
+
+      # Mac only apps
+      mas # Mac appstore installer
+      stats # System monitor for the menu bar
+      raycast # Raycast - A better alternative to Alfred and spotlight
+      bartender # Menu bar icon organizer
+      appcleaner # Application uninstaller
+      pinentry_mac # GPG key entry utility
+    ];
+  };
+
   services = {
+    nix-daemon.enable = true;
     # A tiling window manager for macOS based on binary space partitioning
     yabai = {
       enable = true;
@@ -49,7 +58,10 @@
     hostName = "kakashi";
   };
 
-  users.users.vijay.home = /Users/vijay;
+  users.users.vijay = {
+    home = /Users/vijay;
+    shell = pkgs.zsh;
+  };
   fonts.packages = [
     (pkgs.nerdfonts.override {
       fonts = [
@@ -58,7 +70,7 @@
       ];
     })
   ];
-  services.nix-daemon.enable = true;
+
   security.pam.enableSudoTouchIdAuth = true;
 
   # here go the darwin preferences and config items
