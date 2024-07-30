@@ -194,6 +194,18 @@
 
   networking.firewall.enable = false;
 
+  system.autoUpgrade = {
+    enable = true;
+    dates = "*:0/30";
+    allowReboot = true;
+    persistent = true;
+    rebootWindow = {
+      lower = "03:00";
+      upper = "05:00";
+    };
+    flake = "github:VijayakumarRavi/nix-config";
+  };
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   # List packages installed in system profile. To search, run:
@@ -223,6 +235,31 @@
       # "--server https://zoro:6443"
     ];
   };
+
+  #  networking.firewall.allowedTCPPorts = [
+  #    apiServerPort
+  #    10257
+  #    10259
+  #  ]; # apiServerPort is default port 6443
+  #
+  #  users.users.wittano.extraGroups = [ "kubernetes" ];
+  #
+  #  services.kubernetes = {
+  #    roles = [ "master" ];
+  #    masterAddress = ipAddress; # ipAddress is my local IP
+  #    apiserverAddress = "https://${ipAddress}:${toString apiServerPort}";
+  #    easyCerts = true;
+  #    apiserver = {
+  #      securePort = apiServerPort;
+  #      advertiseAddress = ipAddress;
+  #    };
+  #
+  #    # use coredns
+  #    addons.dns.enable = true;
+  #
+  #    # needed if you use swap
+  #    kubelet.extraOpts = "--fail-swap-on=false"; # I need it
+  #  };
 
   services.openiscsi = {
     enable = true;

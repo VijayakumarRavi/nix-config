@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   imports = [
     ../common
@@ -6,6 +6,7 @@
     ./wezterm.nix
     #./alacritty.nix
     ./wezterm.nix
+    ./lf.nix
   ];
 
   programs = {

@@ -87,6 +87,15 @@
       commit = "git commit --signoff -S -m";
       gc = "git clone --depth=1 --recursive";
 
+      # ssh commands
+      vault-ssh = "fly ssh console -a flyvault";
+      tail-ssh = "fly ssh console -a flytailexit";
+      time-ssh = "fly ssh console -a flytime";
+      nami = "ssh nami";
+      zoro = "ssh zoro";
+      sanji = "ssh sanji";
+      robin = "ssh robin";
+
       # Docker container
       ds = "sudo docker start";
       dsp = "sudo docker stop";
@@ -106,14 +115,48 @@
       dcst = "sudo docker compose stats";
       dcprune = "sudo docker compose down --remove-orphans --volumes --rmi all";
 
-      # ssh commands
-      vault-ssh = "fly ssh console -a flyvault";
-      tail-ssh = "fly ssh console -a flytailexit";
-      time-ssh = "fly ssh console -a flytime";
-      nami = "ssh nami";
-      zoro = "ssh zoro";
-      sanji = "ssh sanji";
-      robin = "ssh robin";
+      # Kubernetes aliases
+      k = "kubectl";
+      kns = "kubectl config set-context --current --namespace";
+
+      # Switch between contexts
+      kctxs = "kubectl config get-contexts";
+      kctx = "kubectl config use-context";
+
+      # Get commands
+      kg = "kubectl get";
+      kgp = "kubectl get pods";
+      kgs = "kubectl get services";
+      kgd = "kubectl get deployments";
+      kgn = "kubectl get nodes";
+
+      # Describe commands
+      kd = "kubectl describe";
+      kdp = "kubectl describe pod";
+      kds = "kubectl describe service";
+      kdd = "kubectl describe deployment";
+
+      # Logs
+      kl = "kubectl logs -f";
+
+      # Apply, create, delete commands
+      ka = "kubectl apply -f";
+      kc = "kubectl create -f";
+      kdelf = "kubectl delete -f";
+
+      # Exec into a pod
+      ke = "kubectl exec -it";
+
+      # Port-forwarding
+      kpf = "kubectl port-forward";
+
+      # Custom useful commands
+      ktop = "kubectl top pods";
+      kall = "kubectl get all";
+      krestart = "kubectl rollout restart deployment";
+
+      # Alias to open kube dashboard
+      kdash = "kubectl proxy";
     };
   };
 }

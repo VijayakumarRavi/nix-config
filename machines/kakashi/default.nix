@@ -129,11 +129,23 @@
         wvous-bl-corner = 11; # Launchpad
         wvous-br-corner = 4; # Show Desktop
 
+        # persistent apps in dock
+        persistent-apps = [
+          "/System/Applications/Launchpad.app/"
+          "/Applications/Arc.app/"
+          "/System/Cryptexes/App/System/Applications/Safari.app/"
+          "/System/Applications/Messages.app/"
+          "/System/Applications/Mail.app/"
+          "/System/Applications/Music.app/"
+          "/System/Applications/Photos.app/"
+          "/System/Applications/System Settings.app/"
+          "${pkgs.wezterm}/Applications/WezTerm.app/"
+        ];
       };
 
       finder = {
         # Allow quitting via ⌘Q
-        QuitMenuItem = true;
+        QuitMenuItem = false;
 
         # Disable warning when changing a file extension
         FXEnableExtensionChangeWarning = false;

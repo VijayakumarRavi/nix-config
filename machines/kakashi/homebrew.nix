@@ -48,6 +48,7 @@
       "pinentry-mac" # GPG key entry utility
       "mas" # Mac appstore installer
       "docker-clean" # Clean Docker containers, images, networks, and volumes
+      "nginx" # Loadbalancer for kube nodes 
     ];
   };
 }
