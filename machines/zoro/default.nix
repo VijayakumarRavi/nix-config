@@ -218,6 +218,7 @@
     killall
     cifs-utils
     nfs-utils
+    fastfetch
   ];
 
   services.k3s = {
