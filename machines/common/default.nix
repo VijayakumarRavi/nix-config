@@ -21,7 +21,7 @@
 
   # BUG: if you remove these two lines you won't be able to access any nix programs
   programs.zsh.enable = true;
-  #  users.users.vijay.shell = pkgs.zsh;
+  users.users.vijay.shell = pkgs.zsh;
 
   #disable nix documentation
   documentation.enable = false;
