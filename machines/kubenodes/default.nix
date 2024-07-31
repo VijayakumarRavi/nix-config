@@ -43,6 +43,8 @@
         '';
       };
     };
+    # Emulate an arm64 machine for RPI
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
     # Enable unlock disk encryption with ssh
     #    kernelParams = [ "ip=10.0.0.4::10.0.0.1:255.255.0.0:zoro::none" ];
     #    initrd = {
@@ -58,8 +60,6 @@
     #        ];
     #      };
     #    };
-    # Emulate an arm64 machine for RPI
-    #    binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
 
   # Enable networking
