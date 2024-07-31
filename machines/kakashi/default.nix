@@ -25,6 +25,7 @@
       flyctl # fly.io cli tool
       vscode # Visual Studio Code editor
       nodejs_22 # Node js version 22
+      bitwarden-cli # free password manager
 
       # Mac only apps
       mas # Mac appstore installer

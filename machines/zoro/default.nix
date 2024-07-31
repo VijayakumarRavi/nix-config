@@ -119,6 +119,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.vijay = {
     isNormalUser = true;
+    shell = pkgs.zsh;
     description = "Vijayakumar Ravi";
     extraGroups = [
       "networkmanager"
