@@ -244,7 +244,6 @@
   services.k3s = {
     enable = true;
     role = "server";
-    #token = "TemjVK4KJqlT8FFO"; # demo
     tokenFile = config.sops.secrets.kubetoken.path;
     extraFlags = toString (
       [
