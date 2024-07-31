@@ -100,27 +100,39 @@
         ];
       };
 
-      nixosConfigurations.zoro = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        # makes all inputs available in imported files
-        specialArgs = {
-          inherit inputs;
-        };
-        modules = [
-          ./machines/zoro
-          # { _module.args.mode = "zap_create_mount"; } #Disko config
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-            };
-            home-manager.users.vijay =
-              { ... }:
-              {
-                imports = [ ./home-manager/zoro ];
+      nixosConfigurations = builtins.listToAttrs (
+        map
+          (name: {
+            inherit name;
+            value = nixpkgs.lib.nixosSystem {
+              # makes all inputs available in imported files
+              specialArgs = {
+                inherit inputs;
+                meta = {
+                  hostname = name;
+                };
               };
-          }
-        ];
-      };
+              system = "x86_64-linux";
+              modules = [
+                ./machines/kubenodes
+                # { _module.args.mode = "zap_create_mount"; } #Disko config
+                home-manager.nixosModules.home-manager
+                {
+                  home-manager.extraSpecialArgs = {
+                    inherit inputs;
+                  };
+                  home-manager.users.vijay = {
+                    imports = [ ./home-manager/kubenodes ];
+                  };
+                }
+              ];
+            };
+          })
+          [
+            "zoro"
+            "usopp"
+            "choppar"
+          ]
+      );
     };
 }

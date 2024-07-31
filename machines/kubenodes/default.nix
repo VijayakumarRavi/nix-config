@@ -1,4 +1,9 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  meta,
+  ...
+}:
 
 {
   imports = [
@@ -60,7 +65,9 @@
   # Enable networking
   networking = {
     # Hostname
-    hostName = "zoro";
+    hostName = meta.hostname;
+    # disable firewall
+    firewall.enable = false;
     # Enabling WIFI
     wireless = {
       enable = true;
@@ -82,7 +89,15 @@
     interfaces.eno2 = {
       ipv4.addresses = [
         {
-          address = "10.0.0.4";
+          address =
+            if meta.hostname == "zoro" then
+              "10.0.0.4"
+            else if meta.hostname == "usopp" then
+              "10.0.0.5"
+            else if meta.hostname == "choppar" then
+              "10.0.0.6"
+            else
+              null;
           prefixLength = 16;
         }
       ];
@@ -97,7 +112,6 @@
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_IN";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_IN";
     LC_IDENTIFICATION = "en_IN";
@@ -116,6 +130,7 @@
     packages = with pkgs; [ terminus_font ];
     keyMap = "us";
   };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.vijay = {
     isNormalUser = true;
@@ -144,7 +159,6 @@
       "\${HOME}/.cargo/bin"
       "$/usr/local/bin"
     ];
-    SCRIPTDIR = "\${HOME}/.local/share/scriptdeps";
     STARSHIP_CONFIG = "\${HOME}/.config/starship/starship.toml";
   };
 
@@ -188,8 +202,6 @@
     };
   };
 
-  networking.firewall.enable = false;
-
   system.autoUpgrade = {
     enable = true;
     dates = "*:0/05";
@@ -218,51 +230,27 @@
   services.k3s = {
     enable = true;
     role = "server";
-    clusterInit = true;
     token = "TemjVK4KJqlT8FFO"; # demo
-    extraFlags = toString [
-      ''--write-kubeconfig-mode "0644"''
-      "--cluster-init"
-      "--disable servicelb"
-      "--disable traefik"
-      "--disable local-storage"
-      "--cluster-cidr 10.24.0.0/16"
-      # "--server https://zoro:6443"
-    ];
+    extraFlags = toString (
+      [
+        "--write-kubeconfig-mode \"0644\""
+        "--cluster-init"
+        "--disable servicelb"
+        "--disable traefik"
+        "--disable local-storage"
+      ]
+      ++ (if meta.hostname == "zoro" then [ ] else [ "--server https://zoro:6443" ])
+    );
+    clusterInit = meta.hostname == "zoro";
   };
 
   services.openiscsi = {
     enable = true;
-    name = "iqn.2016-04.com.open-iscsi:zoro";
+    name = "iqn.2016-04.com.open-iscsi:${meta.hostname}";
   };
 
   # Fixes for longhorn
   systemd.tmpfiles.rules = [ "L+ /usr/local/bin - - - - /run/current-system/sw/bin/" ];
-
-  #  networking.firewall.allowedTCPPorts = [
-  #    apiServerPort
-  #    10257
-  #    10259
-  #  ]; # apiServerPort is default port 6443
-  #
-  #  users.users.wittano.extraGroups = [ "kubernetes" ];
-  #
-  #  services.kubernetes = {
-  #    roles = [ "master" ];
-  #    masterAddress = ipAddress; # ipAddress is my local IP
-  #    apiserverAddress = "https://${ipAddress}:${toString apiServerPort}";
-  #    easyCerts = true;
-  #    apiserver = {
-  #      securePort = apiServerPort;
-  #      advertiseAddress = ipAddress;
-  #    };
-  #
-  #    # use coredns
-  #    addons.dns.enable = true;
-  #
-  #    # needed if you use swap
-  #    kubelet.extraOpts = "--fail-swap-on=false"; # I need it
-  #  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
