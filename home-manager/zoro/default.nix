@@ -1,4 +1,5 @@
-{ pkgs, ... }: { # vjvim,
+{
+  # vjvim,
   imports = [
     ../common
     # ./firefox.nix 

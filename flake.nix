@@ -108,7 +108,7 @@
         };
         modules = [
           ./machines/zoro
-          # { _module.args.mode = "zap_create_mount"; } #Disko conig
+          # { _module.args.mode = "zap_create_mount"; } #Disko config
           home-manager.nixosModules.home-manager
           {
             home-manager.extraSpecialArgs = {

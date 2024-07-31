@@ -231,6 +231,14 @@
     ];
   };
 
+  services.openiscsi = {
+    enable = true;
+    name = "iqn.2016-04.com.open-iscsi:zoro";
+  };
+
+  # Fixes for longhorn
+  systemd.tmpfiles.rules = [ "L+ /usr/local/bin - - - - /run/current-system/sw/bin/" ];
+
   #  networking.firewall.allowedTCPPorts = [
   #    apiServerPort
   #    10257
@@ -255,14 +263,6 @@
   #    # needed if you use swap
   #    kubelet.extraOpts = "--fail-swap-on=false"; # I need it
   #  };
-
-  services.openiscsi = {
-    enable = true;
-    name = "iqn.2016-04.com.open-iscsi:zoro";
-  };
-
-  # Fixes for longhorn
-  systemd.tmpfiles.rules = [ "L+ /usr/local/bin - - - - /run/current-system/sw/bin/" ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

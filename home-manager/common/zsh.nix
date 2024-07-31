@@ -72,11 +72,11 @@
       pv = "prettyping vijayakumar.xyz";
       lg = "${pkgs.lazygit}/bin/lazygit";
       ld = "${pkgs.lazydocker}/bin/lazydocker";
-      ncspotd = "${pkgs.ncspot}/bin/ncspot -d ~/.config/ncspot/DEBUG";
+      dvim = "XDG_CONFIG_HOME=~/.nix-config/home-manager/dotfiles/ XDG_DATA_HOME=~/.local/share/dev_nvim XDG_STATE_HOME=~/.local/state/dev_nvim nvim";
 
       # tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
       pping = "prettyping";
-      notes = "nvim ~/.notes.txt";
+      note = "nvim ~/.notes.txt";
       preview = "${pkgs.fzf}/bin/fzf --preview 'cat {}'";
 
       # Git
@@ -88,13 +88,13 @@
       gc = "git clone --depth=1 --recursive";
 
       # ssh commands
-      vault-ssh = "fly ssh console -a flyvault";
-      tail-ssh = "fly ssh console -a flytailexit";
-      time-ssh = "fly ssh console -a flytime";
       nami = "ssh nami";
       zoro = "ssh zoro";
       sanji = "ssh sanji";
       robin = "ssh robin";
+      vault-ssh = "fly ssh console -a flyvault";
+      tail-ssh = "fly ssh console -a flytailexit";
+      time-ssh = "fly ssh console -a flytime";
 
       # Docker container
       ds = "sudo docker start";

@@ -1,4 +1,4 @@
-{ ... }: {
+{
   programs.alacritty = {
     enable = true;
     settings = {
@@ -24,24 +24,29 @@
         multiplier = 3;
       };
 
-      mouse = { hide_when_typing = false; };
-
-      font = let fontname = "JetBrainsMono Nerd Font Mono";
-      in {
-        normal = {
-          family = fontname;
-          style = "Regular";
-        };
-        bold = {
-          family = fontname;
-          style = "Bold";
-        };
-        italic = {
-          family = fontname;
-          style = "Italic";
-        };
-        size = 18;
+      mouse = {
+        hide_when_typing = false;
       };
+
+      font =
+        let
+          fontname = "JetBrainsMono Nerd Font Mono";
+        in
+        {
+          normal = {
+            family = fontname;
+            style = "Regular";
+          };
+          bold = {
+            family = fontname;
+            style = "Bold";
+          };
+          italic = {
+            family = fontname;
+            style = "Italic";
+          };
+          size = 18;
+        };
       cursor.style = "Block";
 
       colors = {

@@ -28,6 +28,7 @@
       "onyx" # Verify system files structure, run miscellaneous maintenance and more
       "1password" # Best password manager imo
       "1password-cli" # 1Password manager CLI
+      "bartender" # Menu bar icon organizer
       "google-drive" # Google cloud storage
       "beeper" # Universal chat app powered by Matrix
       "github" # Desktop client for GitHub repositories

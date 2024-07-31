@@ -1,4 +1,4 @@
-{ ... }: {
+{
   programs.git = {
     enable = true;
     userName = "Vijayakumar Ravi";
@@ -18,7 +18,9 @@
         followTags = true;
         autoSetupRemote = true;
       };
-      gpg = { format = "ssh"; };
+      gpg = {
+        format = "ssh";
+      };
       commit = {
         # gpgsign = true;
         template = "./gitmessage";
@@ -179,8 +181,7 @@
       dc = "difftool --cached";
       fp = "format-patch";
       lg = "log --graph";
-      lp =
-        "log --graph --pretty=format:'%Cred%h%Credreset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
+      lp = "log --graph --pretty=format:'%Cred%h%Credreset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
       rb = "rebase";
       ut = "rm -r --cached";
       new = "flow feature start";

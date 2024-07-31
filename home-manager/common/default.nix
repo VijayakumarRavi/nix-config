@@ -1,6 +1,4 @@
-{ ... }:
 {
-
   imports = [
     ./common.nix
     ./zsh.nix
@@ -10,9 +8,6 @@
     ./nvim.nix
   ];
 
-  # specify my home-manager configs
-  # home.packages = with pkgs; [  ];
-
   systemd.user.startServices = "sd-switch";
   home = {
     sessionPath = [ "$HOME/.local/bin" ];
@@ -21,7 +16,6 @@
       CLICLOLOR = 1;
       EDITOR = "nvim";
     };
-
     # file.".inputrc".source = ../dotfiles/inputrc;
     #home.file.".config/starship.toml".source = ./dotfiles/starship.toml;
 

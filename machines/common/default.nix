@@ -1,6 +1,5 @@
 { pkgs, ... }:
 {
-
   nix = {
     # package = lib.mkDefault pkgs.nix;
     package = pkgs.nix;
@@ -19,6 +18,10 @@
       sandbox = false;
     };
   };
+
+  # BUG: if you remove these two lines you won't be able to access any nix programs
+  programs.zsh.enable = true;
+  users.users.vijay.shell = pkgs.zsh;
 
   #disable nix documentation
   documentation.enable = false;

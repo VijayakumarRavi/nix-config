@@ -1,4 +1,4 @@
-{ ... }: {
+{
   programs = {
     starship = {
       enable = true;
@@ -81,7 +81,9 @@
         };
 
         # Cloud
-        gcloud = { format = "on [$symbol($project)]($style) "; };
+        gcloud = {
+          format = "on [$symbol($project)]($style) ";
+        };
 
         # Icon changes only \/
         aws.symbol = "  ";

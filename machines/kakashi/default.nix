@@ -30,7 +30,6 @@
       mas # Mac appstore installer
       stats # System monitor for the menu bar
       raycast # Raycast - A better alternative to Alfred and spotlight
-      bartender # Menu bar icon organizer
       appcleaner # Application uninstaller
       pinentry_mac # GPG key entry utility
     ];
@@ -60,8 +59,8 @@
 
   users.users.vijay = {
     home = /Users/vijay;
-    shell = pkgs.zsh;
   };
+
   fonts.packages = [
     (pkgs.nerdfonts.override {
       fonts = [

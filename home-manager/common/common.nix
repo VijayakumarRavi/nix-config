@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 {
   programs = {
     zoxide = {
@@ -7,10 +6,12 @@
       enableZshIntegration = true;
       options = [ "--cmd cd" ];
     };
+
     fzf = {
       enable = true; # Fuzzy finder
       enableZshIntegration = true;
     };
+
     atuin = {
       # sync shell history between machines
       enable = true;
@@ -25,6 +26,7 @@
         style = "compact";
       };
     };
+
     ssh = {
       enable = true;
       extraConfig = ''
