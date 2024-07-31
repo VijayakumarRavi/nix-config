@@ -2,9 +2,9 @@
   pkgs,
   inputs,
   meta,
+  config,
   ...
 }:
-
 {
   imports = [
     ../common
@@ -13,7 +13,21 @@
     # Declarative disk partitioning config
     inputs.disko.nixosModules.disko
     ./disko-config.nix
+    # sops for secrets
+    inputs.sops-nix.nixosModules.sops
   ];
+
+  sops = {
+    defaultSopsFile = ../../secrets.yaml;
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    secrets = {
+      kubetoken = { };
+      userhashedPassword = {
+        neededForUsers = true;
+      };
+      id_ed25519_pub = { };
+    };
+  };
 
   nix = {
     gc = {
@@ -143,7 +157,7 @@
       "video"
       "docker"
     ];
-    hashedPassword = "$6$b.0.YvdRoJj6j.WL$8epnXbbF5eplH348AMyDclGL2/CuaVX.6bWV5GY0zE1sVd1UtU7Svphp.m9DD5w0rSapXPftqJapsyVistkEJ1";
+    hashedPasswordFile = config.sops.secrets.userhashedPassword.path;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX Mainkey"
     ];
@@ -230,7 +244,8 @@
   services.k3s = {
     enable = true;
     role = "server";
-    token = "TemjVK4KJqlT8FFO"; # demo
+    #token = "TemjVK4KJqlT8FFO"; # demo
+    tokenFile = config.sops.secrets.kubetoken.path;
     extraFlags = toString (
       [
         "--write-kubeconfig-mode \"0644\""

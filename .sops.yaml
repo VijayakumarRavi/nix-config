@@ -1,0 +1,12 @@
+# NOTE: use 'sops updatekeys --yes secrets.yaml' to add/remove recipients.
+keys:
+  - &user_vijay age1zgyq9gpx5wnwt3dl5gzy2zch97khe0f78dfeed7v4gzwurvkkays0pn4nd
+  - &host_kakashi age17yq2w5vv6akhvdm7s306qx055uuj9fg42me27vsrghpgvtgt443shg24qd
+  - &host_zoro age19uwrhmu3662qenp7k88fq46lrhtjzm56ahmymfm6h03etznrg3vqc5dqah
+creation_rules:
+  - path_regex: secrets.yaml$
+    key_groups:
+    - age:
+      - *user_vijay
+      - *host_kakashi
+      - *host_zoro

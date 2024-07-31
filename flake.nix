@@ -30,6 +30,10 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
+    # sops for secret management
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     # Homebrew
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
 
@@ -50,6 +54,7 @@
       nixpkgs,
       home-manager,
       darwin,
+      sops-nix,
       nix-homebrew,
       homebrew-bundle,
       homebrew-core,
