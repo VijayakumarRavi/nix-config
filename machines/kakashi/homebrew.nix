@@ -10,14 +10,7 @@
       upgrade = true;
     };
     taps = builtins.attrNames config.nix-homebrew.taps;
-    masApps = {
-      "1Password for Safari" = 1569813296;
-      "Tailscale" = 1475387142;
-      "infuse video player" = 1136220934;
-      "localsend" = 1661733229;
-      "shortery" = 1594183810;
-      # "shelly ssh client" = 989642999;
-    };
+    brews = [ "nginx" ]; # Reverse proxy to use as a loadbalancer for kubectl
     casks = [
       # Better mac
       "shottr" # Screenshot util
@@ -33,5 +26,13 @@
       "beeper" # Universal chat app powered by Matrix
       "github" # Desktop client for GitHub repositories
     ];
+    masApps = {
+      "1Password for Safari" = 1569813296;
+      "Tailscale" = 1475387142;
+      "infuse video player" = 1136220934;
+      "localsend" = 1661733229;
+      "shortery" = 1594183810;
+      # "shelly ssh client" = 989642999;
+    };
   };
 }
