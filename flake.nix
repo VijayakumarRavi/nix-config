@@ -54,17 +54,17 @@
     homebrew-services.flake = false;
   };
   outputs =
-    inputs@{
-      nixpkgs,
-      home-manager,
-      darwin,
-      sops-nix,
-      nix-homebrew,
-      homebrew-bundle,
-      homebrew-core,
-      homebrew-cask,
-      homebrew-services,
-      ...
+    inputs@{ self
+    , nixpkgs
+    , home-manager
+    , darwin
+    , sops-nix
+    , nix-homebrew
+    , homebrew-bundle
+    , homebrew-core
+    , homebrew-cask
+    , homebrew-services
+    , ...
     }:
     let
       supportedSystems = [
@@ -88,6 +88,12 @@
             detect-private-keys.enable = true;
             trim-trailing-whitespace.enable = true;
           };
+        };
+      });
+      devShells = forAllSystems (system: {
+        default = nixpkgs.legacyPackages.${system}.mkShell {
+          inherit (self.checks.${system}.pre-commit-check) shellHook;
+          buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
         };
       });
       darwinConfigurations.kakashi = darwin.lib.darwinSystem {
