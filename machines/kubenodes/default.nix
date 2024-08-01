@@ -1,9 +1,8 @@
-{
-  pkgs,
-  inputs,
-  meta,
-  config,
-  ...
+{ pkgs
+, inputs
+, meta
+, config
+, ...
 }:
 {
   imports = [
