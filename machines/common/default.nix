@@ -69,7 +69,7 @@
       python3 # Python lang
       unixtools.watch # Watch command line tool
       python311Packages.pip # install python dependencies
-      nixfmt-rfc-style # nix lang formatter
+      #nixfmt-rfc-style # nix lang formatter
 
       # Containers
       kubectl # Kubernetes CLI tool

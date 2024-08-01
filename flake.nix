@@ -34,6 +34,10 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
+    # git pre commit hook
+    pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
+    pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
+
     # Homebrew
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
 
@@ -62,7 +66,30 @@
       homebrew-services,
       ...
     }:
+    let
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+    in
     {
+      checks = forAllSystems (system: {
+        pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
+          src = ./.;
+          hooks = {
+            nixpkgs-fmt.enable = true;
+            flake-checker.enable = true;
+            check-symlinks.enable = true;
+            end-of-file-fixer.enable = true;
+            detect-private-keys.enable = true;
+            trim-trailing-whitespace.enable = true;
+          };
+        };
+      });
       darwinConfigurations.kakashi = darwin.lib.darwinSystem {
         pkgs = import nixpkgs {
           system = "aarch64-darwin";

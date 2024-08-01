@@ -3,3 +3,4 @@ Archive
 .DS_Store
 .vscode
 lazy-lock.json
+.pre-commit-config.yaml
