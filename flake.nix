@@ -67,13 +67,11 @@
     , ...
     }:
     let
-      supportedSystems =
-        [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
-
+      supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
     in
     {
-      checks = forAllSystems (system: {
+      pre-commit = forAllSystems (system: {
         pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
           src = ./.;
           hooks = {
@@ -83,13 +81,18 @@
             end-of-file-fixer.enable = true;
             detect-private-keys.enable = true;
             trim-trailing-whitespace.enable = true;
+            unit-tests = {
+              enable = true;
+              name = "Nix flake check";
+              entry = "nix flake check --accept-flake-config --all-systems";
+            };
           };
         };
       });
       devShells = forAllSystems (system: {
         default = nixpkgs.legacyPackages.${system}.mkShell {
-          inherit (self.checks.${system}.pre-commit-check) shellHook;
-          buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
+          inherit (self.pre-commit.${system}.pre-commit-check) shellHook;
+          buildInputs = self.pre-commit.${system}.pre-commit-check.enabledPackages;
         };
       });
       darwinConfigurations.kakashi = darwin.lib.darwinSystem {
