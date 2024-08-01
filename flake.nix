@@ -58,7 +58,6 @@
     , nixpkgs
     , home-manager
     , darwin
-    , sops-nix
     , nix-homebrew
     , homebrew-bundle
     , homebrew-core
@@ -75,6 +74,7 @@
         pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
           src = ./.;
           hooks = {
+            deadnix.enable = true;
             nixpkgs-fmt.enable = true;
             flake-checker.enable = true;
             check-symlinks.enable = true;
