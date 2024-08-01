@@ -67,12 +67,8 @@
     , ...
     }:
     let
-      supportedSystems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
+      supportedSystems =
+        [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
 
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
     in
@@ -103,9 +99,7 @@
         };
         system = "aarch64-darwin";
         # makes all inputs available in imported files
-        specialArgs = {
-          inherit inputs;
-        };
+        specialArgs = { inherit inputs; };
         modules = [
           ./machines/kakashi
           nix-homebrew.darwinModules.nix-homebrew
@@ -129,48 +123,35 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = {
-                inherit inputs;
-              };
+              extraSpecialArgs = { inherit inputs; };
               users.vijay.imports = [ ./home-manager/kakashi ];
             };
           }
         ];
       };
 
-      nixosConfigurations = builtins.listToAttrs (
-        map
-          (name: {
-            inherit name;
-            value = nixpkgs.lib.nixosSystem {
-              # makes all inputs available in imported files
-              specialArgs = {
-                inherit inputs;
-                meta = {
-                  hostname = name;
-                };
-              };
-              system = "x86_64-linux";
-              modules = [
-                ./machines/kubenodes
-                # { _module.args.mode = "zap_create_mount"; } #Disko config
-                home-manager.nixosModules.home-manager
-                {
-                  home-manager.extraSpecialArgs = {
-                    inherit inputs;
-                  };
-                  home-manager.users.vijay = {
-                    imports = [ ./home-manager/kubenodes ];
-                  };
-                }
-              ];
+      nixosConfigurations = builtins.listToAttrs (map
+        (name: {
+          inherit name;
+          value = nixpkgs.lib.nixosSystem {
+            # makes all inputs available in imported files
+            specialArgs = {
+              inherit inputs;
+              meta = { hostname = name; };
             };
-          })
-          [
-            "zoro"
-            "usopp"
-            "choppar"
-          ]
-      );
+            system = "x86_64-linux";
+            modules = [
+              ./machines/kubenodes
+              # { _module.args.mode = "zap_create_mount"; } #Disko config
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.extraSpecialArgs = { inherit inputs; };
+                home-manager.users.vijay = {
+                  imports = [ ./home-manager/kubenodes ];
+                };
+              }
+            ];
+          };
+        }) [ "zoro" "usopp" "choppar" ]);
     };
 }
