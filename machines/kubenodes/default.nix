@@ -14,6 +14,8 @@
     ./disko-config.nix
     # sops for secrets
     inputs.sops-nix.nixosModules.sops
+    # Machine specific imports
+    ./${meta.hostname}.nix
   ];
 
   sops = {
@@ -84,7 +86,6 @@
     # Enabling WIFI
     wireless = {
       enable = true;
-      interfaces = [ "wlo1" ];
       networks."vijay wifi".pskRaw = "9559e5edeed089f6c2834257d9f4de0cb442da4ddbee3a09e17707a9223f8958";
     };
     # Default nameservers
@@ -95,29 +96,10 @@
     # Default gateway
     defaultGateway = {
       address = "10.0.0.1";
-      interface = "eno2";
+      interface = "eno1";
     };
     # Static IP
-    useDHCP = true;
-    interfaces.eno2 = {
-      ipv4.addresses = [
-        {
-          address =
-            if meta.hostname == "zoro" then
-              "10.0.0.4"
-            else if meta.hostname == "usopp" then
-              "10.0.0.5"
-            else if meta.hostname == "choppar" then
-              "10.0.0.6"
-            else
-              null;
-          prefixLength = 16;
-        }
-      ];
-    };
-    interfaces.wlo1 = {
-      useDHCP = true;
-    };
+    useDHCP = false;
   };
 
   # Set your time zone.
@@ -240,22 +222,22 @@
     nfs-utils
   ];
 
-  services.k3s = {
-    enable = true;
-    role = "server";
-    tokenFile = config.sops.secrets.kubetoken.path;
-    extraFlags = toString (
-      [
-        "--write-kubeconfig-mode \"0644\""
-        "--cluster-init"
-        "--disable servicelb"
-        "--disable traefik"
-        "--disable local-storage"
-      ]
-      ++ (if meta.hostname == "zoro" then [ ] else [ "--server https://zoro:6443" ])
-    );
-    clusterInit = meta.hostname == "zoro";
-  };
+  #  services.k3s = {
+  #    enable = true;
+  #    role = "server";
+  #    tokenFile = config.sops.secrets.kubetoken.path;
+  #    extraFlags = toString (
+  #      [
+  #        "--write-kubeconfig-mode \"0644\""
+  #        "--cluster-init"
+  #        "--disable servicelb"
+  #        "--disable traefik"
+  #        "--disable local-storage"
+  #      ]
+  #      ++ (if meta.hostname == "usopp" then [ ] else [ "--server https://usopp:6443" ])
+  #    );
+  #    clusterInit = meta.hostname == "usopp";
+  #  };
 
   services.openiscsi = {
     enable = true;
