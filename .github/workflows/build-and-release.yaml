@@ -25,7 +25,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Check if tag exists
+        id: tag_exists
+        run: |
+          TAG=$(date +%d-%m-%Y)
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists. Skipping tag creation."
+            echo "TAG_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "Tag $TAG does not exist. Creating tag."
+            echo "TAG_EXISTS=false" >> $GITHUB_ENV
+          fi
+
       - name: Create GitHub tag with current date
+        if: env.TAG_EXISTS == 'false'
         id: create_tag
         run: |
           TAG=$(date +%d-%m-%Y)
