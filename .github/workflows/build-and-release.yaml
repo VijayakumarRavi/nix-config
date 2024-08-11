@@ -47,9 +47,9 @@ jobs:
           fi
 
       - name: Setup Nix
-        uses: cachix/install-nix-action@v21
+        uses: cachix/install-nix-action@v27
         with:
-          nix_version: 2.14.0
+        github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build NixOS ISO
         run: |
@@ -59,7 +59,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: Nixos ISO ${{ needs.Create-tag.outputs.tag_name }}
-          tag_name: ${{ needs.Create-tag.outputs.tag_name }}
+          tag_name: ${{ env.TAG }}
           make_latest: true
           generate_release_notes: true
           files: ./result/iso/NixOS.iso
