@@ -57,19 +57,19 @@ vim.cmd([[
 -- them to have dual nature, so to speak)
 
 function RestoreCursorPosition()
-	local line = vim.fn.line("'\"")
-	if
-		line > 1
-		and line <= vim.fn.line("$")
-		and vim.bo.filetype ~= "commit"
-		and vim.fn.index({ "xxd", "gitrebase" }, vim.bo.filetype) == -1
-	then
-		vim.cmd('normal! g`"')
-	end
+  local line = vim.fn.line("'\"")
+  if
+      line > 1
+      and line <= vim.fn.line("$")
+      and vim.bo.filetype ~= "commit"
+      and vim.fn.index({ "xxd", "gitrebase" }, vim.bo.filetype) == -1
+  then
+    vim.cmd('normal! g`"')
+  end
 end
 
 if vim.fn.has("autocmd") then
-	vim.cmd([[autocmd BufReadPost * lua RestoreCursorPosition()]])
+  vim.cmd([[autocmd BufReadPost * lua RestoreCursorPosition()]])
 end
 
 -- Keymaps
@@ -83,3 +83,8 @@ vim.keymap.set("n", "<c-l>", ":wincmd l<CR>")
 vim.keymap.set("n", "<c-s>", ":w<CR>")
 vim.keymap.set("v", "<c-s>", "<esc>:w<CR>")
 vim.keymap.set("i", "<c-s>", "<esc>:w<CR>")
+
+-- control+q to save
+vim.keymap.set("n", "<c-q>", ":wq<CR>")
+vim.keymap.set("v", "<c-q>", "<esc>:wq<CR>")
+vim.keymap.set("i", "<c-q>", "<esc>:wq<CR>")

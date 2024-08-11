@@ -7,6 +7,7 @@
 
   nix = {
     configureBuildUsers = true;
+    linux-builder.enable = true;
     gc = {
       automatic = true;
       interval = {
