@@ -86,11 +86,11 @@
             end-of-file-fixer.enable = true;
             detect-private-keys.enable = true;
             trim-trailing-whitespace.enable = true;
-            # nix-flake-check = {
-            #   enable = true;
-            #   name = "Nix flake check";
-            #   entry = "nix flake check --accept-flake-config --all-systems";
-            # };
+            nix-flake-check = {
+              enable = true;
+              name = "Nix flake check";
+              entry = "nix flake check --accept-flake-config --all-systems";
+            };
           };
         };
       });
