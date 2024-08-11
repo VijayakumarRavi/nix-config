@@ -17,7 +17,7 @@ on:
       - ".github/workflows/build-and-release.yaml"
 
 jobs:
-  build:
+  Build:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,16 +32,15 @@ jobs:
       - name: Build NixOS ISO
         run: |
           nix build --accept-flake-config .#nixos-iso
-        # nix-build '<nixpkgs/nixos>' -A config.system.build.isoImage -I nixos-config=iso.nix
 
       - name: Upload ISO as artifact
         uses: actions/upload-artifact@v3
         with:
           name: nixos-iso
-          path: ./result/iso/nixos.iso
+          path: ./result/iso/NixOS.iso
 
-  release:
-    needs: build
+  Release:
+    needs: Build
     runs-on: ubuntu-latest
     steps:
       - name: Download ISO artifact

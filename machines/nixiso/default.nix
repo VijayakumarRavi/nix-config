@@ -1,8 +1,6 @@
 { lib, pkgs, modulesPath, ... }: {
   # ISO settings
   imports = [
-    ../common
-
     "${modulesPath}/profiles/minimal.nix"
     "${modulesPath}/installer/cd-dvd/installation-cd-base.nix"
   ];

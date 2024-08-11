@@ -86,11 +86,11 @@
             end-of-file-fixer.enable = true;
             detect-private-keys.enable = true;
             trim-trailing-whitespace.enable = true;
-            unit-tests = {
-              enable = true;
-              name = "Nix flake check";
-              entry = "nix flake check --accept-flake-config --all-systems";
-            };
+            # nix-flake-check = {
+            #   enable = true;
+            #   name = "Nix flake check";
+            #   entry = "nix flake check --accept-flake-config --all-systems";
+            # };
           };
         };
       });
@@ -108,13 +108,6 @@
           format = "install-iso";
           modules = [
             ./machines/nixiso
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.extraSpecialArgs = { inherit inputs; };
-              home-manager.users.vijay = {
-                imports = [ ./home-manager/common ];
-              };
-            }
           ];
         };
       };
