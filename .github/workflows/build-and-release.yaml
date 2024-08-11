@@ -50,28 +50,29 @@ jobs:
         run: |
           nix build --accept-flake-config .#nixos-iso
 
-      - name: Upload ISO as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: nixos-iso
-          path: ./result/iso/NixOS.iso
-
-  Release:
-    needs: [Create-tag, Build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download ISO artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: nixos-iso
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Nixos ISO ${{ needs.Create-tag.outputs.TAG }}
-          tag_name: ${{ needs.Create-tag.outputs.TAG }}
+          name: Nixos ISO ${{ needs.Create-tag.outputs.tag_name }}
+          tag_name: ${{ needs.Create-tag.outputs.tag_name }}
           make_latest: true
           generate_release_notes: true
-          files: result/iso/nixos.iso
+          files: ./result/iso/NixOS.iso
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      #      - name: Upload ISO as artifact
+      #        uses: actions/upload-artifact@v3
+      #        with:
+      #          name: nixos-iso
+      #          path: ./result/iso/NixOS.iso
+      #
+      #  Release:
+      #    needs: [Create-tag, Build]
+      #    runs-on: ubuntu-latest
+      #    steps:
+      #      - name: Download ISO artifact
+      #        uses: actions/download-artifact@v3
+      #        with:
+      #          name: nixos-iso
+      #
