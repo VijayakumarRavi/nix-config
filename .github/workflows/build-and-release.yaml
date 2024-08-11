@@ -31,7 +31,7 @@ jobs:
 
       - name: Build NixOS ISO
         run: |
-          nix build .#nixos-iso
+          nix build --accept-flake-config .#nixos-iso
         # nix-build '<nixpkgs/nixos>' -A config.system.build.isoImage -I nixos-config=iso.nix
 
       - name: Upload ISO as artifact
