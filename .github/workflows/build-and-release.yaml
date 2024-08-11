@@ -8,13 +8,13 @@ on:
       - "flake.nix"
       - "flake.lock"
       - "machines/nixiso/**"
-      - ".github/workflows/build-and-release.yml"
+      - ".github/workflows/build-and-release.yaml"
   pull_request:
     paths:
       - "flake.nix"
       - "flake.lock"
       - "machines/nixiso/**"
-      - ".github/workflows/build-and-release.yml"
+      - ".github/workflows/build-and-release.yaml"
 
 jobs:
   build:
