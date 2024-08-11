@@ -1,0 +1,55 @@
+name: Build and Release NixOS ISO
+
+on:
+  push:
+    paths:
+      - "flake.nix"
+      - "flake.lock"
+      - "machines/nixiso/**"
+      - ".github/workflows/build-and-release.yml"
+  pull_request:
+    paths:
+      - "flake.nix"
+      - "flake.lock"
+      - "machines/nixiso/**"
+      - ".github/workflows/build-and-release.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Nix
+        uses: cachix/install-nix-action@v21
+        with:
+          nix_version: 2.14.0
+
+      - name: Build NixOS ISO
+        run: |
+          nix-build .#nixos-iso
+        # nix-build '<nixpkgs/nixos>' -A config.system.build.isoImage -I nixos-config=iso.nix
+
+      - name: Upload ISO as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: nixos-iso
+          path: ./result/iso/nixos.iso
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download ISO artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: nixos-iso
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: result/iso/nixos.iso
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -18,6 +18,10 @@
     # called derivations that say how to build software.
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable"; # nixos-22.11
 
+    # Used to generate custom iso installer images
+    nixos-generators.url = "github:nix-community/nixos-generators";
+    nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
+
     # Manages configs links things into your home directory
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -56,6 +60,7 @@
   outputs =
     inputs@{ self
     , nixpkgs
+    , nixos-generators
     , home-manager
     , darwin
     , nix-homebrew
@@ -95,6 +100,24 @@
           buildInputs = self.pre-commit.${system}.pre-commit-check.enabledPackages;
         };
       });
+
+      packages.x86_64-linux = {
+        # NixOS boot disk with my SSH Keys integrated
+        nixos-iso = nixos-generators.nixosGenerate {
+          system = "x86_64-linux";
+          format = "install-iso";
+          modules = [
+            ./machines/nixiso
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.users.vijay = {
+                imports = [ ./home-manager/common ];
+              };
+            }
+          ];
+        };
+      };
       darwinConfigurations.kakashi = darwin.lib.darwinSystem {
         pkgs = import nixpkgs {
           system = "aarch64-darwin";

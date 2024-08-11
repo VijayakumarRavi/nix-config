@@ -236,6 +236,42 @@
         "type": "github"
       }
     },
+    "nixlib": {
+      "locked": {
+        "lastModified": 1722732880,
+        "narHash": "sha256-do2Mfm3T6SR7a5A804RhjQ+JTsF5hk4JTPGjCTRM/m8=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "8bebd4c74f368aacb047f0141db09ec6b339733c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
+    "nixos-generators": {
+      "inputs": {
+        "nixlib": "nixlib",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1723078345,
+        "narHash": "sha256-HSxOQEKNZXiJe9aWnckTTCThOhcRCabwHa32IduDKLk=",
+        "owner": "nix-community",
+        "repo": "nixos-generators",
+        "rev": "d6c5d29f58acc10ea82afff1de2b28f038f572bd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixos-generators",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1687274257,
@@ -346,6 +382,7 @@
         "homebrew-core": "homebrew-core",
         "homebrew-services": "homebrew-services",
         "nix-homebrew": "nix-homebrew",
+        "nixos-generators": "nixos-generators",
         "nixpkgs": "nixpkgs_3",
         "pre-commit-hooks": "pre-commit-hooks",
         "sops-nix": "sops-nix"
