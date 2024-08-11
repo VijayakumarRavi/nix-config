@@ -24,11 +24,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check the Nix flake configs
+        run: nix flake check --accept-flake-config --all-systems
+
       - name: Set tag name
         id: tag_name
         run: |
-          TAG=$(TZ="Asia/Kolkata" date "+%d-%m-%Y")
-          echo "TAG=$TAG" >> $GITHUB_ENV
+          TAG=$(TZ="Asia/Kolkata" date "+%d.%m.%Y")
+          echo "TAG=v.$TAG" >> $GITHUB_ENV
 
       - name: Create tag with current date
         id: create_tag
@@ -36,7 +43,8 @@ jobs:
         with:
           tag: "${{ env.TAG }}"
           force_push_tag: true
-          tag_exists_error: false
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg_passphrase: ${{ secrets.PASSPHRASE }}
           message: "Nixos ISO ${{ env.TAG }}"
 
       - name: Tag creation status
@@ -46,11 +54,6 @@ jobs:
           else
             echo "Tag $TAG does not exist. So created tag."
           fi
-
-      - name: Setup Nix
-        uses: cachix/install-nix-action@v27
-        with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build NixOS ISO
         run: |
