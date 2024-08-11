@@ -4,3 +4,4 @@ Archive
 .vscode
 lazy-lock.json
 .pre-commit-config.yaml
+.direnv
