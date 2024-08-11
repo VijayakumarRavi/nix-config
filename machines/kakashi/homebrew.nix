@@ -10,7 +10,7 @@
       upgrade = true;
     };
     taps = builtins.attrNames config.nix-homebrew.taps;
-    brews = [ "nginx" ]; # Reverse proxy to use as a loadbalancer for kubectl
+    brews = [ "nginx" "aria2" ]; # Reverse proxy to use as a loadbalancer for kubectl
     casks = [
       # Better mac
       "shottr" # Screenshot util
