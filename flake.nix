@@ -89,6 +89,7 @@
             nix-flake-check = {
               enable = true;
               name = "Nix flake check";
+              stages = [ "pre-push" ];
               entry = "nix flake check --accept-flake-config --all-systems";
             };
           };
