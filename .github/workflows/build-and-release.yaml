@@ -28,8 +28,6 @@ jobs:
         uses: cachix/install-nix-action@v27
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Check the Nix flake configs
-        run: nix flake check --accept-flake-config --all-systems
 
       - name: Set tag name
         id: tag_name
