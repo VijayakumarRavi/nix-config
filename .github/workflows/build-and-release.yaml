@@ -34,8 +34,8 @@ jobs:
       - name: Set tag name
         id: tag_name
         run: |
-          TAG=$(TZ="Asia/Kolkata" date "+%d.%m.%Y")
-          echo "TAG=v.$TAG" >> $GITHUB_ENV
+          TAG="$(TZ="Asia/Kolkata" date "+%d.%m.%Y")"
+          echo "TAG=v.$TAG" >> "$GITHUB_ENV"
 
       - name: Create tag with current date
         id: create_tag
@@ -62,7 +62,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Nixos ISO $TAG
+          name: Nixos ISO ${{ env.TAG }}
           tag_name: ${{ env.TAG }}
           make_latest: true
           generate_release_notes: true
