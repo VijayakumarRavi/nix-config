@@ -12,6 +12,23 @@
     isoName = lib.mkForce "NixOS.iso";
   };
 
+  # Nix bin settings
+  nix = {
+    package = pkgs.nix;
+    settings = {
+      allowed-users = [ "vijay" ];
+      trusted-users = [
+        "root"
+        "vijay"
+      ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      auto-optimise-store = true;
+    };
+  };
+
   # Reduce img size
   documentation.enable = false;
 
@@ -39,6 +56,16 @@
       "45.90.28.215"
     ];
   };
+  # List packages installed in system profile.
+  environment.systemPackages = with pkgs; [
+    neovim
+    tmux
+    git
+    htop
+    lm_sensors
+    unzip
+    killall
+  ];
 
   # user account.
   users.users.vijay = {
