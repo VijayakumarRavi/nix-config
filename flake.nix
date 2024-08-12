@@ -80,6 +80,7 @@
           src = ./.;
           hooks = {
             deadnix.enable = true;
+            actionlint.enable = true;
             nixpkgs-fmt.enable = true;
             flake-checker.enable = true;
             check-symlinks.enable = true;
@@ -90,6 +91,7 @@
               enable = true;
               name = "Nix flake check";
               stages = [ "pre-push" ];
+              pass_filenames = false;
               entry = "nix flake check --accept-flake-config --all-systems";
             };
           };
