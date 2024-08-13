@@ -48,21 +48,6 @@
     };
     # Emulate an arm64 machine for RPI
     binfmt.emulatedSystems = [ "aarch64-linux" ];
-    # Enable unlock disk encryption with ssh
-    #    kernelParams = [ "ip=10.0.0.4::10.0.0.1:255.255.0.0:zoro::none" ];
-    #    initrd = {
-    #      availableKernelModules = [ "e1000e" ];
-    #      systemd.users.root.shell = "/bin/cryptsetup-askpass";
-    #      network.enable = true;
-    #      network.ssh = {
-    #        enable = true;
-    #        port = 22;
-    #        hostKeys = [ "/etc/ssh/ssh_host_ed25519_key" ];
-    #        authorizedKeys = [
-    #          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX Mainkey"
-    #        ];
-    #      };
-    #    };
   };
 
   # Enable networking
@@ -134,6 +119,23 @@
 
   # Disable sudo password
   security.sudo.wheelNeedsPassword = false;
+
+
+  age.secrets = {
+    id_ed25519 = {
+      file = ./secrets/id_ed25519;
+      path = "/home/vijay/.ssh/id_ed25519";
+      owner = "vijay";
+      group = "vijay";
+      mode = "600";
+    };
+    "id_ed25519.pub" = {
+      file = ./secrets/id_ed25519.pub;
+      path = "/home/vijay/.ssh/id_ed25519.pub";
+      owner = "vijay";
+      group = "vijay";
+    };
+  };
 
   # Set Environment Variables
   environment.variables = {

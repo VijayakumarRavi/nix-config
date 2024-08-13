@@ -1,5 +1,7 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
+  imports = [ inputs.agenix.nixosModules.default ];
+
   nix = {
     # package = lib.mkDefault pkgs.nix;
     package = pkgs.nix;

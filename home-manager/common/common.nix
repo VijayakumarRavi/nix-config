@@ -54,7 +54,13 @@
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux
         Host zoro
-            HostName 10.0.0.4
+            HostName 10.0.1.101
+            User vijay
+            Port 22
+            RequestTTY yes
+            RemoteCommand tmux -u new-session -A -s ssh_mux
+        Host usopp
+            HostName 10.0.1.102
             User vijay
             Port 22
             RequestTTY yes

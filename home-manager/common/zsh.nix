@@ -72,6 +72,7 @@
       pv = "prettyping vijayakumar.xyz";
       lg = "${pkgs.lazygit}/bin/lazygit";
       ld = "${pkgs.lazydocker}/bin/lazydocker";
+      mux = "tmux -u new-session -A -s default_tmux";
       nfc = "nix flake check --accept-flake-config --all-systems";
       dvim = "XDG_CONFIG_HOME=~/.nix-config/home-manager/dotfiles/ XDG_DATA_HOME=~/.local/share/dev_nvim XDG_STATE_HOME=~/.local/state/dev_nvim nvim";
 
@@ -92,7 +93,7 @@
       nami = "ssh nami";
       zoro = "ssh zoro";
       sanji = "ssh sanji";
-      robin = "ssh robin";
+      usopp = "ssh usopp";
       vault-ssh = "fly ssh console -a flyvault";
       tail-ssh = "fly ssh console -a flytailexit";
       time-ssh = "fly ssh console -a flytime";

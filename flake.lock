@@ -1,5 +1,32 @@
 {
   "nodes": {
+    "agenix": {
+      "inputs": {
+        "darwin": [
+          "darwin"
+        ],
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1723293904,
+        "narHash": "sha256-b+uqzj+Wa6xgMS9aNbX4I+sXeb5biPDi39VgvSFqFvU=",
+        "owner": "ryantm",
+        "repo": "agenix",
+        "rev": "f6291c5935fdc4e0bef208cfc0dcab7e3f7a1c41",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ryantm",
+        "repo": "agenix",
+        "type": "github"
+      }
+    },
     "brew-src": {
       "flake": false,
       "locked": {
@@ -75,7 +102,7 @@
     },
     "flake-utils": {
       "inputs": {
-        "systems": "systems"
+        "systems": "systems_2"
       },
       "locked": {
         "lastModified": 1710146030,
@@ -152,11 +179,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1723546394,
-        "narHash": "sha256-8/rQbFR2JK5biKxYhoBFVvhXgsE0AHfGr3lM1v5y+Pk=",
+        "lastModified": 1723549149,
+        "narHash": "sha256-VKSBAqjL9nJxX01xM9fCM48Ghrs6AFn7+iVzsB1qn7c=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "8d70e849936bc2316653843fa1081a72daefde61",
+        "rev": "bdeb1431bd447d87b0d69bd72c4f3c42e3f9a9ed",
         "type": "github"
       },
       "original": {
@@ -168,11 +195,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1723545590,
-        "narHash": "sha256-evnrcxhrL9xZvXfdGRywkVv/T/QviMrjNyrQv98R90k=",
+        "lastModified": 1723549142,
+        "narHash": "sha256-G602vH64PTBG1y0pS2D1I52bFbm4Ewss2ILUuC2WPCI=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "87fb90fb7d340f5248971ed284b9cea264fa6f79",
+        "rev": "1c9dc0d280758482e6a34ad2e713ce6f662bbc57",
         "type": "github"
       },
       "original": {
@@ -358,6 +385,7 @@
     },
     "root": {
       "inputs": {
+        "agenix": "agenix",
         "darwin": "darwin",
         "disko": "disko",
         "home-manager": "home-manager",
@@ -372,6 +400,21 @@
       }
     },
     "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
