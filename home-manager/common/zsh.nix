@@ -72,6 +72,7 @@
       pv = "prettyping vijayakumar.xyz";
       lg = "${pkgs.lazygit}/bin/lazygit";
       ld = "${pkgs.lazydocker}/bin/lazydocker";
+      nfc = "nix flake check --accept-flake-config --all-systems";
       dvim = "XDG_CONFIG_HOME=~/.nix-config/home-manager/dotfiles/ XDG_DATA_HOME=~/.local/share/dev_nvim XDG_STATE_HOME=~/.local/state/dev_nvim nvim";
 
       # tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";

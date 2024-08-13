@@ -1,6 +1,6 @@
 {
   networking.interfaces = {
-    eno1 = {
+    eno2 = {
       ipv4.addresses = [
         {
           address = "10.0.1.101";
