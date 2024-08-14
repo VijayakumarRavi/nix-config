@@ -4,12 +4,14 @@
     substituters = [
       "https://nix-community.cachix.org?priority=1"
       "https://numtide.cachix.org?priority=2"
-      "https://cache.nixos.org?priority=3"
+      "https://raspberry-pi-nix.cachix.org?priority=3"
+      "https://cache.nixos.org?priority=4"
     ];
 
     trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+      "raspberry-pi-nix.cachix.org-1:WmV2rdSangxW0rZjY/tBvBDSaNFQ3DyEQsVw8EvHn9o="
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
     ];
   };
@@ -47,6 +49,10 @@
         darwin.follows = "darwin";
       };
     };
+
+    #Raspberry pi nix
+    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
+    raspberry-pi-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     # Homebrew
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
@@ -117,6 +123,16 @@
           format = "install-iso";
           modules = [
             ./machines/nixiso
+          ];
+        };
+      };
+      packages.aarch64-linux = {
+        rpi-iso = nixos-generators.nixosGenerate {
+          system = "aarch64-linux";
+          format = "sd-aarch64";
+          modules = [
+            #inputs.raspberry-pi-nix.nixosModules.raspberry-pi
+            ./machines/raspberry
           ];
         };
       };
