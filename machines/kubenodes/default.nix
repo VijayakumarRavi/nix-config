@@ -71,8 +71,6 @@
       address = "10.0.0.1";
       interface = "eno1";
     };
-    # Static IP
-    useDHCP = false;
   };
 
   # Set your time zone.
