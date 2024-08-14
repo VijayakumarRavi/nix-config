@@ -225,9 +225,9 @@
         "--disable traefik"
         "--disable local-storage"
       ]
-      ++ (if meta.hostname == "usopp" then [ ] else [ "--server https://usopp:6443" ])
+      ++ (if meta.hostname == "zoro" then [ ] else [ "--server https://zoro:6443" ])
     );
-    clusterInit = meta.hostname == "usopp";
+    clusterInit = meta.hostname == "zoro";
   };
 
   services.openiscsi = {
