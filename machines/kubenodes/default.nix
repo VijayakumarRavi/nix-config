@@ -1,4 +1,5 @@
 { pkgs
+, config
 , inputs
 , meta
 , ...
@@ -120,6 +121,9 @@
 
 
   age.secrets = {
+    kubetoken = {
+      file = ../../secrets/kubetoken;
+    };
     id_ed25519 = {
       file = ../../secrets/id_ed25519;
       path = "/home/vijay/.ssh/id_ed25519";
@@ -210,23 +214,22 @@
     nfs-utils
   ];
 
-  #  services.k3s = {
-  #    enable = true;
-  #    role = "server";
-  #    # tokenFile = config.sops.secrets.kubetoken.path;
-  #    token=
-  #    extraFlags = toString (
-  #      [
-  #        "--write-kubeconfig-mode \"0644\""
-  #        "--cluster-init"
-  #        "--disable servicelb"
-  #        "--disable traefik"
-  #        "--disable local-storage"
-  #      ]
-  #      ++ (if meta.hostname == "usopp" then [ ] else [ "--server https://usopp:6443" ])
-  #    );
-  #    clusterInit = meta.hostname == "usopp";
-  #  };
+  services.k3s = {
+    enable = true;
+    role = "server";
+    tokenFile = config.age.secrets.kubetoken.path;
+    extraFlags = toString (
+      [
+        "--write-kubeconfig-mode \"0644\""
+        "--cluster-init"
+        "--disable servicelb"
+        "--disable traefik"
+        "--disable local-storage"
+      ]
+      ++ (if meta.hostname == "usopp" then [ ] else [ "--server https://usopp:6443" ])
+    );
+    clusterInit = meta.hostname == "usopp";
+  };
 
   services.openiscsi = {
     enable = true;

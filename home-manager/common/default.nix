@@ -16,9 +16,6 @@
       CLICLOLOR = 1;
       EDITOR = "nvim";
     };
-    # file.".inputrc".source = ../dotfiles/inputrc;
-    #home.file.".config/starship.toml".source = ./dotfiles/starship.toml;
-
     # Don't change this when you change package input. Leave it alone.
     stateVersion = "22.11";
   };
