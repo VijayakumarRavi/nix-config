@@ -187,6 +187,7 @@
     };
   };
 
+  # Unattended upgrades
   system.autoUpgrade = {
     enable = true;
     dates = "*:0/05";
@@ -199,6 +200,7 @@
     flags = [ "--accept-flake-config" ];
     flake = "github:VijayakumarRavi/nix-config";
   };
+  systemd.services.nixos-upgrade.preStart = "nix-collect-garbage -d";
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
