@@ -1,5 +1,4 @@
 { pkgs
-, config
 , inputs
 , meta
 , ...
@@ -213,22 +212,22 @@
     nfs-utils
   ];
 
-  services.k3s = {
-    enable = true;
-    role = "server";
-    tokenFile = config.age.secrets.kubetoken.path;
-    extraFlags = toString (
-      [
-        "--write-kubeconfig-mode \"0644\""
-        "--cluster-init"
-        "--disable servicelb"
-        "--disable traefik"
-        "--disable local-storage"
-      ]
-      ++ (if meta.hostname == "zoro" then [ ] else [ "--server https://zoro:6443" ])
-    );
-    clusterInit = meta.hostname == "zoro";
-  };
+  #  services.k3s = {
+  #    enable = true;
+  #    role = "server";
+  #    tokenFile = config.age.secrets.kubetoken.path;
+  #    extraFlags = toString (
+  #      [
+  #        "--write-kubeconfig-mode \"0644\""
+  #        "--cluster-init"
+  #        "--disable servicelb"
+  #        "--disable traefik"
+  #        "--disable local-storage"
+  #      ]
+  #      ++ (if meta.hostname == "zoro" then [ ] else [ "--server https://zoro:6443" ])
+  #    );
+  #    clusterInit = meta.hostname == "zoro";
+  #  };
 
   services.openiscsi = {
     enable = true;
