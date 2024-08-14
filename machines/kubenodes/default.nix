@@ -21,7 +21,6 @@
   nix = {
     gc = {
       automatic = true;
-      dates = "*-*-1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31 00:00:00";
       options = "--delete-old";
     };
   };
@@ -117,7 +116,6 @@
   # Disable sudo password
   security.sudo.wheelNeedsPassword = false;
 
-
   age.secrets = {
     kubetoken = {
       file = ../../secrets/kubetoken;
@@ -190,7 +188,7 @@
   # Unattended upgrades
   system.autoUpgrade = {
     enable = true;
-    dates = "*:0/05";
+    dates = "*-*-* 04:00:00";
     allowReboot = true;
     persistent = true;
     rebootWindow = {
@@ -200,7 +198,6 @@
     flags = [ "--accept-flake-config" ];
     flake = "github:VijayakumarRavi/nix-config";
   };
-  systemd.services.nixos-upgrade.preStart = "nix-collect-garbage -d";
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
