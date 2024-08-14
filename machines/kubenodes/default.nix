@@ -124,14 +124,14 @@
       file = ../../secrets/id_ed25519;
       path = "/home/vijay/.ssh/id_ed25519";
       owner = "vijay";
-      group = "vijay";
+      group = "users";
       mode = "600";
     };
     "id_ed25519.pub" = {
       file = ../../secrets/id_ed25519.pub;
       path = "/home/vijay/.ssh/id_ed25519.pub";
       owner = "vijay";
-      group = "vijay";
+      group = "users";
     };
   };
 
