@@ -10,10 +10,6 @@
   ];
 
   programs = {
-    direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
     gh = {
       enable = true; # GitHub CLI
       extensions = with pkgs; [ gh-markdown-preview ];

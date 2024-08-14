@@ -12,6 +12,11 @@
       enableZshIntegration = true;
     };
 
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
     atuin = {
       # sync shell history between machines
       enable = true;
