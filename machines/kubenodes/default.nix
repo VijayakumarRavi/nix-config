@@ -1,5 +1,6 @@
 { pkgs
 , inputs
+, config
 , meta
 , ...
 }:
@@ -36,11 +37,16 @@
         efiSupport = true;
         devices = [ "nodev" ];
         extraEntries = ''
-          menuentry "Reboot" {
+          menuentry "System Reboot" {
+            echo "System rebooting..."
             reboot
           }
-          menuentry "Poweroff" {
+          menuentry "System Poweroff" {
+            echo "System shutting down..."
             halt
+          }
+          menuentry 'UEFI Firmware Settings' --id 'uefi-firmware' {
+            fwsetup
           }
         '';
       };
@@ -211,22 +217,22 @@
     nfs-utils
   ];
 
-  #  services.k3s = {
-  #    enable = true;
-  #    role = "server";
-  #    tokenFile = config.age.secrets.kubetoken.path;
-  #    extraFlags = toString (
-  #      [
-  #        "--write-kubeconfig-mode \"0644\""
-  #        "--cluster-init"
-  #        "--disable servicelb"
-  #        "--disable traefik"
-  #        "--disable local-storage"
-  #      ]
-  #      ++ (if meta.hostname == "zoro" then [ ] else [ "--server https://zoro:6443" ])
-  #    );
-  #    clusterInit = meta.hostname == "zoro";
-  #  };
+  services.k3s = {
+    enable = true;
+    role = "server";
+    tokenFile = config.age.secrets.kubetoken.path;
+    extraFlags = toString (
+      [
+        "--write-kubeconfig-mode \"0644\""
+        "--cluster-init"
+        "--disable servicelb"
+        "--disable traefik"
+        "--disable local-storage"
+      ]
+      ++ (if meta.hostname == "zoro" then [ ] else [ "--server https://zoro:6443" ])
+    );
+    clusterInit = meta.hostname == "zoro";
+  };
 
   services.openiscsi = {
     enable = true;
