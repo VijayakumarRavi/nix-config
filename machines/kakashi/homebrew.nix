@@ -25,6 +25,7 @@
       "google-drive" # Google cloud storage
       "beeper" # Universal chat app powered by Matrix
       "github" # Desktop client for GitHub repositories
+      "balenaetcher" # Tool to flash OS images to SD cards & USB drives
     ];
     masApps = {
       "1Password for Safari" = 1569813296;
