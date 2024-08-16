@@ -1,4 +1,4 @@
-{
+{ username, ... }: {
   programs = {
     zoxide = {
       # smarter cd command
@@ -42,13 +42,13 @@
           RemoteCommand /bin/cryptsetup-askpass
         Host sanji
             HostName 10.0.0.3
-            User vijay
+            User ${username}
             Port 22
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux
         Host nami
             HostName 10.0.0.2
-            User vijay
+            User ${username}
             Port 22
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux
@@ -60,13 +60,13 @@
             RemoteCommand tmux -u new-session -A -s ssh_mux
         Host zoro
             HostName 10.0.1.101
-            User vijay
+            User ${username}
             Port 22
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux
         Host usopp
             HostName 10.0.1.102
-            User vijay
+            User ${username}
             Port 22
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux

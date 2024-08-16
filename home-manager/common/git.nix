@@ -1,7 +1,7 @@
-{
+{ user, ... }: {
   programs.git = {
     enable = true;
-    userName = "Vijayakumar Ravi";
+    userName = user;
     userEmail = "im@vijayakumar.xyz";
     signing = {
       key = "~/.ssh/id_ed25519.pub";

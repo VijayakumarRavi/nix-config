@@ -1,8 +1,8 @@
-{ pkgs, ... }:
+{ username, pkgs, ... }:
 {
   programs.firefox = {
     enable = true;
-    profiles.vijay = {
+    profiles.${username} = {
 
       search.engines = {
         "Nix Packages" = {

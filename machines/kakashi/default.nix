@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ username, pkgs, ... }:
 {
   imports = [
     ./homebrew.nix
@@ -105,8 +105,8 @@
     hostName = "kakashi";
   };
 
-  users.users.vijay = {
-    home = /Users/vijay;
+  users.users.${username} = {
+    home = /Users/${username};
   };
 
   fonts.packages = [

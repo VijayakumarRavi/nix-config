@@ -1,4 +1,4 @@
-{ modulesPath, ... }: {
+{ modulesPath, user, username, ... }: {
   imports = [
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];
@@ -43,9 +43,9 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.vijay = {
+  users.users.${username} = {
     isNormalUser = true;
-    description = "Vijayakumar Ravi";
+    description = user;
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -66,15 +66,15 @@
   #  age.secrets = {
   #    id_ed25519 = {
   #      file = ../../secrets/id_ed25519;
-  #      path = "/home/vijay/.ssh/id_ed25519";
-  #      owner = "vijay";
+  #      path = "/home/${username}/.ssh/id_ed25519";
+  #      owner = "${username}";
   #      group = "users";
   #      mode = "600";
   #    };
   #    "id_ed25519.pub" = {
   #      file = ../../secrets/id_ed25519.pub;
-  #      path = "/home/vijay/.ssh/id_ed25519.pub";
-  #      owner = "vijay";
+  #      path = "/home/${username}/.ssh/id_ed25519.pub";
+  #      owner = "${username}";
   #      group = "users";
   #    };
   #  };
@@ -96,5 +96,12 @@
   #      };
   #    };
   #  };
-  system.stateVersion = "24.05";
+
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "24.11"; # Did you read the comment?
 }

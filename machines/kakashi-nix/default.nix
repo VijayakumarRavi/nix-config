@@ -1,8 +1,8 @@
 { pkgs
-, inputs
 , user
 , username
-, config
+  #, inputs
+  #, config
 , meta
 , ...
 }:
@@ -13,12 +13,9 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
 
-    # Declarative disk partitioning config
-    inputs.disko.nixosModules.disko
-    ./disko-config.nix
-
-    # Machine specific imports
-    ./${meta.hostname}.nix
+    ./scripts.nix
+    # M2 Macbook support
+    # inputs.apple-silicon.nixosModules.apple-silicon-support
   ];
 
   nix = {
@@ -27,6 +24,8 @@
       options = "--delete-old";
     };
   };
+
+  ###########################################################
 
   # Bootloader
   boot = {
@@ -53,9 +52,12 @@
         '';
       };
     };
-    # Emulate an arm64 machine for RPI
-    binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
+
+  #############################################################
+
+  # Set your time zone.
+  time.timeZone = "Asia/Kolkata";
 
   # Enable networking
   networking = {
@@ -79,9 +81,6 @@
     };
   };
 
-  # Set your time zone.
-  time.timeZone = "Asia/Kolkata";
-
   # Select internationalisation properties.
   i18n.defaultLocale = "en_IN";
   i18n.extraLocaleSettings = {
@@ -94,6 +93,71 @@
     LC_PAPER = "en_IN";
     LC_TELEPHONE = "en_IN";
     LC_TIME = "en_IN";
+  };
+
+  # Display manager stuff
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+  services = {
+    greetd = {
+      enable = true;
+      settings = {
+        default_session = {
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --remember --time --asterisks --greeting \"Vanakkam da mapla 👻\" --cmd Hyprland";
+          user = "${username}";
+        };
+      };
+    };
+  };
+
+  # Set Environment Variables
+  environment.variables = {
+    PATH = [
+      "\${HOME}/.local/bin"
+      "\${HOME}/.cargo/bin"
+      "$/usr/local/bin"
+    ];
+    STARSHIP_CONFIG = "\${HOME}/.config/starship/starship.toml";
+
+    # NIXOS_OZONE_WL = "1";  # vscode is not working if this is enabled
+    NIXPKGS_ALLOW_UNFREE = "1";
+    SCRIPTDIR = "\${HOME}/.local/share/scriptdeps";
+    XDG_CURRENT_DESKTOP = "Hyprland";
+    XDG_SESSION_TYPE = "wayland";
+    XDG_SESSION_DESKTOP = "Hyprland";
+    GDK_BACKEND = "wayland";
+    CLUTTER_BACKEND = "wayland";
+    SDL_VIDEODRIVER = "x11";
+    XCURSOR_SIZE = "24";
+    XCURSOR_THEME = "Bibata-Modern-Ice";
+    QT_QPA_PLATFORM = "wayland";
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    MOZ_ENABLE_WAYLAND = "1";
+  };
+
+  # Sound options
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+
+  # High quality BT calls
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+  services.blueman.enable = true;
+
+  # pipewire support
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+    wireplumber.enable = true;
   };
 
   console = {
@@ -143,16 +207,6 @@
     };
   };
 
-  # Set Environment Variables
-  environment.variables = {
-    PATH = [
-      "\${HOME}/.local/bin"
-      "\${HOME}/.cargo/bin"
-      "$/usr/local/bin"
-    ];
-    STARSHIP_CONFIG = "\${HOME}/.config/starship/starship.toml";
-  };
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs = {
@@ -180,69 +234,47 @@
     };
 
     libinput.enable = true;
-
-    nfs.server = {
-      enable = true;
-      # fixed rpc.statd port; for firewall
-      lockdPort = 4001;
-      mountdPort = 4002;
-      statdPort = 4000;
-      exports = ''
-        /mnt/share     *(rw,sync,wdelay,hide,no_subtree_check,fsid=0,sec=sys,insecure,no_root_squash,no_all_squash)
-      '';
-    };
   };
-
-  # Unattended upgrades
-  system.autoUpgrade = {
-    enable = true;
-    dates = "*-*-* 04:00:00";
-    allowReboot = true;
-    persistent = true;
-    rebootWindow = {
-      lower = "03:00";
-      upper = "05:00";
-    };
-    flags = [ "--accept-flake-config" ];
-    flake = "github:VijayakumarRavi/nix-config";
-  };
-
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
     sbctl
+    git
     htop
+    tmux
+
+    libvirt
+    swww
+    polkit_gnome
+    grim
+    slurp
     lm_sensors
     unzip
     unrar
+    file-roller
+    libnotify
+    swaynotificationcenter
+    tofi
+    xfce.thunar
+    imv
     killall
-    cifs-utils
-    nfs-utils
+    v4l-utils
+    ueberzugpp
+    xdg-utils
+
+    vscode # code editor developed by Microsoft
+    _1password-gui # Best password manager imo
+    _1password # 1Password manager CLI
+    wl-clipboard
+    # Audio
+    pavucontrol
+    pulseaudio
+    audacity
+    # Fonts
+    font-awesome
+    symbola
+    noto-fonts-color-emoji
+    material-icons
   ];
-
-  services.k3s = {
-    enable = true;
-    role = "server";
-    tokenFile = config.age.secrets.kubetoken.path;
-    extraFlags = toString (
-      [
-        "--write-kubeconfig-mode \"0644\""
-        "--cluster-init"
-        "--disable servicelb"
-        "--disable traefik"
-        "--disable local-storage"
-      ]
-      ++ (if meta.hostname == "zoro" then [ ] else [ "--server https://zoro:6443" ])
-    );
-    clusterInit = meta.hostname == "zoro";
-  };
-
-  services.openiscsi = {
-    enable = true;
-    name = "iqn.2016-04.com.open-iscsi:${meta.hostname}";
-  };
-
-  # Fixes for longhorn
-  systemd.tmpfiles.rules = [ "L+ /usr/local/bin - - - - /run/current-system/sw/bin/" ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

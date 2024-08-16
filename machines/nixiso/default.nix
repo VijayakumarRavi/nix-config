@@ -1,4 +1,9 @@
-{ lib, pkgs, modulesPath, ... }: {
+{ lib
+, pkgs
+, modulesPath
+, username
+, ...
+}: {
   # ISO settings
   imports = [
     "${modulesPath}/profiles/minimal.nix"
@@ -16,10 +21,10 @@
   nix = {
     package = pkgs.nix;
     settings = {
-      allowed-users = [ "vijay" ];
+      allowed-users = [ "${username}" ];
       trusted-users = [
         "root"
-        "vijay"
+        "${username}"
       ];
       experimental-features = [
         "nix-command"
@@ -68,8 +73,7 @@
   ];
 
   # user account.
-  users.users.vijay = {
-    password = "vijay";
+  users.users.${username} = {
     isNormalUser = true;
     extraGroups = [
       "users"
@@ -79,7 +83,8 @@
       "video"
       "networkmanager"
     ];
-    description = "Default vijay user";
+    description = "Default user account";
+    hashedPassword = "$6$b.0.YvdRoJj6j.WL$8epnXbbF5eplH348AMyDclGL2/CuaVX.6bWV5GY0zE1sVd1UtU7Svphp.m9DD5w0rSapXPftqJapsyVistkEJ1";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX Mainkey"
     ];
@@ -95,5 +100,11 @@
   };
   systemd.services.sshd.wantedBy = pkgs.lib.mkForce [ "multi-user.target" ];
 
-  system.stateVersion = "24.05";
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "24.11"; # Did you read the comment?
 }

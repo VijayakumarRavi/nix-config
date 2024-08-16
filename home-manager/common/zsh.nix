@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 {
   programs.zsh = {
     enable = true;
@@ -24,9 +24,9 @@
     initExtra = ''
       function switch() {
         if command -v darwin-rebuild &> /dev/null 2>&1; then
-          darwin-rebuild switch "$@" --flake /Users/vijay/.nix-config#kakashi
+          darwin-rebuild switch "$@" --flake /Users/${username}/.nix-config#kakashi
         else
-          sudo nixos-rebuild switch "$@" --accept-flake-config --flake /home/vijay/.nix-config
+          sudo nixos-rebuild switch "$@" --accept-flake-config --flake /home/${username}/.nix-config
         fi
       }
 

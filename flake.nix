@@ -40,19 +40,16 @@
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Agenix for secrets
-    agenix = {
-      url = "github:ryantm/agenix";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        home-manager.follows = "home-manager";
-        darwin.follows = "darwin";
-      };
-    };
-
     #Raspberry pi nix
     raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
     raspberry-pi-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    # For M2 Macbook Air
+    apple-silicon.url = "github:tpwrules/nixos-apple-silicon";
+    apple-silicon.inputs.nixpkgs.follows = "nixpkgs";
+
+    firefox.url = "github:nix-community/flake-firefox-nightly";
+    firefox.inputs.nixpkgs.follows = "nixpkgs";
 
     # Homebrew
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
@@ -68,6 +65,16 @@
 
     homebrew-services.url = "github:homebrew/homebrew-services";
     homebrew-services.flake = false;
+
+    # Agenix for secrets
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+        darwin.follows = "darwin";
+      };
+    };
   };
   outputs =
     inputs@{ self
@@ -83,7 +90,20 @@
     , ...
     }:
     let
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+      # Config
+      user = "Vijayakumar Ravi";
+      username = "vijay";
+
+      # Configured Hosts
+      darwinSystems = { kakashi = "aarch64-darwin"; };
+      linuxSystems = {
+        zoro = "x86_64-linux";
+        usopp = "x86_64-linux";
+        choppar = "x86_64-linux";
+        kakashi = "aarch64-linux";
+      };
+
+      supportedSystems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
     in
     {
@@ -115,10 +135,10 @@
           buildInputs = self.pre-commit.${system}.pre-commit-check.enabledPackages;
         };
       });
-
       packages.x86_64-linux = {
         # NixOS boot disk with my SSH Keys integrated
         nixos-iso = nixos-generators.nixosGenerate {
+          specialArgs = { inherit inputs username user; };
           system = "x86_64-linux";
           format = "install-iso";
           modules = [
@@ -128,6 +148,7 @@
       };
       packages.aarch64-linux = {
         rpi-iso = nixos-generators.nixosGenerate {
+          specialArgs = { inherit inputs username user; };
           system = "aarch64-linux";
           format = "sd-aarch64";
           modules = [
@@ -137,20 +158,16 @@
         };
       };
       darwinConfigurations.kakashi = darwin.lib.darwinSystem {
-        pkgs = import nixpkgs {
-          system = "aarch64-darwin";
-          config.allowUnfree = true;
-        };
-        system = "aarch64-darwin";
+        system = darwinSystems.kakashi;
         # makes all inputs available in imported files
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs username user; };
         modules = [
           ./machines/kakashi
           nix-homebrew.darwinModules.nix-homebrew
           {
             nix-homebrew = {
               enable = true;
-              user = "vijay";
+              user = user;
               enableRosetta = true;
               autoMigrate = true;
               mutableTaps = false;
@@ -167,8 +184,8 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = { inherit inputs; };
-              users.vijay.imports = [ ./home-manager/kakashi ];
+              extraSpecialArgs = { inherit inputs username user; };
+              users.${username}.imports = [ ./home-manager/kakashi ];
             };
           }
         ];
@@ -177,25 +194,24 @@
       nixosConfigurations = builtins.listToAttrs (map
         (name: {
           inherit name;
-          value = nixpkgs.lib.nixosSystem {
-            # makes all inputs available in imported files
-            specialArgs = {
-              inherit inputs;
-              meta = { hostname = name; };
+          value = nixpkgs.lib.nixosSystem
+            {
+              # makes all inputs available in imported files
+              specialArgs = {
+                inherit inputs username user;
+                meta = { hostname = name; };
+              };
+              system = linuxSystems.${name};
+              modules = [
+                home-manager.nixosModules.home-manager
+                {
+                  home-manager.extraSpecialArgs = { inherit inputs username user; };
+                  home-manager.users.${username} = {
+                    imports = if name == "kakashi" then [ ./home-manager/kakashi-nix ] else [ ./home-manager/kubenodes ];
+                  };
+                }
+              ] ++ (if name == "kakashi" then [ ./machines/kakashi-nix ] else [ ./machines/kubenodes ]);
             };
-            system = "x86_64-linux";
-            modules = [
-              ./machines/kubenodes
-              # { _module.args.mode = "zap_create_mount"; } #Disko config
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.extraSpecialArgs = { inherit inputs; };
-                home-manager.users.vijay = {
-                  imports = [ ./home-manager/kubenodes ];
-                };
-              }
-            ];
-          };
-        }) [ "zoro" "usopp" "choppar" ]);
+        }) [ "zoro" "usopp" "choppar" "kakashi" ]);
     };
 }
