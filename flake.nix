@@ -76,144 +76,155 @@
       };
     };
   };
-  outputs =
-    inputs@{ self
-    , nixpkgs
-    , nixos-generators
-    , home-manager
-    , darwin
-    , nix-homebrew
-    , homebrew-bundle
-    , homebrew-core
-    , homebrew-cask
-    , homebrew-services
-    , ...
-    }:
-    let
-      # Config
-      user = "Vijayakumar Ravi";
-      username = "vijay";
-      # stateVersion = "24.11";
-      # stateVersionDarwin = 4;
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    nixos-generators,
+    home-manager,
+    darwin,
+    nix-homebrew,
+    homebrew-bundle,
+    homebrew-core,
+    homebrew-cask,
+    homebrew-services,
+    ...
+  }: let
+    # Config
+    user = "Vijayakumar Ravi";
+    username = "vijay";
+    # stateVersion = "24.11";
+    # stateVersionDarwin = 4;
 
-      # Configured Hosts
-      darwinSystems = { kakashi = "aarch64-darwin"; };
-      linuxSystems = {
-        zoro = "x86_64-linux";
-        usopp = "x86_64-linux";
-        choppar = "x86_64-linux";
-        kakashi = "aarch64-linux";
-      };
+    # Configured Hosts
+    darwinSystems = {kakashi = "aarch64-darwin";};
+    linuxSystems = {
+      zoro = "x86_64-linux";
+      usopp = "x86_64-linux";
+      choppar = "x86_64-linux";
+      kakashi = "aarch64-linux";
+    };
 
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
-      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-    in
-    {
-      pre-commit = forAllSystems (system: {
-        pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
-          src = ./.;
-          hooks = {
-            deadnix.enable = true;
-            actionlint.enable = true;
-            nixpkgs-fmt.enable = true;
-            flake-checker.enable = true;
-            check-symlinks.enable = true;
-            end-of-file-fixer.enable = true;
-            detect-private-keys.enable = true;
-            trim-trailing-whitespace.enable = true;
-            nix-flake-check = {
-              enable = true;
-              name = "Nix flake check";
-              stages = [ "pre-push" ];
-              pass_filenames = false;
-              entry = "nix flake check --accept-flake-config --all-systems";
-            };
+    supportedSystems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
+    forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+  in {
+    # Enables `nix fmt` at root of repo to format all nix files
+    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+
+    pre-commit = forAllSystems (system: {
+      pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
+        src = ./.;
+        hooks = {
+          deadnix.enable = true;
+          alejandra.enable = true;
+          actionlint.enable = true;
+          flake-checker.enable = true;
+          check-symlinks.enable = true;
+          end-of-file-fixer.enable = true;
+          detect-private-keys.enable = true;
+          trim-trailing-whitespace.enable = true;
+          nix-flake-check = {
+            enable = true;
+            name = "Nix flake check";
+            stages = ["pre-push"];
+            pass_filenames = false;
+            entry = "nix flake check --accept-flake-config --all-systems";
           };
         };
-      });
-      devShells = forAllSystems (system: {
-        default = nixpkgs.legacyPackages.${system}.mkShell {
-          inherit (self.pre-commit.${system}.pre-commit-check) shellHook;
-          buildInputs = self.pre-commit.${system}.pre-commit-check.enabledPackages;
-        };
-      });
-      packages.x86_64-linux = {
-        # NixOS boot disk with my SSH Keys integrated
-        nixos-iso = nixos-generators.nixosGenerate {
-          specialArgs = { inherit inputs username user; };
-          system = "x86_64-linux";
-          format = "install-iso";
-          modules = [
-            ./machines/nixiso
-          ];
-        };
       };
-      packages.aarch64-linux = {
-        rpi-iso = nixos-generators.nixosGenerate {
-          specialArgs = { inherit inputs username user; };
-          system = "aarch64-linux";
-          format = "sd-aarch64";
-          modules = [
-            #inputs.raspberry-pi-nix.nixosModules.raspberry-pi
-            ./machines/raspberry
-          ];
-        };
+    });
+    devShells = forAllSystems (system: {
+      default = nixpkgs.legacyPackages.${system}.mkShell {
+        inherit (self.pre-commit.${system}.pre-commit-check) shellHook;
+        buildInputs = self.pre-commit.${system}.pre-commit-check.enabledPackages;
       };
-      darwinConfigurations.kakashi = darwin.lib.darwinSystem {
-        system = darwinSystems.kakashi;
-        # makes all inputs available in imported files
-        specialArgs = { inherit inputs username user; };
+    });
+    packages.x86_64-linux = {
+      # NixOS boot disk with my SSH Keys integrated
+      nixos-iso = nixos-generators.nixosGenerate {
+        specialArgs = {inherit inputs username user;};
+        system = "x86_64-linux";
+        format = "install-iso";
         modules = [
-          ./machines/kakashi
-          nix-homebrew.darwinModules.nix-homebrew
-          {
-            nix-homebrew = {
-              enable = true;
-              user = user;
-              enableRosetta = true;
-              autoMigrate = true;
-              mutableTaps = false;
-              taps = {
-                "homebrew/homebrew-core" = homebrew-core;
-                "homebrew/homebrew-cask" = homebrew-cask;
-                "homebrew/homebrew-bundle" = homebrew-bundle;
-                "homebrew/homebrew-services" = homebrew-services;
-              };
-            };
-          }
-          home-manager.darwinModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = { inherit inputs username user; };
-              users.${username}.imports = [ ./home-manager/kakashi ];
-            };
-          }
+          ./machines/nixiso
         ];
       };
+    };
+    packages.aarch64-linux = {
+      rpi-iso = nixos-generators.nixosGenerate {
+        specialArgs = {inherit inputs username user;};
+        system = "aarch64-linux";
+        format = "sd-aarch64";
+        modules = [
+          #inputs.raspberry-pi-nix.nixosModules.raspberry-pi
+          ./machines/raspberry
+        ];
+      };
+    };
+    darwinConfigurations.kakashi = darwin.lib.darwinSystem {
+      system = darwinSystems.kakashi;
+      # makes all inputs available in imported files
+      specialArgs = {inherit inputs username user;};
+      modules = [
+        ./machines/kakashi
+        nix-homebrew.darwinModules.nix-homebrew
+        {
+          nix-homebrew = {
+            enable = true;
+            user = user;
+            enableRosetta = true;
+            autoMigrate = true;
+            mutableTaps = false;
+            taps = {
+              "homebrew/homebrew-core" = homebrew-core;
+              "homebrew/homebrew-cask" = homebrew-cask;
+              "homebrew/homebrew-bundle" = homebrew-bundle;
+              "homebrew/homebrew-services" = homebrew-services;
+            };
+          };
+        }
+        home-manager.darwinModules.home-manager
+        {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            extraSpecialArgs = {inherit inputs username user;};
+            users.${username}.imports = [./home-manager/kakashi];
+          };
+        }
+      ];
+    };
 
-      nixosConfigurations = builtins.listToAttrs (map
-        (name: {
-          inherit name;
-          value = nixpkgs.lib.nixosSystem
-            {
-              # makes all inputs available in imported files
-              specialArgs = {
-                inherit inputs username user;
-                meta = { hostname = name; };
-              };
-              system = linuxSystems.${name};
-              modules = [
+    nixosConfigurations = builtins.listToAttrs (map
+      (name: {
+        inherit name;
+        value =
+          nixpkgs.lib.nixosSystem
+          {
+            # makes all inputs available in imported files
+            specialArgs = {
+              inherit inputs username user;
+              meta = {hostname = name;};
+            };
+            system = linuxSystems.${name};
+            modules =
+              [
                 home-manager.nixosModules.home-manager
                 {
-                  home-manager.extraSpecialArgs = { inherit inputs username user; };
+                  home-manager.extraSpecialArgs = {inherit inputs username user;};
                   home-manager.users.${username} = {
-                    imports = if name == "kakashi" then [ ./home-manager/kakashi-nix ] else [ ./home-manager/kubenodes ];
+                    imports =
+                      if name == "kakashi"
+                      then [./home-manager/kakashi-nix]
+                      else [./home-manager/kubenodes];
                   };
                 }
-              ] ++ (if name == "kakashi" then [ ./machines/kakashi-nix ] else [ ./machines/kubenodes ]);
-            };
-        }) [ "zoro" "usopp" "choppar" "kakashi" ]);
-    };
+              ]
+              ++ (
+                if name == "kakashi"
+                then [./machines/kakashi-nix]
+                else [./machines/kubenodes]
+              );
+          };
+      }) ["zoro" "usopp" "choppar" "kakashi"]);
+  };
 }

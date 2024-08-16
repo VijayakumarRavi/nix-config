@@ -1,12 +1,16 @@
-{ username, inputs, pkgs, ... }:
 {
-  imports = [ inputs.agenix.nixosModules.default ];
+  username,
+  inputs,
+  pkgs,
+  ...
+}: {
+  imports = [inputs.agenix.nixosModules.default];
 
   nix = {
     # package = lib.mkDefault pkgs.nix;
     package = pkgs.nix;
     settings = {
-      allowed-users = [ "${username}" ];
+      allowed-users = ["${username}"];
       trusted-users = [
         "root"
         "${username}"
@@ -31,7 +35,7 @@
   nixpkgs.config.allowUnfree = true;
 
   environment = {
-    shells = with pkgs; [ zsh ];
+    shells = with pkgs; [zsh];
     #loginShell = pkgs.zsh;
     systemPackages = with pkgs; [
       # Linux utils

@@ -58,8 +58,8 @@
         kubernetes = {
           disabled = false;
           format = "via [󱃾 $context($namespace)](bold purple) ";
-          detect_files = [ "k8s" ];
-          detect_extensions = [ "yaml" ];
+          detect_files = ["k8s"];
+          detect_extensions = ["yaml"];
         };
         ocaml.disabled = true;
         perl.disabled = true;

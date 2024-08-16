@@ -1,10 +1,10 @@
-{ username, ... }: {
+{username, ...}: {
   programs = {
     zoxide = {
       # smarter cd command
       enable = true;
       enableZshIntegration = true;
-      options = [ "--cmd cd" ];
+      options = ["--cmd cd"];
     };
 
     fzf = {
@@ -21,7 +21,7 @@
       # sync shell history between machines
       enable = true;
       enableZshIntegration = true;
-      flags = [ "--disable-up-arrow" ];
+      flags = ["--disable-up-arrow"];
       settings = {
         auto_sync = true;
         sync_frequency = "0";

@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
     ../common
     ./lf.nix
@@ -12,7 +11,7 @@
   programs = {
     gh = {
       enable = true; # GitHub CLI
-      extensions = with pkgs; [ gh-markdown-preview ];
+      extensions = with pkgs; [gh-markdown-preview];
       settings = {
         git_protocol = "ssh";
         prompt = "enabled";

@@ -1,12 +1,12 @@
-{ pkgs
-, inputs
-, user
-, username
-, config
-, meta
-, ...
-}:
 {
+  pkgs,
+  inputs,
+  user,
+  username,
+  config,
+  meta,
+  ...
+}: {
   imports = [
     ../common
 
@@ -37,7 +37,7 @@
       grub = {
         enable = true;
         efiSupport = true;
-        devices = [ "nodev" ];
+        devices = ["nodev"];
         extraEntries = ''
           menuentry "System Reboot" {
             echo "System rebooting..."
@@ -54,7 +54,7 @@
       };
     };
     # Emulate an arm64 machine for RPI
-    binfmt.emulatedSystems = [ "aarch64-linux" ];
+    binfmt.emulatedSystems = ["aarch64-linux"];
   };
 
   # Enable networking
@@ -99,7 +99,7 @@
   console = {
     earlySetup = true;
     font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
-    packages = with pkgs; [ terminus_font ];
+    packages = with pkgs; [terminus_font];
     keyMap = "us";
   };
 
@@ -203,7 +203,7 @@
       lower = "03:00";
       upper = "05:00";
     };
-    flags = [ "--accept-flake-config" ];
+    flags = ["--accept-flake-config"];
     flake = "github:VijayakumarRavi/nix-config";
   };
 
@@ -231,7 +231,11 @@
         "--disable traefik"
         "--disable local-storage"
       ]
-      ++ (if meta.hostname == "zoro" then [ ] else [ "--server https://zoro:6443" ])
+      ++ (
+        if meta.hostname == "zoro"
+        then []
+        else ["--server https://zoro:6443"]
+      )
     );
     clusterInit = meta.hostname == "zoro";
   };
@@ -242,7 +246,7 @@
   };
 
   # Fixes for longhorn
-  systemd.tmpfiles.rules = [ "L+ /usr/local/bin - - - - /run/current-system/sw/bin/" ];
+  systemd.tmpfiles.rules = ["L+ /usr/local/bin - - - - /run/current-system/sw/bin/"];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

@@ -1,9 +1,11 @@
-{ username, pkgs, ... }:
 {
+  username,
+  pkgs,
+  ...
+}: {
   programs.firefox = {
     enable = true;
     profiles.${username} = {
-
       search.engines = {
         "Nix Packages" = {
           urls = [
@@ -26,7 +28,7 @@
             }
           ];
           icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-          definedAliases = [ "@ni" ];
+          definedAliases = ["@ni"];
         };
         "Home manager options" = {
           urls = [
@@ -41,7 +43,7 @@
             }
           ];
           icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-          definedAliases = [ "@ho" ];
+          definedAliases = ["@ho"];
         };
       };
 
@@ -50,7 +52,7 @@
       bookmarks = [
         {
           name = "wikipedia";
-          tags = [ "wiki" ];
+          tags = ["wiki"];
           keyword = "wiki";
           url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
         }

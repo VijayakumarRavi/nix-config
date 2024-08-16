@@ -1,5 +1,8 @@
-{ pkgs, username, ... }:
 {
+  pkgs,
+  username,
+  ...
+}: {
   programs.zsh = {
     enable = true;
     enableCompletion = true;

@@ -1,12 +1,12 @@
-{ pkgs
-, user
-, username
+{
+  pkgs,
+  user,
+  username,
   #, inputs
   #, config
-, meta
-, ...
-}:
-{
+  meta,
+  ...
+}: {
   imports = [
     ../common
 
@@ -36,7 +36,7 @@
       grub = {
         enable = true;
         efiSupport = true;
-        devices = [ "nodev" ];
+        devices = ["nodev"];
         extraEntries = ''
           menuentry "System Reboot" {
             echo "System rebooting..."
@@ -163,7 +163,7 @@
   console = {
     earlySetup = true;
     font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
-    packages = with pkgs; [ terminus_font ];
+    packages = with pkgs; [terminus_font];
     keyMap = "us";
   };
 

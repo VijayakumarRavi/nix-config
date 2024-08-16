@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{config, ...}: {
   homebrew = {
     enable = true;
     caskArgs.no_quarantine = true;
@@ -10,7 +9,7 @@
       upgrade = true;
     };
     taps = builtins.attrNames config.nix-homebrew.taps;
-    brews = [ "nginx" "aria2" ]; # Reverse proxy to use as a loadbalancer for kubectl
+    brews = ["nginx" "aria2"]; # Reverse proxy to use as a loadbalancer for kubectl
     casks = [
       # Better mac
       "shottr" # Screenshot util

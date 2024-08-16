@@ -1,9 +1,10 @@
-{ pkgs
-, inputs
-, modulesPath
-, user
-, username
-, ...
+{
+  pkgs,
+  inputs,
+  modulesPath,
+  user,
+  username,
+  ...
 }: {
   imports = [
     #"${modulesPath}/profiles/minimal.nix"
@@ -18,7 +19,7 @@
   nix = {
     package = pkgs.nix;
     settings = {
-      allowed-users = [ "${username}" ];
+      allowed-users = ["${username}"];
       trusted-users = [
         "root"
         "${username}"
@@ -38,11 +39,14 @@
   console = {
     earlySetup = true;
     font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
-    packages = with pkgs; [ terminus_font ];
+    packages = with pkgs; [terminus_font];
     keyMap = "us";
   };
 
-  sdImage = { imageName = "NixPi.img"; compressImage = false; };
+  sdImage = {
+    imageName = "NixPi.img";
+    compressImage = false;
+  };
 
   time.timeZone = "Asia/Kolkata";
 
@@ -77,7 +81,7 @@
     enable = true;
     settings.PermitRootLogin = "yes";
   };
-  systemd.services.sshd.wantedBy = pkgs.lib.mkForce [ "multi-user.target" ];
+  systemd.services.sshd.wantedBy = pkgs.lib.mkForce ["multi-user.target"];
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [

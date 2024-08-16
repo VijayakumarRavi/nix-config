@@ -1,5 +1,8 @@
-{ username, pkgs, ... }:
 {
+  username,
+  pkgs,
+  ...
+}: {
   imports = [
     ./homebrew.nix
     ../common
@@ -20,8 +23,8 @@
   };
 
   environment = {
-    systemPath = [ "/opt/homebrew/bin" ];
-    pathsToLink = [ "/Applications" ];
+    systemPath = ["/opt/homebrew/bin"];
+    pathsToLink = ["/Applications"];
     systemPackages = with pkgs; [
       flyctl # fly.io cli tool
       vscode # Visual Studio Code editor
@@ -47,21 +50,19 @@
     # A tiling window manager for macOS based on binary space partitioning
     yabai = {
       enable = true;
-      config =
-        let
-          padding = 10;
-        in
-        {
-          layout = "bsp";
-          focus_follows_mouse = "autoraise";
-          mouse_follows_focus = "off";
-          window_placement = "second_child";
-          top_padding = padding;
-          bottom_padding = padding;
-          left_padding = padding;
-          right_padding = padding;
-          window_gap = padding;
-        };
+      config = let
+        padding = 10;
+      in {
+        layout = "bsp";
+        focus_follows_mouse = "autoraise";
+        mouse_follows_focus = "off";
+        window_placement = "second_child";
+        top_padding = padding;
+        bottom_padding = padding;
+        left_padding = padding;
+        right_padding = padding;
+        window_gap = padding;
+      };
       extraConfig = ''
         yabai -m rule --add app='System Settings' manage=off
         yabai -m rule --add app='krisp' manage=off

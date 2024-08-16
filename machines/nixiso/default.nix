@@ -1,8 +1,9 @@
-{ lib
-, pkgs
-, modulesPath
-, username
-, ...
+{
+  lib,
+  pkgs,
+  modulesPath,
+  username,
+  ...
 }: {
   # ISO settings
   imports = [
@@ -21,7 +22,7 @@
   nix = {
     package = pkgs.nix;
     settings = {
-      allowed-users = [ "${username}" ];
+      allowed-users = ["${username}"];
       trusted-users = [
         "root"
         "${username}"
@@ -41,7 +42,7 @@
   console = {
     earlySetup = true;
     font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
-    packages = with pkgs; [ terminus_font ];
+    packages = with pkgs; [terminus_font];
     keyMap = "us";
   };
 
@@ -98,7 +99,7 @@
     enable = true;
     settings.PermitRootLogin = "yes";
   };
-  systemd.services.sshd.wantedBy = pkgs.lib.mkForce [ "multi-user.target" ];
+  systemd.services.sshd.wantedBy = pkgs.lib.mkForce ["multi-user.target"];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

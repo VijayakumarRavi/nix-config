@@ -7,7 +7,7 @@ return {
         null_ls.builtins.formatting.stylua,
         null_ls.builtins.formatting.prettier,
 
-        null_ls.builtins.formatting.nixpkgs_fmt,
+        null_ls.builtins.formatting.alejandra,
         null_ls.builtins.code_actions.statix,
         null_ls.builtins.diagnostics.statix,
 
