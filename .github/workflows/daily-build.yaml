@@ -1,0 +1,55 @@
+name: Build and Release NixOS ISO
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch: null
+  schedule:
+    - cron: 0 4 * * *
+
+jobs:
+  Build_OS:
+    name: Buildig 👷‍♂️ New 🆕 NixOS 🏗️ ISO 📀
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Nix
+        uses: cachix/install-nix-action@v27
+
+      - name: Setup QEMU for ARM builds
+        run: sudo apt-get install -y qemu qemu-user-static binfmt-support
+
+      - name: Bump flake.lock
+        run: nix flake update
+
+      - name: Build NixOS ISO
+        run: sudo nix build --accept-flake-config .#nixos-iso
+
+      - name: Build NixOS ISO (ARM)
+        run: sudo nix build --accept-flake-config .#rpi-iso --system "aarch64-linux"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Nixos ISO daily build
+          tag_name: "daily-build"
+          make_latest: true
+          generate_release_notes: true
+          files: |
+            ./result/iso/NixOS.iso
+            ./result/sd-image/NixPi.img.zst
+
+      - name: Commit and Push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Chore👨‍💻(flake): bump flake.lock"
+          commit_user_name: Flake Bot
+          commit_options: --no-verify --signoff
+          commit_author: Flake Bot <actions@github.com>
+          branch: master
+          file_pattern: flake.lock
+          skip_dirty_check: false
+          skip_fetch: true
