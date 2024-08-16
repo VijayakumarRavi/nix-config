@@ -1,14 +1,46 @@
-{ modulesPath, user, username, ... }: {
+{ pkgs
+, inputs
+, modulesPath
+, user
+, username
+, ...
+}: {
   imports = [
+    #"${modulesPath}/profiles/minimal.nix"
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
+
+    inputs.agenix.nixosModules.default
   ];
-  # bcm2711 for rpi 3, 3+, 4, zero 2 w
-  # bcm2712 for rpi 5
-  # See the docs at:
-  # https://www.raspberrypi.com/documentation/computers/linux_kernel.html#native-build-configuration
-  #  raspberry-pi-nix.board = "bcm2712";
 
   nixpkgs.hostPlatform = "aarch64-linux";
+
+  # Nix bin settings
+  nix = {
+    package = pkgs.nix;
+    settings = {
+      allowed-users = [ "${username}" ];
+      trusted-users = [
+        "root"
+        "${username}"
+      ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      auto-optimise-store = true;
+    };
+  };
+
+  # Reduce img size
+  documentation.enable = false;
+
+  # Console font size
+  console = {
+    earlySetup = true;
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
+    packages = with pkgs; [ terminus_font ];
+    keyMap = "us";
+  };
 
   sdImage = { imageName = "NixPi.img"; compressImage = false; };
 
@@ -42,6 +74,21 @@
     };
   };
 
+  # Enable ssh
+  services.openssh = {
+    enable = true;
+    settings.PermitRootLogin = "yes";
+  };
+  systemd.services.sshd.wantedBy = pkgs.lib.mkForce [ "multi-user.target" ];
+
+  # List packages installed in system profile.
+  environment.systemPackages = with pkgs; [
+    neovim
+    tmux
+    git
+    htop
+  ];
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${username} = {
     isNormalUser = true;
@@ -63,39 +110,23 @@
   # Disable sudo password
   security.sudo.wheelNeedsPassword = false;
 
-  #  age.secrets = {
-  #    id_ed25519 = {
-  #      file = ../../secrets/id_ed25519;
-  #      path = "/home/${username}/.ssh/id_ed25519";
-  #      owner = "${username}";
-  #      group = "users";
-  #      mode = "600";
-  #    };
-  #    "id_ed25519.pub" = {
-  #      file = ../../secrets/id_ed25519.pub;
-  #      path = "/home/${username}/.ssh/id_ed25519.pub";
-  #      owner = "${username}";
-  #      group = "users";
-  #    };
-  #  };
+  virtualisation.docker.enable = true;
 
-  #  hardware = {
-  #    bluetooth.enable = true;
-  #    raspberry-pi = {
-  #      config = {
-  #        all = {
-  #          base-dt-params = {
-  #            # enable autoprobing of bluetooth driver
-  #            # https://github.com/raspberrypi/linux/blob/c8c99191e1419062ac8b668956d19e788865912a/arch/arm/boot/dts/overlays/README#L222-L224
-  #            krnbt = {
-  #              enable = true;
-  #              value = "on";
-  #            };
-  #          };
-  #        };
-  #      };
-  #    };
-  #  };
+  age.secrets = {
+    id_ed25519 = {
+      file = ../../secrets/id_ed25519;
+      path = "/home/${username}/.ssh/id_ed25519";
+      owner = "${username}";
+      group = "users";
+      mode = "600";
+    };
+    "id_ed25519.pub" = {
+      file = ../../secrets/id_ed25519.pub;
+      path = "/home/${username}/.ssh/id_ed25519.pub";
+      owner = "${username}";
+      group = "users";
+    };
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
