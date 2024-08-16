@@ -23,13 +23,13 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y qemu qemu-user-static binfmt-support
 
       - name: Bump flake.lock
-        run: nix flake update
+        run: nix flake update --accept-flake-config
 
       - name: Build NixOS ISO
-        run: sudo nix build --accept-flake-config .#nixos-iso
+        run: nix build --accept-flake-config .#nixos-iso
 
       - name: Build NixOS ISO (ARM)
-        run: sudo nix build --accept-flake-config .#rpi-iso --system "aarch64-linux"
+        run: nix build --accept-flake-config .#rpi-iso --system "aarch64-linux"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
