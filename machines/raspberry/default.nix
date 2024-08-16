@@ -46,8 +46,6 @@
 
   time.timeZone = "Asia/Kolkata";
 
-  users.users.root.initialPassword = "root";
-
   networking = {
     hostName = "nami";
 
