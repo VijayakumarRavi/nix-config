@@ -13,7 +13,7 @@
     codespell # Fix common misspellings in source code
     stylua # An opinionated Lua code form matter
     nil # Yet another language server for Nix
-    nixpkgs-fmt # formatter for Nix
+    alejandra # formatter for Nix
     ripgrep # for telescope builtin.grep_string function
   ];
 }
