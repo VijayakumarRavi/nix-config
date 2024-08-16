@@ -93,6 +93,8 @@
       # Config
       user = "Vijayakumar Ravi";
       username = "vijay";
+      # stateVersion = "24.11";
+      # stateVersionDarwin = 4;
 
       # Configured Hosts
       darwinSystems = { kakashi = "aarch64-darwin"; };
