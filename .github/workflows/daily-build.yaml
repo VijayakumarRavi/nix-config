@@ -1,4 +1,4 @@
-name: 🏗️ Build and Release NixOS ISO
+name: 🏗️ Build and Release custom RPI image and NixOS ISO
 
 on:
   # Allows you to run this workflow manually from the Actions tab
@@ -7,7 +7,7 @@ on:
     - cron: 0 4 * * *
 
 jobs:
-  Build_OS:
+  Build:
     name: Buildig 👷‍♂️ New 🆕 Nix ISO 📀
     runs-on: ubuntu-latest
     steps:
@@ -41,20 +41,14 @@ jobs:
       - name: Build NixOS ISO
         run: nix build --accept-flake-config .#nixos-iso
 
-      - name: Upload ISO
-        uses: actions/upload-artifact@v4
-        with:
-          name: NixOS.iso
-          path: ./result/iso/NixOS.iso
+      - name: Rename ISO
+        run: sudo mv ./result/iso/NixOS.iso NixOS.iso
 
-      - name: Build NixOS ISO (ARM)
+      - name: Build NixOS Image (ARM)
         run: nix build --accept-flake-config .#rpi-iso --system "aarch64-linux"
 
-      - name: Upload Rpi image
-        uses: actions/upload-artifact@v4
-        with:
-          name: NixPi.img.zst
-          path: ./result/sd-image/NixPi.img.zst
+      - name: Rename IMG
+        run: sudo mv ./result/sd-image/NixPi.img.zst NixPi.img.zst
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
