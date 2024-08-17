@@ -18,19 +18,24 @@ jobs:
 
       - name: Setup Nix
         uses: cachix/install-nix-action@v27
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            # save space on disk and in cache
+            auto-optimise-store = true
+            # keep all store paths necessary to build the outputs
+            keep-outputs = true
 
       - name: Cache Nix store
-        id: cache-nix
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-nix-store
+        uses: nix-community/cache-nix-action@v1
         with:
-          path: /nix
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/flake.lock') }}
+          key: nix-${{ runner.os }}-job-${{ hashfiles('**/flake.nix', '**/flake.lock') }}
+          linux-gc-enabled: true
+          linux-max-store-size: 5000000000
+          macos-gc-enabled: true
+          macos-max-store-size: 5000000000
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+            nix-${{ runner.os }}-job-
 
       - name: Setup QEMU for ARM builds
         run: sudo apt-get update && sudo apt-get install -y qemu qemu-user-static binfmt-support
@@ -67,7 +72,7 @@ jobs:
           commit_message: "Chore👨‍💻(flake): bump flake.lock"
           commit_user_name: Flake Bot
           commit_options: --no-verify --signoff
-          commit_author: Flake Bot <actions@github.com>
+          commit_author: Flake Bot <github-actions@github.com>
           branch: master
           file_pattern: flake.lock
           skip_dirty_check: false
