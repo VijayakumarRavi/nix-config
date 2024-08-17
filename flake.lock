@@ -133,11 +133,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723856737,
-        "narHash": "sha256-HtQ1c0jTSLVJ8ATVazheTTc1j05h8+ABtVu1mF8yPUI=",
+        "lastModified": 1723897578,
+        "narHash": "sha256-8K7qxP5MLUt5LC/8UPlEGrzo6P3dRf8v8Y48C1ooM3w=",
         "owner": "nix-community",
         "repo": "flake-firefox-nightly",
-        "rev": "ace6a59a1ccf0874fbfbe12884b1fa3d027ec630",
+        "rev": "c0673c288ad8fd55a0bd630b1560ad1811ba9e47",
         "type": "github"
       },
       "original": {
@@ -289,11 +289,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1723887747,
-        "narHash": "sha256-0zCRCptffPG3IYUHtOEZWjcguczttqglGPQeTbT/Jaw=",
+        "lastModified": 1723910037,
+        "narHash": "sha256-U4EbFY5p2itkVhPFl85G9aJ5M5Had6MOqRpdS/DQAwg=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "8fdc3a977cb7c973a31e1fb91e8659f487f7a4be",
+        "rev": "8859efd9ff093685de748920f0495b3388202e72",
         "type": "github"
       },
       "original": {
@@ -305,11 +305,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1723890022,
-        "narHash": "sha256-BVUrdgXe8gvg14R6NqR0w4ghqNpIujegqRu1b1yuepA=",
+        "lastModified": 1723911002,
+        "narHash": "sha256-fgB26KhfeUWQcQ0IIlYzLA5ndbGI84TjIB0dLWwSIeI=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "232b6c1d1708d8a9d484beb5a0fbcc8fde02e93b",
+        "rev": "60cce83eae61daae1393cee05809c5b814218a18",
         "type": "github"
       },
       "original": {
@@ -622,7 +622,8 @@
         "nixos-generators": "nixos-generators",
         "nixpkgs": "nixpkgs_3",
         "pre-commit-hooks": "pre-commit-hooks",
-        "raspberry-pi-nix": "raspberry-pi-nix"
+        "raspberry-pi-nix": "raspberry-pi-nix",
+        "suckless": "suckless"
       }
     },
     "rpi-bluez-firmware-src": {
@@ -740,6 +741,26 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "suckless": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1723911206,
+        "narHash": "sha256-D1SH1RJIuH1JlnQ99V0ne8ZmOBKlU+rVFvotbKs6C68=",
+        "owner": "VijayakumarRavi",
+        "repo": "suckless",
+        "rev": "01ce26033da7eedfbe59c8ae842e012bc73f1692",
+        "type": "github"
+      },
+      "original": {
+        "owner": "VijayakumarRavi",
+        "repo": "suckless",
         "type": "github"
       }
     },

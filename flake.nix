@@ -51,6 +51,10 @@
     firefox.url = "github:nix-community/flake-firefox-nightly";
     firefox.inputs.nixpkgs.follows = "nixpkgs";
 
+    # My custom suckless build
+    suckless.url = "github:VijayakumarRavi/suckless";
+    suckless.inputs.nixpkgs.follows = "nixpkgs";
+
     # Homebrew
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
 
@@ -83,6 +87,7 @@
     home-manager,
     agenix,
     darwin,
+    suckless,
     nix-homebrew,
     homebrew-bundle,
     homebrew-core,
@@ -181,7 +186,7 @@
         {
           nix-homebrew = {
             enable = true;
-            user = user;
+            user = {inherit user;};
             enableRosetta = true;
             autoMigrate = true;
             mutableTaps = false;
@@ -213,7 +218,7 @@
           {
             # makes all inputs available in imported files
             specialArgs = {
-              inherit inputs username user;
+              inherit inputs username user suckless;
               meta = {hostname = name;};
             };
             system = linuxSystems.${name};
@@ -233,7 +238,17 @@
               ]
               ++ (
                 if name == "kakashi"
-                then [./machines/kakashi-nix]
+                then [
+                  ./machines/kakashi-nix
+                  {
+                    environment.systemPackages = [
+                      suckless.packages.${linuxSystems.${name}}.dwm
+                      suckless.packages.${linuxSystems.${name}}.dmenu
+                      suckless.packages.${linuxSystems.${name}}.slock
+                      suckless.packages.${linuxSystems.${name}}.st
+                    ];
+                  }
+                ]
                 else [./machines/kubenodes]
               );
           };

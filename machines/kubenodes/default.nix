@@ -1,10 +1,10 @@
 {
   pkgs,
-  inputs,
   user,
-  username,
-  config,
   meta,
+  inputs,
+  config,
+  username,
   ...
 }: {
   imports = [

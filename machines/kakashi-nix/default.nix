@@ -1,8 +1,8 @@
 {
   pkgs,
   user,
-  username,
   meta,
+  username,
   ...
 }: {
   imports = [
@@ -20,8 +20,6 @@
       options = "--delete-old";
     };
   };
-
-  ###########################################################
 
   # Bootloader
   boot = {
@@ -47,8 +45,6 @@
       };
     };
   };
-
-  #############################################################
 
   # Set your time zone.
   time.timeZone = "Asia/Kolkata";
@@ -90,16 +86,13 @@
   };
 
   # Display manager stuff
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
+
   services = {
     greetd = {
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --remember --time --asterisks --greeting \"Vanakkam da mapla 👻\" --cmd Hyprland";
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --remember --time --asterisks --greeting \"Vanakkam da mapla 👻\" --cmd dwm";
           user = "${username}";
         };
       };
@@ -118,19 +111,19 @@
     # NIXOS_OZONE_WL = "1";  # vscode is not working if this is enabled
     NIXPKGS_ALLOW_UNFREE = "1";
     SCRIPTDIR = "\${HOME}/.local/share/scriptdeps";
-    XDG_CURRENT_DESKTOP = "Hyprland";
-    XDG_SESSION_TYPE = "wayland";
-    XDG_SESSION_DESKTOP = "Hyprland";
-    GDK_BACKEND = "wayland";
-    CLUTTER_BACKEND = "wayland";
+    # XDG_CURRENT_DESKTOP = "Hyprland";
+    # XDG_SESSION_TYPE = "wayland";
+    # XDG_SESSION_DESKTOP = "Hyprland";
+    # GDK_BACKEND = "wayland";
+    # CLUTTER_BACKEND = "wayland";
     SDL_VIDEODRIVER = "x11";
     XCURSOR_SIZE = "24";
     XCURSOR_THEME = "Bibata-Modern-Ice";
-    QT_QPA_PLATFORM = "wayland";
-    QT_QPA_PLATFORMTHEME = "qt5ct";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    MOZ_ENABLE_WAYLAND = "1";
+    # QT_QPA_PLATFORM = "wayland";
+    # QT_QPA_PLATFORMTHEME = "qt5ct";
+    # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    # QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    # MOZ_ENABLE_WAYLAND = "1";
   };
 
   # Sound options
@@ -225,6 +218,11 @@
     xserver = {
       xkb.layout = "us";
       xkb.variant = "";
+      /*
+        windowManager.dwm = {
+        enable =true;
+      };
+      */
     };
 
     libinput.enable = true;
