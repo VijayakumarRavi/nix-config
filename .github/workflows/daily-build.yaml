@@ -10,6 +10,10 @@ jobs:
   Build:
     name: Buildig 👷‍♂️ New 🆕 Nix ISO 📀
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        system: [x86_64-linux, aarch64-linux]
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,35 +29,42 @@ jobs:
             keep-outputs = true
 
       - name: Cache Nix store
-        uses: nix-community/cache-nix-action@v1
+        id: nix-cache
+        uses: nix-community/cache-nix-action@v5
         with:
-          key: nix-${{ runner.os }}-job-${{ hashfiles('**/flake.nix', '**/flake.lock') }}
-          linux-gc-enabled: true
-          linux-max-store-size: 5000000000
-          macos-gc-enabled: true
-          macos-max-store-size: 5000000000
-          restore-keys: |
-            nix-${{ runner.os }}-job-
-
-      - name: Setup QEMU for ARM builds
-        run: sudo apt-get update && sudo apt-get install -y qemu qemu-user-static binfmt-support
+          primary-key: nix-${{ matrix.system }}-${{ hashfiles('**/flake.nix', '**/flake.lock') }}
+          # if there's no cache hit, restore a cache by this prefix
+          restore-prefixes-first-match: nix-${{ matrix.system }}-
+          # collect garbage until Nix store size (in bytes) is at most this number
+          # before trying to save a new cache
+          gc-max-store-size: 5000000000
+          # purge all versions of the cache
+          purge: true
+          purge-prefixes: nix-${{ matrix.system }}-
+          purge-created: 300 # created more than this number of seconds ago relative to the start of the `Post Restore` phase
+          purge-primary-key: never # except the version with the `primary-key`, if it exists
 
       - name: Bump flake.lock
         run: nix flake update --accept-flake-config
 
       - name: Build NixOS ISO
+        if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'x86_64-linux'
         run: nix build --accept-flake-config .#nixos-iso
 
-      - name: Rename ISO
+      - name: Rename NixOS ISO
+        if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'x86_64-linux'
         run: sudo mv ./result/iso/NixOS.iso NixOS.iso
 
       - name: Build NixOS Image (ARM)
+        if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'aarch64-linux'
         run: nix build --accept-flake-config .#rpi-iso --system "aarch64-linux"
 
-      - name: Rename IMG
+      - name: Rename NixOS Image (ARM)
+        if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'aarch64-linux'
         run: sudo mv ./result/sd-image/NixPi.img.zst NixPi.img.zst
 
       - name: Create GitHub Release
+        if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'x86_64-linux'
         uses: softprops/action-gh-release@v2
         with:
           name: Nixos ISO Daily Build
@@ -65,6 +76,7 @@ jobs:
             NixPi.img.zst
 
       - name: Commit and Push
+        if: matrix.system == 'x86_64-linux'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Chore👨‍💻(flake): bump flake.lock"
