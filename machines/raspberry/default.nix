@@ -45,7 +45,7 @@
 
   sdImage = {
     imageName = "NixPi.img";
-    compressImage = false;
+    compressImage = true;
   };
 
   time.timeZone = "Asia/Kolkata";
