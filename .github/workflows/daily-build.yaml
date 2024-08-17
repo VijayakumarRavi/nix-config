@@ -27,6 +27,7 @@ jobs:
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
             # keep all store paths necessary to build the outputs
             keep-outputs = true
+            keep-derivations = true
 
       - name: Cache Nix store
         id: nix-cache
@@ -55,6 +56,10 @@ jobs:
         if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'x86_64-linux'
         run: sudo mv ./result/iso/NixOS.iso NixOS.iso
 
+      - name: Setup QEMU for ARM builds
+        if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'aarch64-linux'
+        run: sudo apt-get update && sudo apt-get install -y qemu qemu-user-static binfmt-support
+
       - name: Build NixOS Image (ARM)
         if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'aarch64-linux'
         run: nix build --accept-flake-config .#rpi-iso --system "aarch64-linux"
@@ -79,7 +84,7 @@ jobs:
         if: matrix.system == 'x86_64-linux'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Chore👨‍💻(flake): bump flake.lock"
+          commit_message: "Bot 🤖(flake): bump flake.lock"
           commit_user_name: Flake Bot
           commit_options: --no-verify --signoff
           commit_author: Flake Bot <github-actions@github.com>
