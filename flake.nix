@@ -122,6 +122,13 @@
           end-of-file-fixer.enable = true;
           detect-private-keys.enable = true;
           trim-trailing-whitespace.enable = true;
+          git-pull = {
+            enable = true;
+            name = "git pull remort";
+            stages = ["pre-push"];
+            pass_filenames = false;
+            entry = "git pull";
+          };
           nix-flake-check = {
             enable = true;
             name = "Nix flake check";
