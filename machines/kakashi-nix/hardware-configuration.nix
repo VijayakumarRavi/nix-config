@@ -35,7 +35,7 @@
       #      withRust = true;
       #      useExperimentalGPUDriver = true;
       #      experimentalGPUInstallMode = "replace";
-      peripheralFirmwareDirectory = /etc/nixos/firmware;
+      peripheralFirmwareDirectory = ./firmware;
     };
     graphics.enable = true;
   };
