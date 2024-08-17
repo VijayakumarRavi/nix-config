@@ -127,9 +127,9 @@
             enable = true;
             name = "git pull remort";
             always_run = true;
-            entry = "git pull";
             pass_filenames = false;
             stages = ["post-commit"];
+            entry = "git pull --rebase --quiet --autostash";
           };
           nix-flake-check = {
             enable = true;
