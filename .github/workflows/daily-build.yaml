@@ -69,7 +69,7 @@ jobs:
         run: sudo mv ./result/sd-image/NixPi.img.zst NixPi.img.zst
 
       - name: Create GitHub Release
-        if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'x86_64-linux'
+        if: steps.nix-cache.outputs.hit != 'true'
         uses: softprops/action-gh-release@v2
         with:
           name: Nixos ISO Daily Build
