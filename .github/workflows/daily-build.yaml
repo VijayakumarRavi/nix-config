@@ -29,6 +29,12 @@ jobs:
             keep-outputs = true
             keep-derivations = true
 
+      - name: Get current date
+        id: current_date
+        run: |
+          DATE="$(TZ="Asia/Kolkata" date "+%d.%m.%Y")"
+          echo "DATE=$DATE" >> "$GITHUB_ENV"
+
       - name: Cache Nix store
         id: nix-cache
         uses: nix-community/cache-nix-action@v5
@@ -54,7 +60,7 @@ jobs:
 
       - name: Rename NixOS ISO
         if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'x86_64-linux'
-        run: sudo mv ./result/iso/NixOS.iso NixOS.iso
+        run: sudo mv ./result/iso/NixOS.iso "NixOS-${{ env.DATE }}.iso"
 
       - name: Setup QEMU for ARM builds
         if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'aarch64-linux'
@@ -66,7 +72,7 @@ jobs:
 
       - name: Rename NixOS Image (ARM)
         if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'aarch64-linux'
-        run: sudo mv ./result/sd-image/NixPi.img.zst NixPi.img.zst
+        run: sudo mv ./result/sd-image/NixPi.img.zst "NixPi-${{ env.DATE }}.img.zst"
 
       - name: Create GitHub Release
         if: steps.nix-cache.outputs.hit != 'true'
@@ -77,8 +83,8 @@ jobs:
           make_latest: true
           generate_release_notes: true
           files: |
-            NixOS.iso
-            NixPi.img.zst
+            "NixOS-${{ env.DATE }}.iso"
+            "NixPi-${{ env.DATE }}.img.zst"
 
       - name: Commit and Push
         if: matrix.system == 'x86_64-linux'
