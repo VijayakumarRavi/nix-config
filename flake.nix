@@ -126,9 +126,10 @@
           git-pull = {
             enable = true;
             name = "git pull remort";
-            stages = ["post-commit"];
-            pass_filenames = false;
+            always_run = true;
             entry = "git pull";
+            pass_filenames = false;
+            stages = ["post-commit"];
           };
           nix-flake-check = {
             enable = true;
