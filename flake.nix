@@ -81,6 +81,7 @@
     nixpkgs,
     nixos-generators,
     home-manager,
+    agenix,
     darwin,
     nix-homebrew,
     homebrew-bundle,
@@ -175,6 +176,7 @@
       specialArgs = {inherit inputs username user;};
       modules = [
         ./machines/kakashi
+        {environment.systemPackages = [agenix.packages.${darwinSystems.kakashi}.default];}
         nix-homebrew.darwinModules.nix-homebrew
         {
           nix-homebrew = {
@@ -217,6 +219,7 @@
             system = linuxSystems.${name};
             modules =
               [
+                {environment.systemPackages = [agenix.packages.${linuxSystems.${name}}.default];}
                 home-manager.nixosModules.home-manager
                 {
                   home-manager.extraSpecialArgs = {inherit inputs username user;};

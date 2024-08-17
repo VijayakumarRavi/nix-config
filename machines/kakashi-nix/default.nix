@@ -2,8 +2,6 @@
   pkgs,
   user,
   username,
-  #, inputs
-  #, config
   meta,
   ...
 }: {
@@ -14,8 +12,6 @@
     ./hardware-configuration.nix
 
     ./scripts.nix
-    # M2 Macbook support
-    # inputs.apple-silicon.nixosModules.apple-silicon-support
   ];
 
   nix = {
@@ -29,6 +25,7 @@
 
   # Bootloader
   boot = {
+    plymouth.enable = true;
     loader = {
       efi = {
         canTouchEfiVariables = true;
@@ -45,9 +42,6 @@
           menuentry "System Poweroff" {
             echo "System shutting down..."
             halt
-          }
-          menuentry 'UEFI Firmware Settings' --id 'uefi-firmware' {
-            fwsetup
           }
         '';
       };
@@ -258,7 +252,7 @@
     imv
     killall
     v4l-utils
-    ueberzugpp
+    # ueberzugpp
     xdg-utils
 
     vscode # code editor developed by Microsoft

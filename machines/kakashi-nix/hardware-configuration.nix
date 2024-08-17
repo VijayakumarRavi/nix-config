@@ -2,34 +2,60 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
+  pkgs,
+  inputs,
   lib,
   modulesPath,
   ...
 }: {
   imports = [
+    # M2 Macbook support
+    inputs.apple-silicon.nixosModules.apple-silicon-support
+
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "usbhid" "uas"];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = [];
-  boot.extraModulePackages = [];
+  boot = {
+    consoleLogLevel = 0;
+    kernelParams = ["apple_dcp.show_notch=1"];
 
-  /*
-       hardware.asahi = {
-    peripheralFirmwareDirectory = /etc/nixos/firmware;
-    useExperimentalGPUDriver = true;
+    initrd.availableKernelModules = ["usb_storage"];
+    initrd.kernelModules = [];
+    kernelModules = [];
+    extraModulePackages = [];
   };
-  */
+
+  # setting WLR Graphic Card - needed for hyprland
+  environment.sessionVariables = {
+    WLR_DRM_DEVICES = "/dev/dri/card0";
+  };
+
+  # experimental GPU drivers - needed for hyperland
+  hardware = {
+    asahi = {
+      withRust = true;
+      useExperimentalGPUDriver = true;
+      experimentalGPUInstallMode = "replace";
+      peripheralFirmwareDirectory = /etc/nixos/firmware;
+    };
+    graphics.enable = true;
+  };
+
+  # packages
+  environment.systemPackages = with pkgs; [
+    mesa-asahi-edge
+    xdg-desktop-portal-hyprland
+  ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/aeb6d443-1e35-42c4-b735-252bb7bbfb28";
+    device = "/dev/disk/by-uuid/fad9765b-d18a-4321-8ad4-9ccf1fb4bf33";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/436A-1B1E";
+    device = "/dev/disk/by-uuid/A3EE-1B08";
     fsType = "vfat";
+    options = ["fmask=0022" "dmask=0022"];
   };
 
   swapDevices = [];
@@ -39,7 +65,6 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.end0.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlan0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";

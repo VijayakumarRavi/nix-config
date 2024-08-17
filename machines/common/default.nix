@@ -52,7 +52,7 @@
       rclone # Rsync for Cloud storage
       restic # A backup program that is fast, efficient and secure
       openssl # cryptographic library
-      neofetch # Fast, highly customisable system info script
+      fastfetch # Fast, highly customisable system info script
       coreutils # GNU core utilities for Mac
       pkg-config # Manage compile and link flags for libraries
 
