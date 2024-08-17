@@ -1,4 +1,4 @@
-name: Build and Release NixOS ISO
+name: 🏗️ Build and Release NixOS ISO
 
 on:
   # Allows you to run this workflow manually from the Actions tab
@@ -8,7 +8,7 @@ on:
 
 jobs:
   Build_OS:
-    name: Buildig 👷‍♂️ New 🆕 NixOS 🏗️ ISO 📀
+    name: Buildig 👷‍♂️ New 🆕 Nix ISO 📀
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -28,19 +28,31 @@ jobs:
       - name: Build NixOS ISO
         run: nix build --accept-flake-config .#nixos-iso
 
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: NixOS.iso
+          path: ./result/iso/NixOS.iso
+
       - name: Build NixOS ISO (ARM)
         run: nix build --accept-flake-config .#rpi-iso --system "aarch64-linux"
+
+      - name: Upload Rpi image
+        uses: actions/upload-artifact@v4
+        with:
+          name: NixPi.img.zst
+          path: ./result/sd-image/NixPi.img.zst
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Nixos ISO daily build
+          name: Nixos ISO Daily Build
           tag_name: "daily-build"
           make_latest: true
           generate_release_notes: true
           files: |
-            ./result/iso/NixOS.iso
-            ./result/sd-image/NixPi.img.zst
+            NixOS.iso
+            NixPi.img.zst
 
       - name: Commit and Push
         uses: stefanzweifel/git-auto-commit-action@v5
