@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Nix
-        uses: nixbuild/nix-quick-install-action@v25
+        uses: nixbuild/nix-quick-install-action@v28
         with:
           nix_conf: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
