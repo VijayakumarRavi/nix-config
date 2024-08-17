@@ -2,7 +2,6 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
-  pkgs,
   inputs,
   lib,
   modulesPath,
@@ -33,19 +32,13 @@
   # experimental GPU drivers - needed for hyperland
   hardware = {
     asahi = {
-      withRust = true;
-      useExperimentalGPUDriver = true;
-      experimentalGPUInstallMode = "replace";
-      peripheralFirmwareDirectory = ./firmware;
+      #      withRust = true;
+      #      useExperimentalGPUDriver = true;
+      #      experimentalGPUInstallMode = "replace";
+      peripheralFirmwareDirectory = /etc/nixos/firmware;
     };
     graphics.enable = true;
   };
-
-  # packages
-  environment.systemPackages = with pkgs; [
-    mesa-asahi-edge
-    xdg-desktop-portal-hyprland
-  ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/fad9765b-d18a-4321-8ad4-9ccf1fb4bf33";
