@@ -125,7 +125,7 @@
           git-pull = {
             enable = true;
             name = "git pull remort";
-            stages = ["pre-push"];
+            stages = ["post-commit"];
             pass_filenames = false;
             entry = "git pull";
           };
