@@ -122,6 +122,7 @@
           end-of-file-fixer.enable = true;
           detect-private-keys.enable = true;
           trim-trailing-whitespace.enable = true;
+          trim-trailing-whitespace.stages = ["pre-commit"];
           git-pull = {
             enable = true;
             name = "git pull remort";
