@@ -133,11 +133,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723943310,
-        "narHash": "sha256-/6Kie0y1mldCCm1uyOFrLg2AR5pqzGFwbPjwzaQ5crs=",
+        "lastModified": 1723984150,
+        "narHash": "sha256-mEMimxxfpHdyu3IvXz+LRLtA0aBslJ+85gj0O7+4k6w=",
         "owner": "nix-community",
         "repo": "flake-firefox-nightly",
-        "rev": "b372f87848ecf1ff2ff744b64aebfb130bbc961a",
+        "rev": "92d24b9d11ff64a5ed2e5473266ec825e39725b1",
         "type": "github"
       },
       "original": {
@@ -256,11 +256,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723399884,
-        "narHash": "sha256-97wn0ihhGqfMb8WcUgzzkM/TuAxce2Gd20A8oiruju4=",
+        "lastModified": 1723986931,
+        "narHash": "sha256-Fy+KEvDQ+Hc8lJAV3t6leXhZJ2ncU5/esxkgt3b8DEY=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "086f619dd991a4d355c07837448244029fc2d9ab",
+        "rev": "2598861031b78aadb4da7269df7ca9ddfc3e1671",
         "type": "github"
       },
       "original": {
@@ -289,11 +289,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1723944909,
-        "narHash": "sha256-4Ku+u8p2f2b/jjBj7VVjZIda345LycBIDp3jT1qHHXU=",
+        "lastModified": 1723986374,
+        "narHash": "sha256-b1cAExY3g1ADVBS8KAzvlvCHgu9KzZYejEyC/RfDIco=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "7eb844038f84abf7f2bc7a654c13c1b703350f3f",
+        "rev": "dbf70365c1213cc97affade3f7cf6ab2da3e9b69",
         "type": "github"
       },
       "original": {
@@ -305,11 +305,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1723953481,
-        "narHash": "sha256-J3WSuinUcLbWIdICGTWQ6fCDC1c5Ee8g1pcKwyiaWFg=",
+        "lastModified": 1723992409,
+        "narHash": "sha256-xyPSfOpS13SxZQmDB1LvZQvQv/1HK6U4d4i5IZ+x0Sw=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "9a9b379319b425206f0613e8b5566ded45b9cc50",
+        "rev": "5475463a982fe62cad122b970d9f936d4c3b3fc0",
         "type": "github"
       },
       "original": {
@@ -593,11 +593,11 @@
         "u-boot-src": "u-boot-src"
       },
       "locked": {
-        "lastModified": 1723755330,
-        "narHash": "sha256-kmJPdoDIhbGz6J7mIUPK6JYJLY6YDkeZPdtzpWPCk0I=",
+        "lastModified": 1723990852,
+        "narHash": "sha256-72GMGaEOC0f7ExJMBSJhtMLX7Q3CnaXQHMjMO2NkRQA=",
         "owner": "nix-community",
         "repo": "raspberry-pi-nix",
-        "rev": "6d61a9b18b1d3786ebd1cc73b7a3b37959bf4557",
+        "rev": "a993f0cd595ecc0836ca82640657527b934f9c9e",
         "type": "github"
       },
       "original": {
