@@ -56,27 +56,29 @@ jobs:
         run: nix flake update --accept-flake-config
 
       - name: Build NixOS ISO
-        if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'x86_64-linux'
+        if: steps.nix-cache.outputs.hit-primary-key != 'true' && matrix.system ==  'x86_64-linux'
         run: nix build --accept-flake-config .#nixos-iso
 
       - name: Rename NixOS ISO
-        if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'x86_64-linux'
+        if: steps.nix-cache.outputs.hit-primary-key != 'true' && matrix.system ==  'x86_64-linux'
         run: sudo mv ./result/iso/NixOS.iso "NixOS-${{ env.DATE }}.iso"
 
       - name: Setup QEMU for ARM builds
-        if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'aarch64-linux'
+        if: steps.nix-cache.outputs.hit-primary-key != 'true' && matrix.system ==  'aarch64-linux'
         run: sudo apt-get update && sudo apt-get install -y qemu qemu-user-static binfmt-support
 
       - name: Build NixOS Image (ARM)
-        if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'aarch64-linux'
-        run: nix build --accept-flake-config .#rpi-iso --system "aarch64-linux"
+        if: steps.nix-cache.outputs.hit-primary-key != 'true' && matrix.system ==  'aarch64-linux'
+        run: nix build --accept-flake-config .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux"
+        # run: nix build --accept-flake-config .#rpi-iso --system "aarch64-linux"
+
 
       - name: Rename NixOS Image (ARM)
-        if: steps.nix-cache.outputs.hit != 'true' && matrix.system ==  'aarch64-linux'
+        if: steps.nix-cache.outputs.hit-primary-key != 'true' && matrix.system ==  'aarch64-linux'
         run: sudo mv ./result/sd-image/NixPi.img.zst "NixPi-${{ env.DATE }}.img.zst"
 
       - name: Create GitHub Release
-        if: steps.nix-cache.outputs.hit != 'true'
+        if: steps.nix-cache.outputs.hit-primary-key != 'true'
         uses: softprops/action-gh-release@v2
         with:
           name: Nixos ISO Daily Build
