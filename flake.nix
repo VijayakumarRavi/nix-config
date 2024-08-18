@@ -2,13 +2,15 @@
   description = "My configs";
   nixConfig = {
     substituters = [
-      "https://nix-community.cachix.org?priority=1"
-      "https://numtide.cachix.org?priority=2"
-      "https://raspberry-pi-nix.cachix.org?priority=3"
-      "https://cache.nixos.org?priority=4"
+      "https://vijay.cachix.org?priority=1"
+      "https://nix-community.cachix.org?priority=2"
+      "https://numtide.cachix.org?priority=3"
+      "https://raspberry-pi-nix.cachix.org?priority=4"
+      "https://cache.nixos.org?priority=5"
     ];
 
     trusted-public-keys = [
+      "vijay.cachix.org-1:6Re6EF3Q58sxaIobAWP1QTwMUCSA0nYMrSJGUedL3Zk="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
       "raspberry-pi-nix.cachix.org-1:WmV2rdSangxW0rZjY/tBvBDSaNFQ3DyEQsVw8EvHn9o="
