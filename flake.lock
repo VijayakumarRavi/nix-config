@@ -133,11 +133,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723897578,
-        "narHash": "sha256-8K7qxP5MLUt5LC/8UPlEGrzo6P3dRf8v8Y48C1ooM3w=",
+        "lastModified": 1723943310,
+        "narHash": "sha256-/6Kie0y1mldCCm1uyOFrLg2AR5pqzGFwbPjwzaQ5crs=",
         "owner": "nix-community",
         "repo": "flake-firefox-nightly",
-        "rev": "c0673c288ad8fd55a0bd630b1560ad1811ba9e47",
+        "rev": "b372f87848ecf1ff2ff744b64aebfb130bbc961a",
         "type": "github"
       },
       "original": {
@@ -289,11 +289,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1723910037,
-        "narHash": "sha256-U4EbFY5p2itkVhPFl85G9aJ5M5Had6MOqRpdS/DQAwg=",
+        "lastModified": 1723944909,
+        "narHash": "sha256-4Ku+u8p2f2b/jjBj7VVjZIda345LycBIDp3jT1qHHXU=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "8859efd9ff093685de748920f0495b3388202e72",
+        "rev": "7eb844038f84abf7f2bc7a654c13c1b703350f3f",
         "type": "github"
       },
       "original": {
@@ -305,11 +305,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1723911709,
-        "narHash": "sha256-QJq6VOMOB9fmgNnWKdmtEUut0AYRMtd74Gp6XfW0tZg=",
+        "lastModified": 1723953481,
+        "narHash": "sha256-J3WSuinUcLbWIdICGTWQ6fCDC1c5Ee8g1pcKwyiaWFg=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "94c469cda8fd807755db009dcf9bc10a384efedc",
+        "rev": "9a9b379319b425206f0613e8b5566ded45b9cc50",
         "type": "github"
       },
       "original": {
@@ -540,11 +540,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1723703277,
-        "narHash": "sha256-nk0RaUB5f68BwtXAYy3WAjqFhVKqIl9Z89RGycTa2vk=",
+        "lastModified": 1723891200,
+        "narHash": "sha256-uljX21+D/DZgb9uEFFG2dkkQbPZN+ig4Z6+UCLWFVAk=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8b908192e64224420e2d59dfd9b2e4309e154c5d",
+        "rev": "a0d6390cb3e82062a35d0288979c45756e481f60",
         "type": "github"
       },
       "original": {
@@ -751,11 +751,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723911206,
-        "narHash": "sha256-D1SH1RJIuH1JlnQ99V0ne8ZmOBKlU+rVFvotbKs6C68=",
+        "lastModified": 1723949309,
+        "narHash": "sha256-m5eDlvjMrEUh59XoL//nCm6mXm+4KhlMOGa1tp/F35I=",
         "owner": "VijayakumarRavi",
         "repo": "suckless",
-        "rev": "01ce26033da7eedfbe59c8ae842e012bc73f1692",
+        "rev": "bd119157042a337d7caf709c9240f2dabfd4ee71",
         "type": "github"
       },
       "original": {
