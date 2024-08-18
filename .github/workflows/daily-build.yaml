@@ -52,7 +52,7 @@ jobs:
           purge-created: 300 # created more than this number of seconds ago relative to the start of the `Post Restore` phase
           purge-primary-key: never # except the version with the `primary-key`, if it exists
 
-      - uses: cachix/cachix-action@v14
+      - uses: cachix/cachix-action@v15
         if: steps.nix-cache.outputs.hit-primary-key != 'true'
         with:
           name: vijay
@@ -77,7 +77,6 @@ jobs:
         if: steps.nix-cache.outputs.hit-primary-key != 'true' && matrix.system ==  'aarch64-linux'
         run: nix build --accept-flake-config .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux" && cachix push vijay ./result
         # run: nix build --accept-flake-config .#rpi-iso --system "aarch64-linux"
-
 
       - name: Rename NixOS Image (ARM)
         if: steps.nix-cache.outputs.hit-primary-key != 'true' && matrix.system ==  'aarch64-linux'
