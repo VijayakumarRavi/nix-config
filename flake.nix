@@ -143,6 +143,7 @@
           nix-flake-check = {
             enable = true;
             name = "Nix flake check";
+            files = "\\.nix$";
             stages = ["pre-push"];
             pass_filenames = false;
             entry = "nix flake check --accept-flake-config --all-systems";
