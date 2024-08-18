@@ -70,6 +70,7 @@
       jq # JSON query tool
       gcc # c compiler
       tree # Tree command line tool
+      just # Handy way to save and run project-specific commands AKA justfile
       iperf # Network performance test
       cachix # Command-line client for Nix binary cache hosting https://cachix.org
       python3 # Python lang
