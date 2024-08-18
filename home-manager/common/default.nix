@@ -1,4 +1,4 @@
-{
+{variables, ...}: {
   imports = [
     ./common.nix
     ./zsh.nix
@@ -16,7 +16,8 @@
       CLICLOLOR = 1;
       EDITOR = "nvim";
     };
+    file.".config/htop/htoprc".source = ./htoprc;
     # Don't change this when you change package input. Leave it alone.
-    stateVersion = "22.11";
+    stateVersion = variables.stateVersion;
   };
 }

@@ -1,10 +1,9 @@
 {
   pkgs,
-  user,
   meta,
   inputs,
   config,
-  username,
+  variables,
   ...
 }: {
   imports = [
@@ -104,9 +103,9 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${username} = {
+  users.users.${variables.username} = {
     isNormalUser = true;
-    description = user;
+    description = variables.user;
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -130,15 +129,15 @@
     };
     id_ed25519 = {
       file = ../../secrets/id_ed25519;
-      path = "/home/${username}/.ssh/id_ed25519";
-      owner = "${username}";
+      path = "/home/${variables.username}/.ssh/id_ed25519";
+      owner = "${variables.username}";
       group = "users";
       mode = "600";
     };
     "id_ed25519.pub" = {
       file = ../../secrets/id_ed25519.pub;
-      path = "/home/${username}/.ssh/id_ed25519.pub";
-      owner = "${username}";
+      path = "/home/${variables.username}/.ssh/id_ed25519.pub";
+      owner = "${variables.username}";
       group = "users";
     };
   };
@@ -254,5 +253,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = variables.stateVersion; # Did you read the comment?
 }

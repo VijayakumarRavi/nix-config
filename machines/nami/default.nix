@@ -1,28 +1,30 @@
 {
   pkgs,
   inputs,
-  modulesPath,
-  user,
-  username,
+  variables,
   ...
 }: {
   imports = [
-    #"${modulesPath}/profiles/minimal.nix"
-    "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
-
     inputs.agenix.nixosModules.default
+    inputs.raspberry-pi-nix.nixosModules.raspberry-pi
   ];
 
   nixpkgs.hostPlatform = "aarch64-linux";
+
+  # bcm2711 for rpi 3, 3+, 4, zero 2 w
+  # bcm2712 for rpi 5
+  # See the docs at:
+  # https://www.raspberrypi.com/documentation/computers/linux_kernel.html#native-build-configuration
+  raspberry-pi-nix.board = "bcm2712";
 
   # Nix bin settings
   nix = {
     package = pkgs.nix;
     settings = {
-      allowed-users = ["${username}"];
+      allowed-users = ["${variables.username}"];
       trusted-users = [
         "root"
-        "${username}"
+        "${variables.username}"
       ];
       experimental-features = [
         "nix-command"
@@ -92,9 +94,9 @@
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${username} = {
+  users.users.${variables.username} = {
     isNormalUser = true;
-    description = user;
+    description = variables.user;
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -109,6 +111,8 @@
     ];
   };
 
+  # Root password
+  users.users.root.initialPassword = "root";
   # Disable sudo password
   security.sudo.wheelNeedsPassword = false;
 
@@ -117,16 +121,34 @@
   age.secrets = {
     id_ed25519 = {
       file = ../../secrets/id_ed25519;
-      path = "/home/${username}/.ssh/id_ed25519";
-      owner = "${username}";
+      path = "/home/${variables.username}/.ssh/id_ed25519";
+      owner = "${variables.username}";
       group = "users";
       mode = "600";
     };
     "id_ed25519.pub" = {
       file = ../../secrets/id_ed25519.pub;
-      path = "/home/${username}/.ssh/id_ed25519.pub";
-      owner = "${username}";
+      path = "/home/${variables.username}/.ssh/id_ed25519.pub";
+      owner = "${variables.username}";
       group = "users";
+    };
+  };
+
+  hardware = {
+    bluetooth.enable = true;
+    raspberry-pi = {
+      config = {
+        all = {
+          base-dt-params = {
+            # enable autoprobing of bluetooth driver
+            # https://github.com/raspberrypi/linux/blob/c8c99191e1419062ac8b668956d19e788865912a/arch/arm/boot/dts/overlays/README#L222-L224
+            krnbt = {
+              enable = true;
+              value = "on";
+            };
+          };
+        };
+      };
     };
   };
 
@@ -136,5 +158,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = variables.stateVersion; # Did you read the comment?
 }

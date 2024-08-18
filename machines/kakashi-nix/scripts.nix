@@ -1,6 +1,6 @@
 {
   pkgs,
-  username,
+  variables,
   ...
 }: let
   task-waybar = pkgs.writeShellScriptBin "task-waybar" ''
@@ -27,7 +27,7 @@
 
   autohypr = pkgs.writeShellScriptBin "autohypr" ''
     ${pkgs.swww}/bin/swww init &
-    ${pkgs.swww}/bin/swww img /home/${username}/.config/wallpaper.png &
+    ${pkgs.swww}/bin/swww img /home/${variables.username}/.config/wallpaper.png &
     ${pkgs.swaynotificationcenter}/bin/swaync &
     if [[ ! $(pgrep -f waybar) ]]; then
       ${pkgs.waybar}/bin/waybar &

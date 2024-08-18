@@ -1,6 +1,6 @@
 {
   pkgs,
-  username,
+  variables,
   ...
 }: {
   programs.zsh = {
@@ -27,9 +27,9 @@
     initExtra = ''
       function switch() {
         if command -v darwin-rebuild &> /dev/null 2>&1; then
-          darwin-rebuild switch "$@" --flake /Users/${username}/.nix-config#kakashi
+          darwin-rebuild switch "$@" --flake /Users/${variables.username}/.nix-config#kakashi
         else
-          sudo nixos-rebuild switch "$@" --accept-flake-config --flake /home/${username}/.nix-config
+          sudo nixos-rebuild switch "$@" --accept-flake-config --flake /home/${variables.username}/.nix-config
         fi
       }
 
@@ -68,15 +68,16 @@
       ",," = "cd -";
       ".." = "cd ..";
       "..." = "cd ../..";
-      n = "nvim";
-      sn = "sudo nvim";
-      sv = "sudo vim";
-      pg = "prettyping google.com";
-      pv = "prettyping vijayakumar.xyz";
+      n = "${pkgs.neovim}/bin/nvim";
+      sn = "sudo ${pkgs.neovim}/bin/nvim";
+      sv = "sudo ${pkgs.vim}/bin/vim";
+      pg = "${pkgs.prettyping}/bin/prettyping google.com";
+      pv = "${pkgs.prettyping}/bin/prettyping vijayakumar.xyz";
       lg = "${pkgs.lazygit}/bin/lazygit";
       ld = "${pkgs.lazydocker}/bin/lazydocker";
-      mux = "tmux -u new-session -A -s default_tmux";
-      nfc = "nix flake check --accept-flake-config --all-systems";
+      tmux = "${pkgs.tmux}/bin/tmux -u new-session -A -s default_tmux";
+      nfs = "${pkgs.nix}/bin/nix flake show --accept-flake-config --all-systems";
+      nfc = "${pkgs.nix}/bin/nix flake check --accept-flake-config --all-systems";
       dvim = "XDG_CONFIG_HOME=~/.nix-config/home-manager/dotfiles/ XDG_DATA_HOME=~/.local/share/dev_nvim XDG_STATE_HOME=~/.local/state/dev_nvim nvim";
 
       # tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";

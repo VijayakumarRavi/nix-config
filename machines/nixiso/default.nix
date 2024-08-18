@@ -2,7 +2,7 @@
   lib,
   pkgs,
   modulesPath,
-  username,
+  variables,
   ...
 }: {
   # ISO settings
@@ -22,10 +22,10 @@
   nix = {
     package = pkgs.nix;
     settings = {
-      allowed-users = ["${username}"];
+      allowed-users = ["${variables.username}"];
       trusted-users = [
         "root"
-        "${username}"
+        "${variables.username}"
       ];
       experimental-features = [
         "nix-command"
@@ -74,7 +74,7 @@
   ];
 
   # user account.
-  users.users.${username} = {
+  users.users.${variables.username} = {
     isNormalUser = true;
     extraGroups = [
       "users"
@@ -107,5 +107,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = variables.stateVersion; # Did you read the comment?
 }

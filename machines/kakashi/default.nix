@@ -1,6 +1,6 @@
 {
-  username,
   pkgs,
+  variables,
   ...
 }: {
   imports = [
@@ -106,8 +106,8 @@
     hostName = "kakashi";
   };
 
-  users.users.${username} = {
-    home = /Users/${username};
+  users.users.${variables.username} = {
+    home = /Users/${variables.username};
   };
 
   fonts.packages = [
@@ -359,6 +359,6 @@
     #      ];
     #    };
     # backwards compat; don't change
-    stateVersion = 4;
+    stateVersion = variables.stateVersionDarwin;
   };
 }

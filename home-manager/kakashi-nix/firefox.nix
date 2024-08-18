@@ -1,11 +1,11 @@
 {
-  username,
   pkgs,
+  variables,
   ...
 }: {
   programs.firefox = {
     enable = true;
-    profiles.${username} = {
+    profiles.${variables.username} = {
       search.engines = {
         "Nix Packages" = {
           urls = [

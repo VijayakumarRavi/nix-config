@@ -1,7 +1,7 @@
 {
-  username,
-  inputs,
   pkgs,
+  inputs,
+  variables,
   ...
 }: {
   imports = [inputs.agenix.nixosModules.default];
@@ -10,10 +10,10 @@
     # package = lib.mkDefault pkgs.nix;
     package = pkgs.nix;
     settings = {
-      allowed-users = ["${username}"];
+      allowed-users = ["${variables.username}"];
       trusted-users = [
         "root"
-        "${username}"
+        "${variables.username}"
       ];
       experimental-features = [
         "nix-command"
@@ -27,7 +27,7 @@
 
   # BUG: if you remove these two lines you won't be able to access any nix programs
   programs.zsh.enable = true;
-  users.users.${username}.shell = pkgs.zsh;
+  users.users.${variables.username}.shell = pkgs.zsh;
 
   #disable nix documentation
   documentation.enable = false;

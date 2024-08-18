@@ -96,18 +96,21 @@
     ...
   }: let
     # Config
-    user = "Vijayakumar Ravi";
-    username = "vijay";
-    # stateVersion = "24.11";
-    # stateVersionDarwin = 4;
-
+    variables = {
+      username = "vijay";
+      user = "Vijayakumar Ravi";
+      useremail = "im@vijayakumar.xyz";
+      stateVersion = "24.11";
+      stateVersionDarwin = 4;
+    };
     # Configured Hosts
     darwinSystems = {kakashi = "aarch64-darwin";};
     linuxSystems = {
+      nami = "aarch64-linux";
       zoro = "x86_64-linux";
       usopp = "x86_64-linux";
       choppar = "x86_64-linux";
-      kakashi = "aarch64-linux";
+      kakshiNix = "aarch64-linux";
     };
 
     supportedSystems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
@@ -156,7 +159,7 @@
     packages.x86_64-linux = {
       # NixOS boot disk with my SSH Keys integrated
       nixos-iso = nixos-generators.nixosGenerate {
-        specialArgs = {inherit inputs username user;};
+        specialArgs = {inherit inputs variables;};
         system = "x86_64-linux";
         format = "install-iso";
         modules = [
@@ -164,21 +167,10 @@
         ];
       };
     };
-    packages.aarch64-linux = {
-      rpi-iso = nixos-generators.nixosGenerate {
-        specialArgs = {inherit inputs username user;};
-        system = "aarch64-linux";
-        format = "sd-aarch64";
-        modules = [
-          #inputs.raspberry-pi-nix.nixosModules.raspberry-pi
-          ./machines/raspberry
-        ];
-      };
-    };
     darwinConfigurations.kakashi = darwin.lib.darwinSystem {
       system = darwinSystems.kakashi;
       # makes all inputs available in imported files
-      specialArgs = {inherit inputs username user;};
+      specialArgs = {inherit inputs variables;};
       modules = [
         ./machines/kakashi
         {environment.systemPackages = [agenix.packages.${darwinSystems.kakashi}.default];}
@@ -186,7 +178,7 @@
         {
           nix-homebrew = {
             enable = true;
-            user = {inherit user;};
+            user = variables.username;
             enableRosetta = true;
             autoMigrate = true;
             mutableTaps = false;
@@ -203,8 +195,8 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            extraSpecialArgs = {inherit inputs username user;};
-            users.${username}.imports = [./home-manager/kakashi];
+            extraSpecialArgs = {inherit inputs variables;};
+            users.${variables.username}.imports = [./home-manager/kakashi];
           };
         }
       ];
@@ -218,7 +210,7 @@
           {
             # makes all inputs available in imported files
             specialArgs = {
-              inherit inputs username user suckless;
+              inherit inputs variables suckless;
               meta = {hostname = name;};
             };
             system = linuxSystems.${name};
@@ -227,17 +219,19 @@
                 {environment.systemPackages = [agenix.packages.${linuxSystems.${name}}.default];}
                 home-manager.nixosModules.home-manager
                 {
-                  home-manager.extraSpecialArgs = {inherit inputs username user;};
-                  home-manager.users.${username} = {
+                  home-manager.extraSpecialArgs = {inherit inputs variables;};
+                  home-manager.users.${variables.username} = {
                     imports =
-                      if name == "kakashi"
+                      if name == "kakshiNix"
                       then [./home-manager/kakashi-nix]
+                      else if name == "nami"
+                      then [./home-manager/nami]
                       else [./home-manager/kubenodes];
                   };
                 }
               ]
               ++ (
-                if name == "kakashi"
+                if name == "kakshiNix"
                 then [
                   ./machines/kakashi-nix
                   {
@@ -249,9 +243,11 @@
                     ];
                   }
                 ]
+                else if name == "nami"
+                then [./machines/nami]
                 else [./machines/kubenodes]
               );
           };
-      }) ["zoro" "usopp" "choppar" "kakashi"]);
+      }) ["zoro" "usopp" "choppar" "kakshiNix" "nami"]);
   };
 }
