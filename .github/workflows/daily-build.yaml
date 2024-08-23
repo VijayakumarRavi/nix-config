@@ -7,6 +7,10 @@ on:
   schedule:
     - cron: 0 4 * * *
 
+# Workflow permissions
+permissions:
+  contents: write
+
 jobs:
   Build:
     name: Buildig 👷‍♂️ New 🆕 Nix ISO 📀
@@ -22,39 +26,18 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Nix
-        uses: nixbuild/nix-quick-install-action@v28
-        with:
-          nix_conf: |
-            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-            # keep all store paths necessary to build the outputs
-            keep-outputs = true
-            keep-derivations = true
+        uses: DeterminateSystems/nix-installer-action@main
 
       - name: Get current date
-        id: current_date
-        run: |
-          DATE="$(TZ="Asia/Kolkata" date "+%d.%m.%Y")"
-          echo "DATE=$DATE" >> "$GITHUB_ENV"
+        id: date
+        run: echo "date=$(TZ="Asia/Kolkata" date +'%d-%m-%Y')" >> "$GITHUB_OUTPUT"
 
       - name: Cache Nix store
         id: nix-cache
-        uses: nix-community/cache-nix-action@v5
-        with:
-          primary-key: nix-${{ matrix.system }}-${{ hashfiles('**/flake.nix', '**/flake.lock') }}
-          # if there's no cache hit, restore a cache by this prefix
-          restore-prefixes-first-match: nix-${{ matrix.system }}-
-          # collect garbage until Nix store size (in bytes) is at most this number
-          # before trying to save a new cache
-          gc-max-store-size: 5000000000
-          # purge all versions of the cache
-          purge: true
-          purge-prefixes: nix-${{ matrix.system }}-
-          purge-created: 300 # created more than this number of seconds ago relative to the start of the `Post Restore` phase
-          purge-primary-key: never # except the version with the `primary-key`, if it exists
+        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Cachix binary cache
         uses: cachix/cachix-action@v15
-        if: steps.nix-cache.outputs.hit-primary-key != 'true'
         with:
           name: vijay
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
@@ -63,28 +46,26 @@ jobs:
         run: nix flake update --accept-flake-config
 
       - name: Build NixOS ISO
-        if: steps.nix-cache.outputs.hit-primary-key != 'true' && matrix.system ==  'x86_64-linux'
-        run: nix build --accept-flake-config .#nixos-iso && cachix push vijay ./result
+        if: matrix.system ==  'x86_64-linux'
+        run: nix build --accept-flake-config .#nixos-iso
 
       - name: Rename NixOS ISO
-        if: steps.nix-cache.outputs.hit-primary-key != 'true' && matrix.system ==  'x86_64-linux'
-        run: sudo mv ./result/iso/NixOS.iso "NixOS-${{ env.DATE }}.iso"
+        if: matrix.system ==  'x86_64-linux'
+        run: sudo mv ./result/iso/NixOS.iso "NixOS-${{ steps.date.outputs.date }}.iso"
 
       - name: Setup QEMU for ARM builds
-        if: steps.nix-cache.outputs.hit-primary-key != 'true' && matrix.system ==  'aarch64-linux'
+        if: matrix.system ==  'aarch64-linux'
         run: sudo apt-get update && sudo apt-get install -y qemu qemu-user-static binfmt-support
 
       - name: Build NixOS Image (ARM)
-        if: steps.nix-cache.outputs.hit-primary-key != 'true' && matrix.system ==  'aarch64-linux'
-        run: nix build --accept-flake-config .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux" && cachix push vijay ./result
-        # run: nix build --accept-flake-config .#rpi-iso --system "aarch64-linux"
+        if: matrix.system ==  'aarch64-linux'
+        run: nix build --accept-flake-config .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux"
 
       - name: Rename NixOS Image (ARM)
-        if: steps.nix-cache.outputs.hit-primary-key != 'true' && matrix.system ==  'aarch64-linux'
-        run: sudo mv ./result/sd-image/NixPi.img.zst "NixPi-${{ env.DATE }}.img.zst"
+        if: matrix.system ==  'aarch64-linux'
+        run: sudo mv ./result/sd-image/NixPi.img.zst "NixPi-${{ steps.date.outputs.date }}.img.zst"
 
       - name: Create GitHub Release
-        if: steps.nix-cache.outputs.hit-primary-key != 'true'
         uses: softprops/action-gh-release@v2
         with:
           name: Nixos ISO Daily Build
@@ -92,8 +73,8 @@ jobs:
           make_latest: true
           generate_release_notes: true
           files: |
-            NixOS-${{ env.DATE }}.iso
-            NixPi-${{ env.DATE }}.img.zst
+            NixOS-${{ steps.date.outputs.date }}.iso
+            NixPi-${{ steps.date.outputs.date }}.img.zst
 
       - name: Commit and Push
         if: matrix.system == 'x86_64-linux'

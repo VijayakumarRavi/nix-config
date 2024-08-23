@@ -8,3 +8,4 @@ lazy-lock.json
 *.img
 *.iso
 *.zst
+host_keys
