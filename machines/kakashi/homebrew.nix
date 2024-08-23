@@ -25,6 +25,7 @@
       "beeper" # Universal chat app powered by Matrix
       "github" # Desktop client for GitHub repositories
       "balenaetcher" # Tool to flash OS images to SD cards & USB drives
+      "raspberry-pi-imager" # Raspberry Pi Imager to flash sd cards
     ];
     masApps = {
       "1Password for Safari" = 1569813296;

@@ -52,7 +52,8 @@ jobs:
           purge-created: 300 # created more than this number of seconds ago relative to the start of the `Post Restore` phase
           purge-primary-key: never # except the version with the `primary-key`, if it exists
 
-      - uses: cachix/cachix-action@v15
+      - name: Cachix binary cache
+        uses: cachix/cachix-action@v15
         if: steps.nix-cache.outputs.hit-primary-key != 'true'
         with:
           name: vijay
