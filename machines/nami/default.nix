@@ -17,6 +17,11 @@
   # https://www.raspberrypi.com/documentation/computers/linux_kernel.html#native-build-configuration
   raspberry-pi-nix.board = "bcm2712";
 
+  sdImage = {
+    imageName = "NixPi.img";
+    compressImage = true;
+  };
+
   # Nix bin settings
   nix = {
     package = pkgs.nix;
@@ -31,11 +36,29 @@
         "flakes"
       ];
       auto-optimise-store = true;
+      warn-dirty = false;
+      sandbox = false;
     };
   };
 
   # Reduce img size
   documentation.enable = false;
+
+  time.timeZone = "Asia/Kolkata";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_IN";
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "en_IN";
+    LC_IDENTIFICATION = "en_IN";
+    LC_MEASUREMENggT = "en_IN";
+    LC_MONETARY = "en_IN";
+    LC_NAME = "en_IN";
+    LC_NUMERIC = "en_IN";
+    LC_PAPER = "en_IN";
+    LC_TELEPHONE = "en_IN";
+    LC_TIME = "en_IN";
+  };
 
   # Console font size
   console = {
@@ -44,13 +67,6 @@
     packages = with pkgs; [terminus_font];
     keyMap = "us";
   };
-
-  sdImage = {
-    imageName = "NixPi.img";
-    compressImage = true;
-  };
-
-  time.timeZone = "Asia/Kolkata";
 
   networking = {
     hostName = "nami";
@@ -78,23 +94,11 @@
     };
   };
 
-  # Enable ssh
-  services.openssh = {
-    enable = true;
-    settings.PermitRootLogin = "yes";
-  };
-  systemd.services.sshd.wantedBy = pkgs.lib.mkForce ["multi-user.target"];
-
-  # List packages installed in system profile.
-  environment.systemPackages = with pkgs; [
-    neovim
-    tmux
-    git
-    htop
-  ];
+  programs.zsh.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${variables.username} = {
+    shell = pkgs.zsh;
     isNormalUser = true;
     description = variables.user;
     extraGroups = [
@@ -111,11 +115,49 @@
     ];
   };
 
-  # Root password
-  users.users.root.initialPassword = "root";
   # Disable sudo password
   security.sudo.wheelNeedsPassword = false;
 
+  # Set Environment Variables
+  environment.variables = {
+    PATH = [
+      "\${HOME}/.local/bin"
+      "\${HOME}/.cargo/bin"
+      "$/usr/local/bin"
+    ];
+    STARSHIP_CONFIG = "\${HOME}/.config/starship/starship.toml";
+  };
+  # List services that you want to enable
+  services = {
+    # Enable the OpenSSH daemon.
+    openssh = {
+      enable = true;
+      settings.PermitRootLogin = "yes";
+    };
+
+    fstrim.enable = true;
+
+    pcscd.enable = true;
+
+    # Configure keymap in X11
+    xserver = {
+      xkb.layout = "us";
+      xkb.variant = "";
+    };
+    libinput.enable = true;
+  };
+  systemd.services.sshd.wantedBy = pkgs.lib.mkForce ["multi-user.target"];
+
+  # List packages installed in system profile.
+  environment.systemPackages = with pkgs; [
+    neovim
+    tmux
+    git
+    gcc
+    htop
+  ];
+
+  # Enable docker
   virtualisation.docker.enable = true;
 
   age.secrets = {
