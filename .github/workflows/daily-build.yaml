@@ -37,11 +37,11 @@ jobs:
         id: nix-cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Cachix binary cache
-        uses: cachix/cachix-action@v15
-        with:
-          name: vijay
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      # - name: Cachix binary cache
+      #   uses: cachix/cachix-action@v15
+      #   with:
+      #     name: vijay
+      #     authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Bump flake.lock
         run: nix flake update --accept-flake-config
