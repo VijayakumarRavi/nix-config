@@ -43,7 +43,7 @@
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
 
     #Raspberry pi nix
-    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
+    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix/v0.4.0";
     raspberry-pi-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     # For M2 Macbook Air
