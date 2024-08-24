@@ -1,4 +1,9 @@
-{variables, ...}: {
+{
+  variables,
+  inputs,
+  ...
+}: {
+  imports = [inputs.disko.nixosModules.disko];
   disko.devices = {
     disk = {
       nixos = {
@@ -45,6 +50,13 @@
                       "noatime"
                     ];
                     mountpoint = "/nix";
+                  };
+                  # Subvolume for the swapfile
+                  "/swap" = {
+                    mountpoint = "/.swapvol";
+                    swap = {
+                      swapfile.size = "8G";
+                    };
                   };
                 };
                 mountpoint = "/partition-root";

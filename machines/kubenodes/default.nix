@@ -1,7 +1,6 @@
 {
   pkgs,
   meta,
-  inputs,
   config,
   variables,
   ...
@@ -13,8 +12,7 @@
     ./hardware-configuration.nix
 
     # Declarative disk partitioning config
-    inputs.disko.nixosModules.disko
-    ./disko-config.nix
+    ./disk-config.nix
 
     # Machine specific imports
     ./${meta.hostname}.nix
