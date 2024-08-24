@@ -10,13 +10,13 @@ on:
       - "flake.lock"
       - "machines/nami/**"
       - "machines/nixiso/**"
-      - ".github/workflows/build-and-release.yaml"
+      - ".github/workflows/daily-build.yaml"
   pull_request:
     paths:
       - "flake.lock"
       - "machines/nami/**"
       - "machines/nixiso/**"
-      - ".github/workflows/build-and-release.yaml"
+      - ".github/workflows/daily-build.yaml"
 
 # Workflow permissions
 permissions:
