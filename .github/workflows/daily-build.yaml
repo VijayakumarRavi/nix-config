@@ -61,10 +61,6 @@ jobs:
         if: matrix.system ==  'x86_64-linux'
         run: nix build --accept-flake-config .#nixos-iso
 
-      - name: Rename NixOS ISO
-        if: matrix.system ==  'x86_64-linux'
-        run: sudo mv ./result/iso/NixOS.iso "NixOS-${{ steps.date.outputs.date }}.iso"
-
       - name: Setup QEMU for ARM builds
         if: matrix.system ==  'aarch64-linux'
         run: sudo apt-get update && sudo apt-get install -y qemu qemu-user-static binfmt-support
@@ -72,10 +68,6 @@ jobs:
       - name: Build NixOS Image (ARM)
         if: matrix.system ==  'aarch64-linux'
         run: nix build --accept-flake-config .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux"
-
-      - name: Rename NixOS Image (ARM)
-        if: matrix.system ==  'aarch64-linux'
-        run: sudo mv ./result/sd-image/NixPi.img.zst "NixPi-${{ steps.date.outputs.date }}.img.zst"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -85,8 +77,8 @@ jobs:
           make_latest: true
           generate_release_notes: true
           files: |
-            NixOS-${{ steps.date.outputs.date }}.iso
-            NixPi-${{ steps.date.outputs.date }}.img.zst
+            ./result/iso/NixOS.iso
+            ./result/sd-image/NixPi.img.zst
 
       - name: Commit and Push
         if: matrix.system == 'x86_64-linux'
