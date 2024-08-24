@@ -33,17 +33,17 @@ jobs:
         id: date
         run: echo "date=$(TZ="Asia/Kolkata" date +'%d-%m-%Y')" >> "$GITHUB_OUTPUT"
 
-      - name: Cache Nix store
+      - name: Enable Github Cache for Nix store
         id: nix-cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
-      # - name: Cachix binary cache
+      # - name: Enable Cachix binary cache
       #   uses: cachix/cachix-action@v15
       #   with:
       #     name: vijay
       #     authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
-      - name: Bump flake.lock
+      - name: Update flake.lock
         run: nix flake update --accept-flake-config
 
       - name: Build NixOS ISO
@@ -69,7 +69,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Nixos ISO Daily Build
+          name: Nixos Daily Build
           tag_name: "daily-build"
           make_latest: true
           generate_release_notes: true
