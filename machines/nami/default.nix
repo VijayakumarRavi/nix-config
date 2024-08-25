@@ -7,6 +7,8 @@
   imports = [
     inputs.agenix.nixosModules.default
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
+
+    ./fan_controller.nix
   ];
 
   nixpkgs.hostPlatform = "aarch64-linux";
@@ -125,6 +127,7 @@
       "\${HOME}/.cargo/bin"
       "$/usr/local/bin"
     ];
+    FLAKE = "/home/${variables.username}/.nix-config";
     STARSHIP_CONFIG = "\${HOME}/.config/starship/starship.toml";
   };
   # List services that you want to enable
@@ -139,6 +142,8 @@
 
     pcscd.enable = true;
 
+    pi5_fan_controller.enable = true;
+
     # Configure keymap in X11
     xserver = {
       xkb.layout = "us";
@@ -150,11 +155,12 @@
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
-    neovim
-    tmux
+    nh
     git
     gcc
     htop
+    tmux
+    neovim
   ];
 
   # Enable docker
