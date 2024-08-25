@@ -15,5 +15,6 @@
     nil # Yet another language server for Nix
     alejandra # formatter for Nix
     ripgrep # for telescope builtin.grep_string function
+    gcc
   ];
 }

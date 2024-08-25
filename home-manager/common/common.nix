@@ -1,5 +1,7 @@
 {variables, ...}: {
   programs = {
+    htop.enable = true;
+
     zoxide = {
       # smarter cd command
       enable = true;

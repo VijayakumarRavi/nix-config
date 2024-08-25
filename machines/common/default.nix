@@ -1,5 +1,7 @@
 {
+  lib,
   pkgs,
+  config,
   inputs,
   variables,
   ...
@@ -7,7 +9,6 @@
   imports = [inputs.agenix.nixosModules.default];
 
   nix = {
-    # package = lib.mkDefault pkgs.nix;
     package = pkgs.nix;
     settings = {
       allowed-users = ["${variables.username}"];
@@ -15,11 +16,14 @@
         "root"
         "${variables.username}"
       ];
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
+      experimental-features =
+        [
+          "nix-command"
+          "flakes"
+        ]
+        ++ lib.optional (lib.versionOlder (lib.versions.majorMinor config.nix.package.version) "2.22") "repl-flake";
       auto-optimise-store = true;
+      connect-timeout = 5;
       warn-dirty = false;
       sandbox = false;
     };
@@ -29,10 +33,17 @@
   programs.zsh.enable = true;
   users.users.${variables.username}.shell = pkgs.zsh;
 
-  #disable nix documentation
-  documentation.enable = false;
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Disable nix documentation
+  # Notice this also disables --help for some commands such es nixos-rebuild
+  documentation = {
+    enable = lib.mkDefault false;
+    info.enable = lib.mkDefault false;
+    man.enable = lib.mkDefault false;
+    #   nixos.enable = lib.mkDefault false;
+  };
 
   environment = {
     shells = with pkgs; [zsh];

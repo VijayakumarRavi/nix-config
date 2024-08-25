@@ -10,6 +10,8 @@
     extraConfig = {
       color.ui = "auto";
       pull.rebase = true;
+      rebase.autoStash = true;
+      merge.autostash = true;
       credential.helper = "osxkeychain";
       difftool.prompt = false;
       # user.signingKey = "~/.ssh/id_ed25519.pub";
