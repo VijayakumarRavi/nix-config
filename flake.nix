@@ -121,15 +121,22 @@
       pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
         src = ./.;
         hooks = {
-          deadnix.enable = true;
           alejandra.enable = true;
           actionlint.enable = true;
+          shellcheck.enable = true;
           flake-checker.enable = true;
           check-symlinks.enable = true;
           end-of-file-fixer.enable = true;
           detect-private-keys.enable = true;
           trim-trailing-whitespace.enable = true;
           trim-trailing-whitespace.stages = ["pre-commit"];
+          deadnix = {
+            enable = true;
+            settings = {
+              edit = true;
+              noLambdaArg = true;
+            };
+          };
           statix = {
             enable = true;
             files = "\\.nix$";
