@@ -134,6 +134,13 @@
           detect-private-keys.enable = true;
           trim-trailing-whitespace.enable = true;
           trim-trailing-whitespace.stages = ["pre-commit"];
+          statix = {
+            enable = true;
+            files = "\\.nix$";
+            name = "statix fix";
+            stages = ["post-commit"];
+            entry = "statix fix";
+          };
           git-pull = {
             enable = true;
             name = "git pull remort";
