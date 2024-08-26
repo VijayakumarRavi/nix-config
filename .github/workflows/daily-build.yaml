@@ -54,6 +54,9 @@ jobs:
       - name: Update flake.lock
         run: nix flake update --accept-flake-config
 
+      - name: Clear unused storre paths (collect garbage)
+        run: nix-collect-garbage -d
+
       - name: Build NixOS ISO
         run: nix build --accept-flake-config .#nixos-iso
 
