@@ -11,6 +11,10 @@
     ../common
     ../common/linux.nix
 
+    # Containers
+    ./compose.nix
+
+    # RPI5 fan controller
     ./fan_controller.nix
   ];
 
@@ -44,9 +48,6 @@
   environment.systemPackages = with pkgs; [
     nh
   ];
-
-  # Enable docker
-  virtualisation.docker.enable = true;
 
   hardware = {
     bluetooth.enable = true;
