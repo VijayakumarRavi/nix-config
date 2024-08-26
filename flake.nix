@@ -83,7 +83,6 @@
     };
   };
   outputs = inputs @ {
-    self,
     nixpkgs,
     nixos-generators,
     home-manager,
@@ -117,9 +116,6 @@
 
     supportedSystems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
     forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-  in {
-    # Enables `nix fmt` at root of repo to format all nix files
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
     pre-commit = forAllSystems (system: {
       pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
@@ -159,14 +155,20 @@
         };
       };
     });
+  in {
+    # Enables `nix fmt` at root of repo to format all nix files
+    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+
+    # devShell to enable pre-commit via direnv
     devShells = forAllSystems (system: {
       default = nixpkgs.legacyPackages.${system}.mkShell {
-        inherit (self.pre-commit.${system}.pre-commit-check) shellHook;
-        buildInputs = self.pre-commit.${system}.pre-commit-check.enabledPackages;
+        inherit (pre-commit.${system}.pre-commit-check) shellHook;
+        buildInputs = pre-commit.${system}.pre-commit-check.enabledPackages;
       };
     });
+
+    # NixOS boot disk with my SSH Keys integrated
     packages.x86_64-linux = {
-      # NixOS boot disk with my SSH Keys integrated
       nixos-iso = nixos-generators.nixosGenerate {
         specialArgs = {inherit inputs variables;};
         system = "x86_64-linux";
@@ -176,9 +178,11 @@
         ];
       };
     };
+
+    # Macos configurations
     darwinConfigurations.kakashi = darwin.lib.darwinSystem {
       system = darwinSystems.kakashi;
-      # makes all inputs available in imported files
+      # makes all inputs & variables available in imported files
       specialArgs = {inherit inputs variables;};
       modules = [
         ./machines/kakashi
@@ -217,7 +221,7 @@
         value =
           nixpkgs.lib.nixosSystem
           {
-            # makes all inputs available in imported files
+            # makes all inputs & variables available in imported files
             specialArgs = {
               inherit inputs variables suckless;
               meta = {hostname = name;};
