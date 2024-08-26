@@ -137,13 +137,12 @@
           statix = {
             enable = true;
             files = "\\.nix$";
-            name = "statix fix";
-            stages = ["post-commit"];
+            name = "statix-fix";
             entry = "statix fix";
           };
           git-pull = {
             enable = true;
-            name = "git pull remort";
+            name = "git-pull-remort";
             always_run = true;
             pass_filenames = false;
             stages = ["post-commit"];
@@ -151,7 +150,7 @@
           };
           nix-flake-check = {
             enable = true;
-            name = "Nix flake check";
+            name = "nix-flake-check";
             files = "\\.nix$";
             stages = ["pre-push"];
             pass_filenames = false;

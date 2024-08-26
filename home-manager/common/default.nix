@@ -18,6 +18,6 @@
     };
     file.".config/htop/htoprc".source = ./htoprc;
     # Don't change this when you change package input. Leave it alone.
-    stateVersion = variables.stateVersion;
+    inherit (variables) stateVersion;
   };
 }
