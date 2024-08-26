@@ -2,8 +2,9 @@
   imports = [
     ../common
     ./lf.nix
+    ./kitty.nix
     ./wezterm.nix
-    #./alacritty.nix
+    ./alacritty.nix
     ./wezterm.nix
     ./lf.nix
   ];

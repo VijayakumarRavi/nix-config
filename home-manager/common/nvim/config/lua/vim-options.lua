@@ -29,9 +29,6 @@ vim.opt.spellfile = spell_dir .. "/en.utf-8.add"
 
 vim.opt.clipboard = "unnamedplus"
 
--- Set colorscheme
-vim.cmd([[colorscheme habamax]])
-
 -- Enable persistent undo history
 vim.cmd([[
     if has("persistent_undo")
