@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   inputs,
   variables,
   ...
@@ -42,6 +43,13 @@
   # List services that you want to enable
   services = {
     pi5_fan_controller.enable = true;
+
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      extraSetFlags = ["--advertise-routes=10.0.0.0/16" "--advertise-exit-node"];
+      authKeyFile = config.age.secrets.tailauthKeyFile.path;
+    };
   };
 
   # List packages installed in system profile.

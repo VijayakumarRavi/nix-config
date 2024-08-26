@@ -13,4 +13,5 @@ in {
   "kubetoken".publicKeys = all;
   "id_ed25519".publicKeys = all;
   "id_ed25519.pub".publicKeys = all;
+  "tailauthKeyFile".publicKeys = all;
 }
