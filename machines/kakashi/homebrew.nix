@@ -1,4 +1,25 @@
-{config, ...}: {
+{
+  config,
+  inputs,
+  variables,
+  ...
+}: {
+  imports = [inputs.nix-homebrew.darwinModules.nix-homebrew];
+
+  nix-homebrew = {
+    enable = true;
+    user = variables.username;
+    enableRosetta = true;
+    autoMigrate = true;
+    mutableTaps = false;
+    taps = {
+      "homebrew/homebrew-core" = inputs.homebrew-core;
+      "homebrew/homebrew-cask" = inputs.homebrew-cask;
+      "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
+      "homebrew/homebrew-services" = inputs.homebrew-services;
+    };
+  };
+
   homebrew = {
     enable = true;
     caskArgs.no_quarantine = true;

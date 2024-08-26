@@ -89,11 +89,6 @@
     agenix,
     darwin,
     suckless,
-    nix-homebrew,
-    homebrew-bundle,
-    homebrew-core,
-    homebrew-cask,
-    homebrew-services,
     ...
   }: let
     # Config
@@ -175,16 +170,16 @@
     });
 
     # NixOS boot disk with my SSH Keys integrated
-    packages.x86_64-linux = {
+    packages = forAllSystems (system: {
       nixos-iso = nixos-generators.nixosGenerate {
         specialArgs = {inherit inputs variables;};
-        system = "x86_64-linux";
+        inherit system;
         format = "install-iso";
         modules = [
           ./machines/nixiso
         ];
       };
-    };
+    });
 
     # Macos configurations
     darwinConfigurations.kakashi = darwin.lib.darwinSystem {
@@ -193,23 +188,6 @@
       specialArgs = {inherit inputs variables;};
       modules = [
         ./machines/kakashi
-        {environment.systemPackages = [agenix.packages.${darwinSystems.kakashi}.default];}
-        nix-homebrew.darwinModules.nix-homebrew
-        {
-          nix-homebrew = {
-            enable = true;
-            user = variables.username;
-            enableRosetta = true;
-            autoMigrate = true;
-            mutableTaps = false;
-            taps = {
-              "homebrew/homebrew-core" = homebrew-core;
-              "homebrew/homebrew-cask" = homebrew-cask;
-              "homebrew/homebrew-bundle" = homebrew-bundle;
-              "homebrew/homebrew-services" = homebrew-services;
-            };
-          };
-        }
         home-manager.darwinModules.home-manager
         {
           home-manager = {
@@ -252,17 +230,7 @@
               ]
               ++ (
                 if name == "kakshiNix"
-                then [
-                  ./machines/kakashi-nix
-                  {
-                    environment.systemPackages = [
-                      suckless.packages.${linuxSystems.${name}}.dwm
-                      suckless.packages.${linuxSystems.${name}}.dmenu
-                      suckless.packages.${linuxSystems.${name}}.slock
-                      suckless.packages.${linuxSystems.${name}}.st
-                    ];
-                  }
-                ]
+                then [./machines/kakashi-nix]
                 else if name == "nami"
                 then [./machines/nami]
                 else [./machines/kubenodes]

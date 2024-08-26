@@ -4,8 +4,8 @@
   ...
 }: {
   imports = [
-    ./homebrew.nix
     ../common
+    ./homebrew.nix
   ];
 
   nix = {
