@@ -27,6 +27,9 @@ jobs:
   Build:
     name: Buildig 👷‍♂️ New 🆕 Nix ISO 📀
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        system: [x86_64-linux, aarch64-linux]
 
     steps:
       - name: Checkout repository
@@ -55,21 +58,23 @@ jobs:
         run: nix flake update --accept-flake-config
 
       - name: Build NixOS ISO
+        if: matrix.system ==  'x86_64-linux'
         run: nix build --accept-flake-config .#nixos-iso
 
       - name: Rename NixOS ISO
+        if: matrix.system ==  'x86_64-linux'
         run: sudo mv ./result/iso/NixOS.iso "NixOS.iso"
 
-      - name: Clear unused store paths (collect garbage)
-        run: nix-collect-garbage -d
-
       - name: Setup QEMU for ARM builds
+        if: matrix.system ==  'aarch64-linux'
         run: sudo apt-get update && sudo apt-get install -y qemu qemu-user-static binfmt-support
 
       - name: Build NixOS Image (ARM)
+        if: matrix.system ==  'aarch64-linux'
         run: nix build --accept-flake-config .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux"
 
       - name: Rename NixOS Image (ARM)
+        if: matrix.system ==  'aarch64-linux'
         run: sudo mv ./result/sd-image/NixPi.img.zst "NixPi.img.zst"
 
       - name: Create GitHub Release
@@ -84,6 +89,7 @@ jobs:
             NixPi.img.zst
 
       - name: Commit and Push
+        if: matrix.system == 'x86_64-linux'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Bot 🤖(flake): bump flake.lock"
