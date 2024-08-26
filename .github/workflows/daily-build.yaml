@@ -54,14 +54,14 @@ jobs:
       - name: Update flake.lock
         run: nix flake update --accept-flake-config
 
-      - name: Clear unused storre paths (collect garbage)
-        run: nix-collect-garbage -d
-
       - name: Build NixOS ISO
         run: nix build --accept-flake-config .#nixos-iso
 
       - name: Rename NixOS ISO
         run: sudo mv ./result/iso/NixOS.iso "NixOS.iso"
+
+      - name: Clear unused store paths (collect garbage)
+        run: nix-collect-garbage -d
 
       - name: Setup QEMU for ARM builds
         run: sudo apt-get update && sudo apt-get install -y qemu qemu-user-static binfmt-support
