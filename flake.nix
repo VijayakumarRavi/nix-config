@@ -193,6 +193,7 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
+            backupFileExtension = "backup";
             extraSpecialArgs = {inherit inputs variables;};
             users.${variables.username}.imports = [./home-manager/kakashi];
           };
@@ -217,14 +218,19 @@
                 {environment.systemPackages = [agenix.packages.${linuxSystems.${name}}.default];}
                 home-manager.nixosModules.home-manager
                 {
-                  home-manager.extraSpecialArgs = {inherit inputs variables;};
-                  home-manager.users.${variables.username} = {
-                    imports =
-                      if name == "kakshiNix"
-                      then [./home-manager/kakashi-nix]
-                      else if name == "nami"
-                      then [./home-manager/nami]
-                      else [./home-manager/kubenodes];
+                  home-manager = {
+                    useGlobalPkgs = true;
+                    useUserPackages = true;
+                    backupFileExtension = "backup";
+                    extraSpecialArgs = {inherit inputs variables;};
+                    users.${variables.username} = {
+                      imports =
+                        if name == "kakshiNix"
+                        then [./home-manager/kakashi-nix]
+                        else if name == "nami"
+                        then [./home-manager/nami]
+                        else [./home-manager/kubenodes];
+                    };
                   };
                 }
               ]
