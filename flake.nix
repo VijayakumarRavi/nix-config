@@ -165,7 +165,7 @@
     devShells = forAllSystems (system: {
       default = nixpkgs.legacyPackages.${system}.mkShell {
         inherit (pre-commit.${system}.pre-commit-check) shellHook;
-        buildInputs = pre-commit.${system}.pre-commit-check.enabledPackages;
+        buildInputs = with nixpkgs.legacyPackages.${system}; [just nixos-rebuild] ++ pre-commit.${system}.pre-commit-check.enabledPackages;
       };
     });
 

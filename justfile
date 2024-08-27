@@ -1,14 +1,27 @@
 default:
   just --list
 
-deploy machine ip='':
+deploy machine='':
   #!/usr/bin/env sh
-  if [ {{machine}} = "kakashi" ]; then
-    darwin-rebuild switch --flake .
-  elif [ -z "{{ip}}" ]; then
-    sudo nixos-rebuild switch --fast --flake ".#{{machine}}"
-  else
-    nixos-rebuild switch --fast --flake ".#{{machine}}" --use-remote-sudo --target-host "vijay@{{ip}}" --build-host "vijay@{{ip}}"
+  if [ -z "{{machine}}" ]; then
+    if command -v darwin-rebuild &> /dev/null 2>&1; then
+      darwin-rebuild switch --flake .
+    else
+      sudo nixos-rebuild switch --fast --flake .
+    fi
+  elif [ {{machine}} = "nami" ]; then
+    nixos-rebuild switch --fast --flake ".#nami" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.0.2" --build-host "vijay@10.0.0.2"
+  elif [ {{machine}} = "zoro" ]; then
+    nixos-rebuild switch --fast --flake ".#zoro" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.1.101" --build-host "vijay@10.0.1.101"
+  elif [ {{machine}} = "usopp" ]; then
+    nixos-rebuild switch --fast --flake ".#usopp" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.1.102" --build-host "vijay@10.0.1.102"
+  elif [ {{machine}} = "kube" ]; then
+    nixos-rebuild switch --fast --flake ".#zoro" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.1.101" --build-host "vijay@10.0.1.101"
+    nixos-rebuild switch --fast --flake ".#usopp" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.1.102" --build-host "vijay@10.0.1.102"
+  elif [ {{machine}} = "all" ]; then
+    nixos-rebuild switch --fast --flake ".#nami" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.0.2" --build-host "vijay@10.0.0.2"
+    nixos-rebuild switch --fast --flake ".#zoro" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.1.101" --build-host "vijay@10.0.1.101"
+    nixos-rebuild switch --fast --flake ".#usopp" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.1.102" --build-host "vijay@10.0.1.102"
   fi
 
 up:
@@ -29,8 +42,8 @@ secrets-rotate:
 secrets-sync:
   for file in secrets/*; do sops updatekeys "$file"; done
 
-build-iso:
+iso:
   nix build -L --accept-flake-config .#nixos-iso
 
-build-pi:
+pi:
   nix build -L --accept-flake-config .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux"
