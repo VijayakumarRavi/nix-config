@@ -78,7 +78,6 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
-    nh
     sbctl
     lm_sensors
     unzip

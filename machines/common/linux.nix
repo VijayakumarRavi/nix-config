@@ -92,7 +92,6 @@
       "\${HOME}/.cargo/bin"
       "$/usr/local/bin"
     ];
-    FLAKE = "/home/${variables.username}/.nix-config";
     STARSHIP_CONFIG = "\${HOME}/.config/starship/starship.toml";
   };
 
@@ -104,6 +103,12 @@
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
+    };
+    nh = {
+      enable = true;
+      clean.enable = true;
+      clean.extraArgs = "--keep-since 4d --keep 3";
+      flake = "/home/${variables.username}/.nix-config";
     };
   };
 

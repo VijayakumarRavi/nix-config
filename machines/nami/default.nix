@@ -1,5 +1,4 @@
 {
-  pkgs,
   config,
   inputs,
   variables,
@@ -52,11 +51,6 @@
       authKeyFile = config.age.secrets.tailauthKeyFile.path;
     };
   };
-
-  # List packages installed in system profile.
-  environment.systemPackages = with pkgs; [
-    nh
-  ];
 
   hardware = {
     bluetooth.enable = true;
