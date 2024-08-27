@@ -11,13 +11,6 @@
   # No mutable users by default i.e you're unable to add new users using useradd and groupadd
   users.mutableUsers = false;
 
-  nix = {
-    gc = {
-      automatic = true;
-      options = "--delete-old";
-    };
-  };
-
   # Set your time zone.
   time.timeZone = "Asia/Kolkata";
 
