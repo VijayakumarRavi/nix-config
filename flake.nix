@@ -72,23 +72,20 @@
     homebrew-services.url = "github:homebrew/homebrew-services";
     homebrew-services.flake = false;
 
-    # Agenix for secrets
-    agenix = {
-      url = "github:ryantm/agenix";
+    # secrets management
+    sops-nix = {
+      url = "github:mic92/sops-nix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        home-manager.follows = "home-manager";
-        darwin.follows = "darwin";
       };
     };
   };
   outputs = inputs @ {
-    nixpkgs,
-    nixos-generators,
-    home-manager,
-    agenix,
     darwin,
+    nixpkgs,
     suckless,
+    home-manager,
+    nixos-generators,
     ...
   }: let
     # Config
@@ -215,7 +212,6 @@
             system = linuxSystems.${name};
             modules =
               [
-                {environment.systemPackages = [agenix.packages.${linuxSystems.${name}}.default];}
                 home-manager.nixosModules.home-manager
                 {
                   home-manager = {

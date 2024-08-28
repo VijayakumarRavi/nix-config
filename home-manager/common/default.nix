@@ -1,5 +1,6 @@
 {
   pkgs,
+  inputs,
   config,
   variables,
   ...
@@ -11,7 +12,25 @@
     ./tmux.nix
     ./starship.nix
     ./nvim
+    inputs.sops-nix.homeManagerModules.sops
   ];
+
+  sops = {
+    age = {
+      sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+      keyFile = "/var/lib/sops-nix/key.txt";
+      generateKey = true;
+    };
+
+    defaultSopsFile = ../../secrets.yaml;
+    validateSopsFiles = false;
+
+    secrets = {
+      github_oauth_token = {};
+      id_ed25519 = {path = "${config.home.homeDirectory}/.ssh/id_ed25519";};
+      id_ed25519_pub = {path = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";};
+    };
+  };
 
   systemd.user.startServices = "sd-switch";
   home = {

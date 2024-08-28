@@ -90,7 +90,7 @@
   services.k3s = {
     enable = true;
     role = "server";
-    tokenFile = config.age.secrets.kubetoken.path;
+    tokenFile = config.sops.secrets.kubetoken.path;
     extraFlags = toString (
       [
         "--write-kubeconfig-mode \"0644\""

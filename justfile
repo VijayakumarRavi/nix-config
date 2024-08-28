@@ -34,13 +34,13 @@ repair:
   sudo nix-store --verify --check-contents --repair
 
 secrets-edit:
-  sops secrets/secrets.yaml
+  sops secrets.yaml
 
 secrets-rotate:
-  for file in secrets/*; do sops --rotate --in-place "$file"; done
+  sops --rotate --in-place secrets.yaml
 
 secrets-sync:
-  for file in secrets/*; do sops updatekeys "$file"; done
+  sops updatekeys --yes secrets.yaml
 
 iso:
   nix build -L --accept-flake-config .#nixos-iso

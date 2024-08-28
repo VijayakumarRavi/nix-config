@@ -5,7 +5,6 @@
   ...
 }: {
   imports = [
-    inputs.agenix.nixosModules.default
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
 
     ../common
@@ -48,7 +47,7 @@
       openFirewall = true;
       extraUpFlags = ["--advertise-tags=tag:cluster" "--accept-routes" "--reset"];
       extraSetFlags = ["--advertise-routes=10.0.0.0/16" "--advertise-exit-node"];
-      authKeyFile = config.age.secrets.tailauthKeyFile.path;
+      authKeyFile = config.sops.secrets.tailscale_authkey.path;
     };
   };
 

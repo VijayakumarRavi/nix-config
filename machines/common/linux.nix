@@ -14,6 +14,25 @@
   # Set your time zone.
   time.timeZone = "Asia/Kolkata";
 
+  sops = {
+    defaultSopsFile = ../../secrets.yaml;
+    validateSopsFiles = false;
+
+    age = {
+      sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+      keyFile = "/var/lib/sops-nix/key.txt";
+      generateKey = true;
+    };
+
+    secrets = {
+      kubetoken = {};
+      userhashedPassword = {
+        neededForUsers = true;
+      };
+      tailscale_authkey = {};
+    };
+  };
+
   # Enable networking
   networking = {
     # Hostname
@@ -122,23 +141,6 @@
     libinput.enable = true;
   };
 
-  age.secrets = {
-    kubetoken = {file = ../../secrets/kubetoken;};
-    tailauthKeyFile = {file = ../../secrets/tailauthKeyFile;};
-    id_ed25519 = {
-      file = ../../secrets/id_ed25519;
-      path = "/home/${variables.username}/.ssh/id_ed25519";
-      owner = "${variables.username}";
-      group = "users";
-      mode = "600";
-    };
-    "id_ed25519.pub" = {
-      file = ../../secrets/id_ed25519.pub;
-      path = "/home/${variables.username}/.ssh/id_ed25519.pub";
-      owner = "${variables.username}";
-      group = "users";
-    };
-  };
   system.activationScripts.diff = {
     supportsDryActivation = true;
     text = ''

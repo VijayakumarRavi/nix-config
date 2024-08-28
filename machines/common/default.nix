@@ -6,7 +6,7 @@
   variables,
   ...
 }: {
-  imports = [inputs.agenix.nixosModules.default];
+  imports = [inputs.sops-nix.nixosModules.sops];
 
   nix = {
     package = pkgs.nix;
