@@ -30,6 +30,17 @@
         neededForUsers = true;
       };
       tailscale_authkey = {};
+      github_oauth_token = {};
+      id_ed25519 = {
+        owner = config.users.users.${variables.username}.name;
+        inherit (config.users.users.${variables.username}) group;
+        path = "/home/${variables.username}/.ssh/id_ed25519";
+      };
+      id_ed25519_pub = {
+        owner = config.users.users.${variables.username}.name;
+        inherit (config.users.users.${variables.username}) group;
+        path = "/home/${variables.username}/.ssh/id_ed25519.pub";
+      };
     };
   };
 
