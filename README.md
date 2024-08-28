@@ -9,3 +9,7 @@
 ![license](https://img.shields.io/static/v1.svg?style=flat&label=License&message=Unlicense&colorA=24273A&colorB=91d7e3&logo=unlicense&logoColor=91d7e3&)
 
 </div>
+
+[TODO]
+
+- NixOS Automated Remote Bootstrapping with Secrets -- Ref: [Youtube](https://www.youtube.com/watch?v=4snnV3hdz7g&t=0s) & [Config](https://github.com/EmergentMind/nix-config/blob/dev/scripts/bootstrap-nixos.sh)

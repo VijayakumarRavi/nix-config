@@ -1,16 +1,18 @@
 {
   pkgs,
+  meta,
+  inputs,
   variables,
   ...
 }: {
   imports = [
-    ../common
-    ../common/linux.nix
+    #    ../common
+    #    ../common/linux.nix
 
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
 
-    ./scripts.nix
+    inputs.stylix.nixosModules.stylix
   ];
 
   # Bootloader
@@ -38,8 +40,305 @@
     };
   };
 
-  # Display manager stuff
+  # Set your time zone.
+  time.timeZone = "Asia/Kolkata";
+
+  # Enable networking
+  networking = {
+    # Hostname
+    hostName = meta.hostname;
+    # disable firewall
+    firewall.enable = false;
+    # Enabling WIFI
+    wireless = {
+      enable = true;
+      networks."vijay wifi".pskRaw = "9559e5edeed089f6c2834257d9f4de0cb442da4ddbee3a09e17707a9223f8958";
+    };
+    # Default nameservers
+    nameservers = [
+      "10.0.0.2"
+      "45.90.28.215"
+    ];
+    # Default gateway
+    defaultGateway = {
+      address = "10.0.0.1";
+    };
+  };
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.${variables.username} = {
+    isNormalUser = true;
+    description = variables.user;
+    shell = pkgs.zsh;
+    ignoreShellProgramCheck = true;
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "disk"
+      "power"
+      "video"
+      "docker"
+    ];
+    hashedPassword = "$6$b.0.YvdRoJj6j.WL$8epnXbbF5eplH348AMyDclGL2/CuaVX.6bWV5GY0zE1sVd1UtU7Svphp.m9DD5w0rSapXPftqJapsyVistkEJ1";
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX Mainkey"
+    ];
+  };
+
+  # Disable sudo password
+  security.sudo.wheelNeedsPassword = false;
+
+  # Styling Options
+  stylix = {
+    enable = true;
+    image = ../../home-manager/kakashi-nix/config/wallpapers/mountainscapedark.jpg;
+    # base16Scheme = {
+    #   base00 = "232136";
+    #   base01 = "2a273f";
+    #   base02 = "393552";
+    #   base03 = "6e6a86";
+    #   base04 = "908caa";
+    #   base05 = "e0def4";
+    #   base06 = "e0def4";
+    #   base07 = "56526e";
+    #   base08 = "eb6f92";
+    #   base09 = "f6c177";
+    #   base0A = "ea9a97";
+    #   base0B = "3e8fb0";
+    #   base0C = "9ccfd8";
+    #   base0D = "c4a7e7";
+    #   base0E = "f6c177";
+    #   base0F = "56526e";
+    # };
+    polarity = "dark";
+    opacity.terminal = 0.8;
+    cursor.package = pkgs.bibata-cursors;
+    cursor.name = "Bibata-Modern-Ice";
+    cursor.size = 24;
+    fonts = {
+      monospace = {
+        package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
+        name = "JetBrainsMono Nerd Font Mono";
+      };
+      sansSerif = {
+        package = pkgs.montserrat;
+        name = "Montserrat";
+      };
+      serif = {
+        package = pkgs.montserrat;
+        name = "Montserrat";
+      };
+      sizes = {
+        applications = 12;
+        terminal = 15;
+        desktop = 11;
+        popups = 12;
+      };
+    };
+  };
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "en_US.UTF-8";
+    LC_IDENTIFICATION = "en_US.UTF-8";
+    LC_MEASUREMENT = "en_US.UTF-8";
+    LC_MONETARY = "en_US.UTF-8";
+    LC_NAME = "en_US.UTF-8";
+    LC_NUMERIC = "en_US.UTF-8";
+    LC_PAPER = "en_US.UTF-8";
+    LC_TELEPHONE = "en_US.UTF-8";
+    LC_TIME = "en_US.UTF-8";
+  };
+
+  programs = {
+    firefox.enable = false;
+    starship = {
+      enable = true;
+      settings = {
+        add_newline = false;
+        buf = {
+          symbol = " ";
+        };
+        c = {
+          symbol = " ";
+        };
+        directory = {
+          read_only = " 󰌾";
+        };
+        docker_context = {
+          symbol = " ";
+        };
+        fossil_branch = {
+          symbol = " ";
+        };
+        git_branch = {
+          symbol = " ";
+        };
+        golang = {
+          symbol = " ";
+        };
+        hg_branch = {
+          symbol = " ";
+        };
+        hostname = {
+          ssh_symbol = " ";
+        };
+        lua = {
+          symbol = " ";
+        };
+        memory_usage = {
+          symbol = "󰍛 ";
+        };
+        meson = {
+          symbol = "󰔷 ";
+        };
+        nim = {
+          symbol = "󰆥 ";
+        };
+        nix_shell = {
+          symbol = " ";
+        };
+        nodejs = {
+          symbol = " ";
+        };
+        ocaml = {
+          symbol = " ";
+        };
+        package = {
+          symbol = "󰏗 ";
+        };
+        python = {
+          symbol = " ";
+        };
+        rust = {
+          symbol = " ";
+        };
+        swift = {
+          symbol = " ";
+        };
+        zig = {
+          symbol = " ";
+        };
+      };
+    };
+    dconf.enable = true;
+    seahorse.enable = true;
+    fuse.userAllowOther = true;
+    mtr.enable = true;
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
+    virt-manager.enable = true;
+    thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [
+        thunar-archive-plugin
+        thunar-volman
+      ];
+    };
+  };
+
+  nixpkgs.config.allowUnfree = true;
+
+  users = {
+    mutableUsers = true;
+  };
+
+  environment.systemPackages = with pkgs; [
+    vim
+    wget
+    killall
+    eza
+    git
+    cmatrix
+    lolcat
+    htop
+    brave
+    libvirt
+    lxqt.lxqt-policykit
+    lm_sensors
+    unzip
+    unrar
+    libnotify
+    v4l-utils
+    ydotool
+    duf
+    ncdu
+    wl-clipboard
+    pciutils
+    ffmpeg
+    socat
+    cowsay
+    ripgrep
+    lshw
+    bat
+    pkg-config
+    meson
+    hyprpicker
+    ninja
+    brightnessctl
+    virt-viewer
+    swappy
+    appimage-run
+    yad
+    inxi
+    playerctl
+    nh
+    nixfmt-rfc-style
+    libvirt
+    swww
+    grim
+    slurp
+    file-roller
+    swaynotificationcenter
+    imv
+    mpv
+    gimp
+    pavucontrol
+    tree
+    neovide
+    greetd.tuigreet
+  ];
+
+  fonts = {
+    packages = with pkgs; [
+      noto-fonts-emoji
+      noto-fonts-cjk
+      font-awesome
+      symbola
+      material-icons
+    ];
+  };
+
+  # Extra Portal Configuration
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal
+    ];
+    configPackages = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-hyprland
+      pkgs.xdg-desktop-portal
+    ];
+  };
+
+  # Services to start
   services = {
+    blueman.enable = true;
+    xserver = {
+      enable = false;
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+    };
+
     greetd = {
       enable = true;
       settings = {
@@ -49,86 +348,96 @@
         };
       };
     };
+    smartd = {
+      enable = false;
+      autodetect = true;
+    };
+    libinput.enable = true;
+    fstrim.enable = true;
+    gvfs.enable = true;
+    openssh.enable = true;
+    flatpak.enable = false;
+    printing = {
+      enable = true;
+      drivers = [
+        # pkgs.hplipWithPlugin
+      ];
+    };
+    gnome.gnome-keyring.enable = true;
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
+    ipp-usb.enable = true;
+    syncthing = {
+      enable = false;
+      user = "${variables.username}";
+      dataDir = "/home/${variables.username}";
+      configDir = "/home/${variables.username}/.config/syncthing";
+    };
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+    rpcbind.enable = false;
+    nfs.server.enable = false;
   };
-
-  # Set Environment Variables
-  environment.variables = {
-    # NIXOS_OZONE_WL = "1";  # vscode is not working if this is enabled
-    NIXPKGS_ALLOW_UNFREE = "1";
-    SCRIPTDIR = "\${HOME}/.local/share/scriptdeps";
-    # XDG_CURRENT_DESKTOP = "Hyprland";
-    # XDG_SESSION_TYPE = "wayland";
-    # XDG_SESSION_DESKTOP = "Hyprland";
-    # GDK_BACKEND = "wayland";
-    # CLUTTER_BACKEND = "wayland";
-    SDL_VIDEODRIVER = "x11";
-    XCURSOR_SIZE = "24";
-    XCURSOR_THEME = "Bibata-Modern-Ice";
-    # QT_QPA_PLATFORM = "wayland";
-    # QT_QPA_PLATFORMTHEME = "qt5ct";
-    # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    # QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    # MOZ_ENABLE_WAYLAND = "1";
+  systemd.services.flatpak-repo = {
+    path = [pkgs.flatpak];
+    script = ''
+      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    '';
   };
+  hardware = {
+    sane = {
+      enable = true;
+      extraBackends = [pkgs.sane-airscan];
+      disabledDefaultBackends = ["escl"];
+    };
 
-  # Sound options
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
+    # Extra Logitech Support
+    logitech.wireless.enable = false;
+    logitech.wireless.enableGraphical = false;
 
-  # High quality BT calls
-  hardware.bluetooth = {
+    # Bluetooth Support
+    bluetooth.enable = true;
+    bluetooth.powerOnBoot = true;
+    pulseaudio.enable = false;
+  };
+  # Security / Polkit
+  security = {
+    rtkit.enable = true;
+    polkit.enable = true;
+    polkit.extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        if (
+          subject.isInGroup("users")
+            && (
+              action.id == "org.freedesktop.login1.reboot" ||
+              action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
+              action.id == "org.freedesktop.login1.power-off" ||
+              action.id == "org.freedesktop.login1.power-off-multiple-sessions"
+            )
+          )
+        {
+          return polkit.Result.YES;
+        }
+      })
+    '';
+    pam.services.swaylock = {
+      text = ''
+        auth include login
+      '';
+    };
+  };
+  # OpenGL
+  hardware.graphics = {
     enable = true;
-    powerOnBoot = true;
+    enable32Bit = false;
   };
-  services.blueman.enable = true;
-
-  # pipewire support
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-    wireplumber.enable = true;
-  };
-
-  # List packages installed in system profile. To search, run:
-  environment.systemPackages = with pkgs; [
-    sbctl
-
-    libvirt
-    swww
-    polkit_gnome
-    grim
-    slurp
-    lm_sensors
-    unzip
-    unrar
-    file-roller
-    libnotify
-    swaynotificationcenter
-    tofi
-    xfce.thunar
-    imv
-    killall
-    v4l-utils
-    # ueberzugpp
-    xdg-utils
-
-    vscode # code editor developed by Microsoft
-    _1password-gui # Best password manager imo
-    _1password # 1Password manager CLI
-    wl-clipboard
-    # Audio
-    pavucontrol
-    pulseaudio
-    audacity
-    # Fonts
-    font-awesome
-    symbola
-    noto-fonts-color-emoji
-    material-icons
-  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

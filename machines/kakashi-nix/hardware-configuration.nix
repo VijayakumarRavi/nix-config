@@ -32,9 +32,7 @@
   # experimental GPU drivers - needed for hyperland
   hardware = {
     asahi = {
-      #      withRust = true;
-      #      useExperimentalGPUDriver = true;
-      #      experimentalGPUInstallMode = "replace";
+      useExperimentalGPUDriver = true;
       peripheralFirmwareDirectory = ./firmware;
     };
     graphics.enable = true;
