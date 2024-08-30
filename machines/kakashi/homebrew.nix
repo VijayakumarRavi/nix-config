@@ -30,7 +30,15 @@
       upgrade = true;
     };
     taps = builtins.attrNames config.nix-homebrew.taps;
-    brews = ["nginx" "aria2"]; # Reverse proxy to use as a loadbalancer for kubectl
+    brews = [
+      "nginx" # Reverse proxy to use as a loadbalancer for kubectl
+      "aria2" # download manager
+      "flyctl" # fly.io cli tool
+      "bitwarden-cli" # free password manager
+      "mas" # Mac appstore installer
+      "pinentry-mac" # GPG key entry utility
+      "node" # Node js
+    ];
     casks = [
       # Better mac
       "shottr" # Screenshot util
@@ -48,6 +56,10 @@
       "balenaetcher" # Tool to flash OS images to SD cards & USB drives
       "raspberry-pi-imager" # Raspberry Pi Imager to flash sd cards
       "background-music" # macOS audio utility to record system audio
+      "stats" # System monitor for the menu bar
+      "raycast" # Raycast - A better alternative to Alfred and spotlight
+      "appcleaner" # Application uninstaller
+      "visual-studio-code" # Visual Studio Code editor
     ];
     masApps = {
       "1Password for Safari" = 1569813296;
@@ -55,7 +67,7 @@
       "infuse video player" = 1136220934;
       "localsend" = 1661733229;
       "shortery" = 1594183810;
-      "Hyperduck" = 2145267525;
+      "Hyperduck" = 6444667067;
       # "shelly ssh client" = 989642999;
     };
   };

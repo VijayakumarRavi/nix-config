@@ -10,28 +10,36 @@
     package = pkgs.nix;
     settings = {
       allowed-users = ["${variables.username}"];
-      trusted-users = [
-        "root"
-        "${variables.username}"
-      ];
+      trusted-users = ["root" "${variables.username}"];
       experimental-features =
-        [
-          "nix-command"
-          "flakes"
-        ]
+        ["nix-command" "flakes"]
         ++ lib.optional (lib.versionOlder (lib.versions.majorMinor config.nix.package.version) "2.22") "repl-flake";
       accept-flake-config = true;
       auto-optimise-store = true;
       connect-timeout = 5;
       warn-dirty = false;
-      sandbox = false;
+      sandbox = "relaxed";
+      substituters = [
+        "https://cache.nixos.org"
+        "https://vijay.cachix.org"
+        "https://numtide.cachix.org"
+        "https://nix-community.cachix.org"
+        "https://atticcache.fly.dev/system"
+      ];
+
+      trusted-public-keys = [
+        "vijay.cachix.org-1:6Re6EF3Q58sxaIobAWP1QTwMUCSA0nYMrSJGUedL3Zk="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "system:gzdIUkeQT1/YeohwHOQGWv3T975iWVwOxAXemBOxL24="
+      ];
     };
     registry = {
       nixpkgs = {
         flake = inputs.nixpkgs;
       };
     };
-
     nixPath = [
       "nixpkgs=${inputs.nixpkgs.outPath}"
       "nixos-config=/etc/nixos/configuration.nix"
@@ -94,6 +102,7 @@
       tree # Tree command line tool
       iperf # Network performance test
       cachix # Command-line client for Nix binary cache hosting https://cachix.org
+      attic-client # Multi-tenant Nix Binary Cache (self-hostede)
       python3 # Python lang
       unixtools.watch # Watch command line tool
       python311Packages.pip # install python dependencies

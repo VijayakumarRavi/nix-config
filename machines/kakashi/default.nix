@@ -25,19 +25,6 @@
   environment = {
     systemPath = ["/opt/homebrew/bin"];
     pathsToLink = ["/Applications"];
-    systemPackages = with pkgs; [
-      flyctl # fly.io cli tool
-      vscode # Visual Studio Code editor
-      nodejs_22 # Node js version 22
-      bitwarden-cli # free password manager
-
-      # Mac only apps
-      mas # Mac appstore installer
-      stats # System monitor for the menu bar
-      raycast # Raycast - A better alternative to Alfred and spotlight
-      appcleaner # Application uninstaller
-      pinentry_mac # GPG key entry utility
-    ];
   };
 
   services.nix-daemon.enable = true;
@@ -146,7 +133,7 @@
           "/System/Applications/Music.app/"
           "/System/Applications/Photos.app/"
           "/System/Applications/System Settings.app/"
-          "${pkgs.kitty}/Applications/kitty.app/"
+          #"${pkgs.kitty}/Applications/kitty.app/"
         ];
       };
 

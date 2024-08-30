@@ -2,19 +2,19 @@
   description = "My configs";
   nixConfig = {
     substituters = [
-      "https://vijay.cachix.org?priority=1"
-      "https://nix-community.cachix.org?priority=2"
-      "https://numtide.cachix.org?priority=3"
-      "https://raspberry-pi-nix.cachix.org?priority=4"
-      "https://cache.nixos.org?priority=5"
+      "https://cache.nixos.org"
+      "https://vijay.cachix.org"
+      "https://numtide.cachix.org"
+      "https://nix-community.cachix.org"
+      "https://atticcache.fly.dev/system"
     ];
 
     trusted-public-keys = [
       "vijay.cachix.org-1:6Re6EF3Q58sxaIobAWP1QTwMUCSA0nYMrSJGUedL3Zk="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
-      "raspberry-pi-nix.cachix.org-1:WmV2rdSangxW0rZjY/tBvBDSaNFQ3DyEQsVw8EvHn9o="
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "system:gzdIUkeQT1/YeohwHOQGWv3T975iWVwOxAXemBOxL24="
     ];
   };
   inputs = {
@@ -25,6 +25,10 @@
     # Used to generate custom iso installer images
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
+
+    # nix packages index to find it faster
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     # Manages configs links things into your home directory
     home-manager.url = "github:nix-community/home-manager/master";
@@ -78,6 +82,7 @@
     suckless,
     home-manager,
     nixos-generators,
+    nix-index-database,
     ...
   }: let
     # Config
@@ -176,6 +181,7 @@
       specialArgs = {inherit inputs variables;};
       modules = [
         ./machines/kakashi
+        nix-index-database.darwinModules.nix-index
         home-manager.darwinModules.home-manager
         {
           home-manager = {
@@ -203,6 +209,7 @@
             system = linuxSystems.${name};
             modules =
               [
+                nix-index-database.nixosModules.nix-index
                 home-manager.nixosModules.home-manager
                 {
                   home-manager = {
