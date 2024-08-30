@@ -62,14 +62,10 @@ jobs:
         id: nix-cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Enable Attic binary cache
-      # We make our netrc file that is used to make authorized requests to Attic
-      # We also make sure that we use our custom GitHub token if we need to clone submodules or anything like that
-        run: |
-          sudo mkdir -p /etc/nix
-          echo "machine atticcache.fly.dev password ${{ secrets.ATTIC_TOKEN }}" | sudo tee /etc/nix/netrc > /dev/null
-          git config --global url."https://${{ secrets.GITHUB_TOKEN }}@github.com".insteadOf https://github.com
-          nix run github:zhaofengli/attic#default login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
+      - name: Install Attic binary cache
+        uses: yaxitech/nix-install-pkgs-action@v4
+        with:
+          packages: "attic-client"
 
       - name: Update flake.lock
         run: nix flake update
@@ -78,13 +74,15 @@ jobs:
         if: matrix.system == 'x86_64-linux'
         run: |
           nix build .#nixos-iso
-          nix run github:zhaofengli/attic#default push system result
+          attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
+          attic push system result
 
       - name: Build Zoro
         if: matrix.system == 'x86_64-linux'
         run: |
           nix build .#nixosConfigurations.zoro.config.system.build.toplevel
-          nix run github:zhaofengli/attic#default push system result
+          attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
+          attic push system result
 
       - name: Rename NixOS ISO
         if: matrix.system == 'x86_64-linux'
@@ -98,7 +96,8 @@ jobs:
         if: matrix.system == 'aarch64-linux'
         run: |
           nix build .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux"
-          nix run github:zhaofengli/attic#default push system result
+          attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
+          attic push system result
 
       - name: Rename NixOS Image (ARM)
         if: matrix.system == 'aarch64-linux'
