@@ -46,9 +46,9 @@
     raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
     raspberry-pi-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    # For M2 Macbook Air
-    apple-silicon.url = "github:tpwrules/nixos-apple-silicon";
-    apple-silicon.inputs.nixpkgs.follows = "nixpkgs";
+    # secrets management
+    sops-nix.url = "github:mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     firefox.url = "github:nix-community/flake-firefox-nightly";
     firefox.inputs.nixpkgs.follows = "nixpkgs";
@@ -71,14 +71,6 @@
 
     homebrew-services.url = "github:homebrew/homebrew-services";
     homebrew-services.flake = false;
-
-    # secrets management
-    sops-nix = {
-      url = "github:mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    stylix.url = "github:danth/stylix";
   };
   outputs = inputs @ {
     darwin,
@@ -103,7 +95,6 @@
       zoro = "x86_64-linux";
       usopp = "x86_64-linux";
       choppar = "x86_64-linux";
-      kakshiNix = "aarch64-linux";
     };
 
     supportedSystems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
@@ -221,9 +212,7 @@
                     extraSpecialArgs = {inherit inputs variables;};
                     users.${variables.username} = {
                       imports =
-                        if name == "kakshiNix"
-                        then [./home-manager/kakashi-nix]
-                        else if name == "nami"
+                        if name == "nami"
                         then [./home-manager/nami]
                         else [./home-manager/kubenodes];
                     };
@@ -231,13 +220,11 @@
                 }
               ]
               ++ (
-                if name == "kakshiNix"
-                then [./machines/kakashi-nix]
-                else if name == "nami"
+                if name == "nami"
                 then [./machines/nami]
                 else [./machines/kubenodes]
               );
           };
-      }) ["zoro" "usopp" "choppar" "kakshiNix" "nami"]);
+      }) ["zoro" "usopp" "choppar" "nami"]);
   };
 }
