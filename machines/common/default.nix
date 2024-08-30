@@ -6,8 +6,6 @@
   variables,
   ...
 }: {
-  imports = [inputs.sops-nix.nixosModules.sops];
-
   nix = {
     package = pkgs.nix;
     settings = {
@@ -22,11 +20,23 @@
           "flakes"
         ]
         ++ lib.optional (lib.versionOlder (lib.versions.majorMinor config.nix.package.version) "2.22") "repl-flake";
+      accept-flake-config = true;
       auto-optimise-store = true;
       connect-timeout = 5;
       warn-dirty = false;
       sandbox = false;
     };
+    registry = {
+      nixpkgs = {
+        flake = inputs.nixpkgs;
+      };
+    };
+
+    nixPath = [
+      "nixpkgs=${inputs.nixpkgs.outPath}"
+      "nixos-config=/etc/nixos/configuration.nix"
+      "/nix/var/nix/profiles/per-user/root/channels"
+    ];
   };
 
   # BUG: if you remove these two lines you won't be able to access any nix programs
@@ -65,6 +75,7 @@
       openssl # cryptographic library
       fastfetch # Fast, highly customisable system info script
       coreutils # GNU core utilities for Mac
+      alejandra # formatter for Nix
       pkg-config # Manage compile and link flags for libraries
 
       # Git

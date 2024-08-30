@@ -55,6 +55,7 @@
       "infuse video player" = 1136220934;
       "localsend" = 1661733229;
       "shortery" = 1594183810;
+      "Hyperduck" = 2145267525;
       # "shelly ssh client" = 989642999;
     };
   };

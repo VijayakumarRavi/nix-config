@@ -6,24 +6,11 @@
   imports = [
     ../common
     ./homebrew.nix
+    ./window-manageer.nix
   ];
 
   nix = {
     configureBuildUsers = true;
-    linux-builder = {
-      enable = true;
-      ephemeral = true;
-      maxJobs = 4;
-      config = {
-        virtualisation = {
-          darwin-builder = {
-            diskSize = 20 * 1024;
-            memorySize = 4 * 1024;
-          };
-          cores = 6;
-        };
-      };
-    };
     gc = {
       automatic = true;
       interval = {
@@ -53,60 +40,7 @@
     ];
   };
 
-  services = {
-    nix-daemon.enable = true;
-    # A minimal status bar for macOS
-    spacebar = {
-      enable = true;
-      package = pkgs.spacebar;
-    };
-    # A tiling window manager for macOS based on binary space partitioning
-    yabai = {
-      enable = true;
-      config = let
-        padding = 10;
-      in {
-        layout = "bsp";
-        focus_follows_mouse = "autoraise";
-        mouse_follows_focus = "off";
-        window_placement = "second_child";
-        top_padding = padding;
-        bottom_padding = padding;
-        left_padding = padding;
-        right_padding = padding;
-        window_gap = padding;
-      };
-      extraConfig = ''
-        yabai -m rule --add app='System Settings' manage=off
-        yabai -m rule --add app='krisp' manage=off
-        yabai -m rule --add app='Leapp' manage=off
-        yabai -m config mouse_modifier cmd
-        # Make non-resizable windows floating
-        yabai -m signal --add event=window_created action='yabai -m query --windows --window $YABAI_WINDOW_ID |\
-        ${pkgs.jq}/bin/jq -er ".\"can-resize\" or .\"is-floating\"" ||\
-        yabai -m window $YABAI_WINDOW_ID --toggle float ||\
-        yabai -m window $YABAI_WINDOW_ID --focus'
-      '';
-    };
-    skhd = {
-      enable = true;
-      skhdConfig = "
-        # Move focus between windows
-        shift + ctrl - h : yabai -m window --focus west
-        shift + ctrl - j : yabai -m window --focus south
-        shift + ctrl - k : yabai -m window --focus north
-        shift + ctrl - l : yabai -m window --focus east
-
-        # Move windows around
-        shift + alt - h : yabai -m window --swap west
-        shift + alt - j : yabai -m window --swap south
-        shift + alt - k : yabai -m window --swap north
-        shift + alt - l : yabai -m window --swap east
-
-        shift + alt - r : yabai -m space --rotate 90
-      ";
-    };
-  };
+  services.nix-daemon.enable = true;
 
   # Logging is disabled by default
   launchd.user.agents.skhd.serviceConfig = {
@@ -212,7 +146,7 @@
           "/System/Applications/Music.app/"
           "/System/Applications/Photos.app/"
           "/System/Applications/System Settings.app/"
-          "${pkgs.wezterm}/Applications/WezTerm.app/"
+          "${pkgs.kitty}/Applications/kitty.app/"
         ];
       };
 
@@ -354,23 +288,6 @@
 
       ~/.config/os/darwin/power.sh
     '';
-
-    # Fully declarative dock using the latest from Nix Store
-    #    local = {
-    #      dock.enable = true;
-    #      dock.entries = [
-    #        { path = "/System/Applications/Launchpad.app/"; }
-    #        { path = "/Applications/Arc.app/"; }
-    #        { path = "/System/Cryptexes/App/System/Applications/Safari.app/"; }
-    #        { path = "/System/Applications/Messages.app/"; }
-    #        { path = "/System/Applications/Mail.app/"; }
-    #        { path = "/System/Applications/Music.app/"; }
-    #        { path = "${pkgs.spotify}/Applications/Spotify.app/"; }
-    #        { path = "/System/Applications/Photos.app/"; }
-    #        { path = "/System/Applications/System Settings.app/"; }
-    #        { path = "/Applications/iTerm.app/"; }
-    #      ];
-    #    };
     # backwards compat; don't change
     stateVersion = variables.stateVersionDarwin;
   };

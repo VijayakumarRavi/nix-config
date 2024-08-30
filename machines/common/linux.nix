@@ -2,9 +2,12 @@
   pkgs,
   meta,
   config,
+  inputs,
   variables,
   ...
 }: {
+  imports = [inputs.sops-nix.nixosModules.sops];
+
   # Ensure a clean & sparkling /tmp on fresh boots.
   boot.tmp.cleanOnBoot = true;
 
