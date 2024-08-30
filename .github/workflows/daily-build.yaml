@@ -28,6 +28,8 @@ jobs:
     name: Buildig 👷‍♂️ New 🆕 Nix ISO 📀
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
+      # Here we specify the matrix of our hosts and their target platform architectures
       matrix:
         system: [x86_64-linux, aarch64-linux]
 
@@ -39,6 +41,18 @@ jobs:
 
       - name: Setup Nix
         uses: DeterminateSystems/nix-installer-action@main
+        with:
+          # We set our custom GitHub token for any private flake inputs we might have
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # We add all the config for extra platforms, other binary caches and to raise the number of connections that can be made
+          extra-conf: |
+            fallback = true
+            http-connections = 128
+            max-substitution-jobs = 128
+            accept-flake-config = true;
+            extra-platforms = aarch64-linux
+            substituters = https://atticcache.fly.dev/system?priority=43 https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= system:gzdIUkeQT1/YeohwHOQGWv3T975iWVwOxAXemBOxL24= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
 
       - name: Get current date
         id: date
@@ -48,33 +62,46 @@ jobs:
         id: nix-cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Enable Cachix binary cache
-        uses: cachix/cachix-action@v15
-        with:
-          name: vijay
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - name: Enable Attic binary cache
+      # We make our netrc file that is used to make authorized requests to Attic
+      # We also make sure that we use our custom GitHub token if we need to clone submodules or anything like that
+        run: |
+          sudo mkdir -p /etc/nix
+          echo "machine atticcache.fly.dev password ${{ secrets.ATTIC_TOKEN }}" | sudo tee /etc/nix/netrc > /dev/null
+          git config --global url."https://${{ secrets.GITHUB_TOKEN }}@github.com".insteadOf https://github.com
+          nix run github:zhaofengli/attic#default login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
 
       - name: Update flake.lock
-        run: nix flake update --accept-flake-config
+        run: nix flake update
 
       - name: Build NixOS ISO
-        if: matrix.system ==  'x86_64-linux'
-        run: nix build --accept-flake-config .#nixos-iso
+        if: matrix.system == 'x86_64-linux'
+        run: |
+          nix build .#nixos-iso
+          nix run github:zhaofengli/attic#default push system result
+
+      - name: Build Zoro
+        if: matrix.system == 'x86_64-linux'
+        run: |
+          nix build .#nixosConfigurations.zoro.config.system.build.toplevel
+          nix run github:zhaofengli/attic#default push system result
 
       - name: Rename NixOS ISO
-        if: matrix.system ==  'x86_64-linux'
+        if: matrix.system == 'x86_64-linux'
         run: sudo mv ./result/iso/NixOS.iso "NixOS.iso"
 
       - name: Setup QEMU for ARM builds
-        if: matrix.system ==  'aarch64-linux'
-        run: sudo apt-get update && sudo apt-get install -y qemu qemu-user-static binfmt-support
+        if: matrix.system == 'aarch64-linux'
+        uses: docker/setup-qemu-action@v3
 
       - name: Build NixOS Image (ARM)
-        if: matrix.system ==  'aarch64-linux'
-        run: nix build --accept-flake-config .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux"
+        if: matrix.system == 'aarch64-linux'
+        run: |
+          nix build .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux"
+          nix run github:zhaofengli/attic#default push system result
 
       - name: Rename NixOS Image (ARM)
-        if: matrix.system ==  'aarch64-linux'
+        if: matrix.system == 'aarch64-linux'
         run: sudo mv ./result/sd-image/NixPi.img.zst "NixPi.img.zst"
 
       - name: Create GitHub Release
