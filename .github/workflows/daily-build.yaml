@@ -75,14 +75,14 @@ jobs:
         run: |
           nix build .#nixos-iso
           attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
-          attic push system result
+          attic push system result -j 2
 
       - name: Build Zoro
         if: matrix.system == 'x86_64-linux'
         run: |
           nix build .#nixosConfigurations.zoro.config.system.build.toplevel
           attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
-          attic push system result
+          attic push system result -j 2
 
       - name: Rename NixOS ISO
         if: matrix.system == 'x86_64-linux'
@@ -97,7 +97,7 @@ jobs:
         run: |
           nix build .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux"
           attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
-          attic push system result
+          attic push system result -j 2
 
       - name: Rename NixOS Image (ARM)
         if: matrix.system == 'aarch64-linux'
