@@ -58,9 +58,9 @@ jobs:
         id: date
         run: echo "date=$(TZ="Asia/Kolkata" date +'%d-%m-%Y')" >> "$GITHUB_OUTPUT"
 
-      - name: Enable Github Cache for Nix store
-        id: nix-cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
+      #      - name: Enable Github Cache for Nix store
+      #        id: nix-cache
+      #        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Install Attic binary cache
         uses: yaxitech/nix-install-pkgs-action@v4
