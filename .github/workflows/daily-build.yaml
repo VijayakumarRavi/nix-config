@@ -77,16 +77,16 @@ jobs:
           attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
           attic push system result -j 2
 
+      - name: Rename NixOS ISO
+        if: matrix.system == 'x86_64-linux'
+        run: sudo mv ./result/iso/NixOS.iso "NixOS.iso"
+
       - name: Build Zoro
         if: matrix.system == 'x86_64-linux'
         run: |
           nix build .#nixosConfigurations.zoro.config.system.build.toplevel
           attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
           attic push system result -j 2
-
-      - name: Rename NixOS ISO
-        if: matrix.system == 'x86_64-linux'
-        run: sudo mv ./result/iso/NixOS.iso "NixOS.iso"
 
       - name: Setup QEMU for ARM builds
         if: matrix.system == 'aarch64-linux'
@@ -95,7 +95,7 @@ jobs:
       - name: Build NixOS Image (ARM)
         if: matrix.system == 'aarch64-linux'
         run: |
-          nix build .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux"
+          nix build .#nixosConfigurations.nami.config.system.build.toplevel --system "aarch64-linux"
           attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
           attic push system result -j 2
 
