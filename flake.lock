@@ -84,11 +84,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1724980034,
-        "narHash": "sha256-aihnQNfqq9W5C6OPZIGpScwyhjZpP92oT2aepc+vKFA=",
+        "lastModified": 1725072289,
+        "narHash": "sha256-pe57i9Pq/aaT7eZma1N+RI5v0uZnFBPMjKgmlYYxY2E=",
         "owner": "nix-community",
         "repo": "flake-firefox-nightly",
-        "rev": "85f50a52e3c33477599b7463398d2ddca68d21ad",
+        "rev": "7d1eb1e28ca04aa248de27e1ec26ee5ef6f0c75b",
         "type": "github"
       },
       "original": {
@@ -225,11 +225,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1725000729,
-        "narHash": "sha256-X4XSSDIOw00D11eKk/fFS/XPpeYz3aWgNZ0m8TP0Uk0=",
+        "lastModified": 1725069317,
+        "narHash": "sha256-JKvmJUu4v9XStiBmCuajZ7ucYu46MevqAB2u7poyD6Y=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "7ecb2f179f9e5ebe9a9f23b794ac8d1fbf21cd09",
+        "rev": "56468c2940fc1fa58d45d8c0a61cb95123d8b907",
         "type": "github"
       },
       "original": {
@@ -241,11 +241,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1725010261,
-        "narHash": "sha256-4RsoAzx1ad7JKMSpOmMx4vhnVjpRNv8OZQpVhqKZqiY=",
+        "lastModified": 1725081669,
+        "narHash": "sha256-hvXhu1PIUW9nkOj4KAAjvoHp/XnCl9qR7Nup0uEEk6E=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "add16a7a4c06b02df9aa8d5a298d045d40488a34",
+        "rev": "f19e4dbc7563e12511b21d3b0639d6df19cafde3",
         "type": "github"
       },
       "original": {
@@ -512,11 +512,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1724932487,
-        "narHash": "sha256-zzbqHmY1mt21omyk1+14QbAkII1B7OHlwKLcczVq22w=",
+        "lastModified": 1725067332,
+        "narHash": "sha256-bMi5zhDwR6jdmN5mBHEu9gQQf9CibIEasA/6mc34Iek=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "b4f7fb71438d00539b21f1b1e6968c0eac060127",
+        "rev": "192e7407cc66e2eccc3a6c5ad3834dd62fae3800",
         "type": "github"
       },
       "original": {
@@ -728,11 +728,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1724990523,
-        "narHash": "sha256-jGDtXf/TKYac1L1DScea3pSdwTtvXa0UGH/7IVRKTeg=",
+        "lastModified": 1725076922,
+        "narHash": "sha256-CSuoWcdlIN3qqmHad7RepI2H0j2Lhqt6WD5M4Ridi5s=",
         "owner": "VijayakumarRavi",
         "repo": "suckless",
-        "rev": "75411cb7231600743a68c18464e7d2af0a182d80",
+        "rev": "95f8436e7fe8d5990a842a3b680f06703da4e6c4",
         "type": "github"
       },
       "original": {
