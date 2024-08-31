@@ -1,22 +1,11 @@
-name: 🏗️ Build and Release custom RPI image and NixOS ISO
+name: 🏗️ Build and push cache to attic
 
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch: null
   schedule:
-    - cron: 0 4 * * *
+    - cron: 0 0 * * *
   push:
-    paths:
-      - "flake.lock"
-      - "machines/nami/**"
-      - "machines/nixiso/**"
-      - ".github/workflows/daily-build.yaml"
-  pull_request:
-    paths:
-      - "flake.lock"
-      - "machines/nami/**"
-      - "machines/nixiso/**"
-      - ".github/workflows/daily-build.yaml"
 
 # Workflow permissions
 permissions:
@@ -25,19 +14,35 @@ permissions:
 
 jobs:
   Build:
-    name: Buildig 👷‍♂️ New 🆕 Nix ISO 📀
+    name: Build 👷‍♂️ & Test 📀
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       # Here we specify the matrix of our hosts and their target platform architectures
       matrix:
-        system: [x86_64-linux, aarch64-linux]
+        machine:
+          - host: zoro
+            platform: x86-64-linux
+            config: nixosConfigurations
+          - host: usopp
+            platform: x86-64-linux
+            config: nixosConfigurations
+          - host: kakashi
+            platform: aarch64-darwin
+            config: darwinConfigurations
+          - host: nami
+            platform: aarch64-linux
+            config: nixosConfigurations
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Setup QEMU for ARM builds
+        if: matrix.machine.platform == 'aarch64-linux'
+        uses: docker/setup-qemu-action@v3
 
       - name: Setup Nix
         uses: DeterminateSystems/nix-installer-action@main
@@ -54,13 +59,9 @@ jobs:
             substituters = https://atticcache.fly.dev/system?priority=43 https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= system:gzdIUkeQT1/YeohwHOQGWv3T975iWVwOxAXemBOxL24= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
 
-      - name: Get current date
-        id: date
-        run: echo "date=$(TZ="Asia/Kolkata" date +'%d-%m-%Y')" >> "$GITHUB_OUTPUT"
-
-      #      - name: Enable Github Cache for Nix store
-      #        id: nix-cache
-      #        uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Enable Github Cache for Nix store
+        id: nix-cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Install Attic binary cache
         uses: yaxitech/nix-install-pkgs-action@v4
@@ -70,52 +71,14 @@ jobs:
       - name: Update flake.lock
         run: nix flake update
 
-      - name: Build NixOS ISO
-        if: matrix.system == 'x86_64-linux'
+      - name: Build & upload cache
         run: |
-          nix build .#nixos-iso
+          nix build .#${{matrix.machine.config}}.${{matrix.machine.host}}.config.system.build.toplevel
           attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
           attic push system result -j 2
-
-      - name: Rename NixOS ISO
-        if: matrix.system == 'x86_64-linux'
-        run: sudo mv ./result/iso/NixOS.iso "NixOS.iso"
-
-      - name: Build Zoro
-        if: matrix.system == 'x86_64-linux'
-        run: |
-          nix build .#nixosConfigurations.zoro.config.system.build.toplevel
-          attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
-          attic push system result -j 2
-
-      - name: Setup QEMU for ARM builds
-        if: matrix.system == 'aarch64-linux'
-        uses: docker/setup-qemu-action@v3
-
-      - name: Build NixOS Image (ARM)
-        if: matrix.system == 'aarch64-linux'
-        run: |
-          nix build .#nixosConfigurations.nami.config.system.build.toplevel --system "aarch64-linux"
-          attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
-          attic push system result -j 2
-
-      - name: Rename NixOS Image (ARM)
-        if: matrix.system == 'aarch64-linux'
-        run: sudo mv ./result/sd-image/NixPi.img.zst "NixPi.img.zst"
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          name: Nixos Daily Build ${{ steps.date.outputs.date }}
-          tag_name: "${{ steps.date.outputs.date }}"
-          make_latest: true
-          generate_release_notes: true
-          files: |
-            NixOS.iso
-            NixPi.img.zst
 
       - name: Commit and Push
-        if: matrix.system == 'x86_64-linux'
+        if: matrix.machine.host == 'zoro'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Bot 🤖(flake): bump flake.lock"
