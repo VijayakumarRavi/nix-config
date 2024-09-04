@@ -73,7 +73,7 @@ jobs:
 
       - name: Build & upload cache
         run: |
-          nix build .#${{matrix.machine.config}}.${{matrix.machine.host}}.config.system.build.toplevel
+          nix build .#${{matrix.machine.config}}.${{matrix.machine.host}}.config.system.build.toplevel --system ${{matrix.machine.platform}}
           attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
           attic push system result -j 2
 

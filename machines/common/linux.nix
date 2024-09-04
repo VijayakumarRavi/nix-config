@@ -60,6 +60,7 @@
     };
     # Default nameservers
     nameservers = [
+      "10.0.2.2"
       "10.0.0.2"
       "45.90.28.215"
     ];
