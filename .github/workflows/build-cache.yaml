@@ -90,6 +90,7 @@ jobs:
 
   Macos:
     name: Build 👷‍♂️ & Upload Cache 📀 For Macos Machines
+    needs: Linux
     runs-on: macos-latest
     timeout-minutes: 30
     strategy:
@@ -139,6 +140,7 @@ jobs:
           attic push system result -j 2
   NixISO:
     name: Buildig & Relese 👷‍♂️ New NixOS ISO 📀
+    needs: Macos
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
