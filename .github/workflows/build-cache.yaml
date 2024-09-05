@@ -13,8 +13,8 @@ permissions:
   id-token: write
 
 jobs:
-  Build:
-    name: Build 👷‍♂️ & Test 📀
+  Linux:
+    name: Build 👷‍♂️ & Upload 📀 Linux Machines
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -27,9 +27,6 @@ jobs:
           - host: usopp
             platform: x86-64-linux
             config: nixosConfigurations
-          - host: kakashi
-            platform: aarch64-darwin
-            config: darwinConfigurations
           - host: nami
             platform: aarch64-linux
             config: nixosConfigurations
@@ -89,3 +86,52 @@ jobs:
           file_pattern: flake.lock
           skip_dirty_check: false
           skip_fetch: true
+
+  Macos:
+    name: Build 👷‍♂️ & Upload 📀 Macos Machines
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        machine:
+          - host: kakashi
+            config: darwinConfigurations
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        with:
+          # We set our custom GitHub token for any private flake inputs we might have
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # We add all the config for extra platforms, other binary caches and to raise the number of connections that can be made
+          extra-conf: |
+            fallback = true
+            http-connections = 128
+            max-substitution-jobs = 128
+            accept-flake-config = true
+            extra-platforms = aarch64-linux
+            substituters = https://atticcache.fly.dev/system?priority=43 https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= system:gzdIUkeQT1/YeohwHOQGWv3T975iWVwOxAXemBOxL24= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
+
+      - name: Enable Github Cache for Nix store
+        id: nix-cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Install Attic binary cache
+        uses: yaxitech/nix-install-pkgs-action@v4
+        with:
+          packages: "attic-client"
+
+      - name: Update flake.lock
+        run: nix flake update
+
+      - name: Build & upload cache
+        run: |
+          nix build .#${{matrix.machine.config}}.${{matrix.machine.host}}.config.system.build.toplevel
+          attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
+          attic push system result -j 2

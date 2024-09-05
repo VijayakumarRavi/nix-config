@@ -58,7 +58,7 @@
       "background-music" # macOS audio utility to record system audio
       "stats" # System monitor for the menu bar
       "raycast" # Raycast - A better alternative to Alfred and spotlight
-      "appcleaner" # Application uninstaller
+      "pearcleaner" # Application uninstaller
       "visual-studio-code" # Visual Studio Code editor
     ];
     masApps = {
