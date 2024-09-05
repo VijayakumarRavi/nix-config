@@ -1,11 +1,10 @@
-name: 🏗️ Nix, NixOS and MacOS config Build, relese and upload cache
+name: 🏗️ Nix, NixOS and MacOS config Build, release and upload cache
 
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch: null
   schedule:
     - cron: 0 0 * * *
-  push:
 
 # Workflow permissions
 permissions:
@@ -139,7 +138,7 @@ jobs:
           attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
           attic push system result -j 2
   NixISO:
-    name: Buildig & Relese 👷‍♂️ New NixOS ISO 📀
+    name: Buildig & Release 👷‍♂️ New NixOS ISO 📀
     needs: Macos
     runs-on: ubuntu-latest
     timeout-minutes: 60
