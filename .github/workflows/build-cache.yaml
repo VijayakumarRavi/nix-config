@@ -22,10 +22,10 @@ jobs:
       matrix:
         machine:
           - host: zoro
-            platform: x86-64-linux
+            platform: x86_64-linux
             config: nixosConfigurations
           - host: usopp
-            platform: x86-64-linux
+            platform: x86_64-linux
             config: nixosConfigurations
           - host: nami
             platform: aarch64-linux
