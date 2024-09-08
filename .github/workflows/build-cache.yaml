@@ -23,13 +23,12 @@ jobs:
         machine:
           - host: zoro
             platform: x86_64-linux
-            config: nixosConfigurations
           - host: usopp
             platform: x86_64-linux
-            config: nixosConfigurations
+          - host: nixiso
+            platform: x86_64-linux
           - host: nami
             platform: aarch64-linux
-            config: nixosConfigurations
 
     steps:
       - name: Checkout repository
@@ -60,6 +59,12 @@ jobs:
         id: nix-cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
+      - name: Enable Cachix binary cache
+        uses: cachix/cachix-action@v15
+        with:
+          name: vijay
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
       - name: Install Attic binary cache
         uses: yaxitech/nix-install-pkgs-action@v4
         with:
@@ -70,7 +75,7 @@ jobs:
 
       - name: Build & upload cache
         run: |
-          nix build .#${{matrix.machine.config}}.${{matrix.machine.host}}.config.system.build.toplevel --system ${{matrix.machine.platform}}
+          nix build .#nixosConfigurations.${{matrix.machine.host}}.config.system.build.toplevel --system ${{matrix.machine.platform}}
           attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
           attic push system result -j 2
 
@@ -97,7 +102,6 @@ jobs:
       matrix:
         machine:
           - host: kakashi
-            config: darwinConfigurations
 
     steps:
       - name: Checkout repository
@@ -124,6 +128,12 @@ jobs:
         id: nix-cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
+      - name: Enable Cachix binary cache
+        uses: cachix/cachix-action@v15
+        with:
+          name: vijay
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
       - name: Install Attic binary cache
         uses: yaxitech/nix-install-pkgs-action@v4
         with:
@@ -134,7 +144,7 @@ jobs:
 
       - name: Build & upload cache
         run: |
-          nix build .#${{matrix.machine.config}}.${{matrix.machine.host}}.config.system.build.toplevel
+          nix build .#darwinConfigurations.${{matrix.machine.host}}.config.system.build.toplevel
           attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
           attic push system result -j 2
   NixISO:
@@ -174,19 +184,12 @@ jobs:
         id: nix-cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Install Attic binary cache
-        uses: yaxitech/nix-install-pkgs-action@v4
-        with:
-          packages: "attic-client"
-
       - name: Update flake.lock
         run: nix flake update
 
       - name: Build NixOS ISO
         run: |
           nix build .#nixos-iso
-          attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
-          attic push system result -j 2
 
       - name: Rename NixOS ISO
         run: sudo mv ./result/iso/NixOS.iso "NixOS.iso"

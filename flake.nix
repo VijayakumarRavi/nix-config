@@ -6,7 +6,7 @@
       "https://vijay.cachix.org"
       "https://numtide.cachix.org"
       "https://nix-community.cachix.org"
-      "https://atticcache.fly.dev/system"
+      #"https://atticcache.fly.dev/system"
     ];
 
     trusted-public-keys = [
@@ -14,7 +14,7 @@
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "system:gzdIUkeQT1/YeohwHOQGWv3T975iWVwOxAXemBOxL24="
+      #"system:gzdIUkeQT1/YeohwHOQGWv3T975iWVwOxAXemBOxL24="
     ];
   };
   inputs = {
@@ -81,7 +81,6 @@
     nixpkgs,
     suckless,
     home-manager,
-    nixos-generators,
     nix-index-database,
     ...
   }: let
@@ -100,6 +99,7 @@
       zoro = "x86_64-linux";
       usopp = "x86_64-linux";
       choppar = "x86_64-linux";
+      nixiso = "x86_64-linux";
     };
 
     supportedSystems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
@@ -163,16 +163,16 @@
     });
 
     # NixOS boot disk with my SSH Keys integrated
-    packages = forAllSystems (system: {
-      nixos-iso = nixos-generators.nixosGenerate {
-        specialArgs = {inherit inputs variables;};
-        inherit system;
-        format = "install-iso";
-        modules = [
-          ./machines/nixiso
-        ];
-      };
-    });
+    # packages = forAllSystems (system: {
+    #   nixos-iso = nixos-generators.nixosGenerate {
+    #     specialArgs = {inherit inputs variables;};
+    #     inherit system;
+    #     format = "install-iso";
+    #     modules = [
+    #       ./machines/nixiso
+    #     ];
+    #   };
+    # });
 
     # Macos configurations
     darwinConfigurations.kakashi = darwin.lib.darwinSystem {
@@ -229,9 +229,11 @@
               ++ (
                 if name == "nami"
                 then [./machines/nami]
+                else if name == "nixiso"
+                then [./machines/nixiso]
                 else [./machines/kubenodes]
               );
           };
-      }) ["zoro" "usopp" "choppar" "nami"]);
+      }) ["zoro" "usopp" "choppar" "nami" "nixiso"]);
   };
 }
