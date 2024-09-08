@@ -43,21 +43,21 @@
       };
     };
     aliases = {
-      commit = "commit --signoff -S";
       a = "add";
-      b = "branch";
-      c = "commit -S --signoff --no-verify";
-      d = "difftool";
-      m = "mergetool";
       l = "log";
       t = "tag";
       ai = "add -i";
+      b = "branch";
+      d = "difftool";
+      m = "mergetool";
       cp = "cherry-pick";
-      cm = "commit -S --signoff --amend";
       co = "checkout";
-      dc = "difftool --cached";
       fp = "format-patch";
       lg = "log --graph";
+      dc = "difftool --cached";
+      commit = "commit --signoff -S";
+      cm = "commit -S --signoff --amend";
+      c = "commit -S --signoff --no-verify -m";
       lp = "log --graph --pretty=format:'%Cred%h%Credreset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
       rb = "rebase";
       ut = "rm -r --cached";
