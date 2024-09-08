@@ -52,8 +52,8 @@ jobs:
             max-substitution-jobs = 128
             accept-flake-config = true
             extra-platforms = aarch64-linux
-            substituters = https://atticcache.fly.dev/system?priority=43 https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= system:gzdIUkeQT1/YeohwHOQGWv3T975iWVwOxAXemBOxL24= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
+            substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
 
       - name: Enable Github Cache for Nix store
         id: nix-cache
@@ -65,19 +65,12 @@ jobs:
           name: vijay
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
-      - name: Install Attic binary cache
-        uses: yaxitech/nix-install-pkgs-action@v4
-        with:
-          packages: "attic-client"
-
       - name: Update flake.lock
         run: nix flake update
 
       - name: Build & upload cache
         run: |
           nix build .#nixosConfigurations.${{matrix.machine.host}}.config.system.build.toplevel --system ${{matrix.machine.platform}}
-          attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
-          attic push system result -j 2
 
       - name: Commit and Push
         if: matrix.machine.host == 'zoro'
@@ -121,8 +114,8 @@ jobs:
             max-substitution-jobs = 128
             accept-flake-config = true
             extra-platforms = aarch64-linux
-            substituters = https://atticcache.fly.dev/system?priority=43 https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= system:gzdIUkeQT1/YeohwHOQGWv3T975iWVwOxAXemBOxL24= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
+            substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
 
       - name: Enable Github Cache for Nix store
         id: nix-cache
@@ -134,19 +127,13 @@ jobs:
           name: vijay
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
-      - name: Install Attic binary cache
-        uses: yaxitech/nix-install-pkgs-action@v4
-        with:
-          packages: "attic-client"
-
       - name: Update flake.lock
         run: nix flake update
 
       - name: Build & upload cache
         run: |
           nix build .#darwinConfigurations.${{matrix.machine.host}}.config.system.build.toplevel
-          attic login fly https://atticcache.fly.dev ${{ secrets.ATTIC_TOKEN }}
-          attic push system result -j 2
+
   NixISO:
     name: Buildig & Release 👷‍♂️ New NixOS ISO 📀
     needs: Macos
@@ -173,8 +160,8 @@ jobs:
             max-substitution-jobs = 128
             accept-flake-config = true
             extra-platforms = aarch64-linux
-            substituters = https://atticcache.fly.dev/system?priority=43 https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= system:gzdIUkeQT1/YeohwHOQGWv3T975iWVwOxAXemBOxL24= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
+            substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
 
       - name: Get current date
         id: date
