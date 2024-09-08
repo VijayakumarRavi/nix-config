@@ -1,29 +1,29 @@
 default:
-  @just --list --unsorted --list-heading $'Available repo commands\n'
+    @just --list --unsorted --list-heading $'Available repo commands\n'
 
 # deploy locally - mention host name to deploy remotely
 deploy machine='':
-  #!/usr/bin/env sh
-  if [ -z "{{machine}}" ]; then
-    if command -v darwin-rebuild &> /dev/null 2>&1; then
-      darwin-rebuild switch --flake .
-    else
-      sudo nixos-rebuild switch --fast --flake .
+    #!/usr/bin/env sh
+    if [ -z "{{ machine }}" ]; then
+      if command -v darwin-rebuild &> /dev/null 2>&1; then
+        darwin-rebuild switch --flake .
+      else
+        sudo nixos-rebuild switch --fast --flake .
+      fi
+    elif [ {{ machine }} = "nami" ]; then
+      @just deploy-nami
+    elif [ {{ machine }} = "zoro" ]; then
+      @just deploy-zoro
+    elif [ {{ machine }} = "usopp" ]; then
+      @just deploy-usopp
+    elif [ {{ machine }} = "kube" ]; then
+      @just deploy-zoro
+      @just deploy-usopp
+    elif [ {{ machine }} = "all" ]; then
+      @just deploy-nami
+      @just deploy-zoro
+      @just deploy-usopp
     fi
-  elif [ {{machine}} = "nami" ]; then
-    @just deploy-nami
-  elif [ {{machine}} = "zoro" ]; then
-    @just deploy-zoro
-  elif [ {{machine}} = "usopp" ]; then
-    @just deploy-usopp
-  elif [ {{machine}} = "kube" ]; then
-    @just deploy-zoro
-    @just deploy-usopp
-  elif [ {{machine}} = "all" ]; then
-    @just deploy-nami
-    @just deploy-zoro
-    @just deploy-usopp
-  fi
 
 # Remote deploy nami
 deploy-nami:
@@ -39,61 +39,61 @@ deploy-usopp:
 
 # update flake.lock
 up:
-  nix flake update
+    nix flake update
 
 # update flake.lock commit it
 up-commit:
-  nix flake update --commit-lock-file
+    nix flake update --commit-lock-file
 
 # Nix garbage collect
 gc:
-  sudo nix profile wipe-history --profile /nix/var/nix/profiles/system --older-than 7d && sudo nix store gc
+    sudo nix profile wipe-history --profile /nix/var/nix/profiles/system --older-than 7d && sudo nix store gc
 
 # Repair nix shore
 repair:
-  sudo nix-store --verify --check-contents --repair
+    sudo nix-store --verify --check-contents --repair
 
 # Edit secrets yaml
 secrets-edit:
-  sops secrets.yaml
+    sops secrets.yaml
 
 secrets-rotate:
-  sops --rotate --in-place secrets.yaml
+    sops --rotate --in-place secrets.yaml
 
 # update new secrets with new key
 secrets-sync:
-  sops updatekeys --yes secrets.yaml
+    sops updatekeys --yes secrets.yaml
 
 # Build nixos install ISO
 iso:
-  nix build -L .#nixos-iso && attic push system ./result && cachix push vijay ./result
+    nix build -L .#nixosConfigurations.nixiso.config.system.build.isoImage && attic push system ./result && cachix push vijay ./result
 
 # build SdImage for pi(Nami)
 pi-img:
-  nix build -L --accept-flake-config .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux" && attic push system ./result && cachix push vijay ./result
+    nix build -L --accept-flake-config .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux" && attic push system ./result && cachix push vijay ./result
 
 # Build and upload cache to attic for all host
 cache:
-  #@just up
-  @just iso
-  @just pi-img
-  @just cache-nami
-  @just cache-zoro
-  @just cache-usopp
-  rm ./result
+    #@just up
+    @just iso
+    @just pi-img
+    @just cache-nami
+    @just cache-zoro
+    @just cache-usopp
+    rm ./result
 
 # Build and upload cache to attic for zoro host
 cache-zoro:
-  nix build -L --accept-flake-config .#nixosConfigurations.zoro.config.system.build.toplevel && attic push system ./result && cachix push vijay ./result
+    nix build -L --accept-flake-config .#nixosConfigurations.zoro.config.system.build.toplevel && attic push system ./result && cachix push vijay ./result
 
 # Build and upload cache to attic for usopp host
 cache-usopp:
-  nix build -L --accept-flake-config .#nixosConfigurations.usopp.config.system.build.toplevel && attic push system ./result && cachix push vijay ./result
+    nix build -L --accept-flake-config .#nixosConfigurations.usopp.config.system.build.toplevel && attic push system ./result && cachix push vijay ./result
 
 # Build and upload cache to attic for kakashi host
 cache-kakashi:
-  nix build -L --accept-flake-config .#darwinConfigurations.kakashi.config.system.build.toplevel --system "aarch64-darwin" --impure && attic push system  && cachix push vijay ./result./result
+    nix build -L --accept-flake-config .#darwinConfigurations.kakashi.config.system.build.toplevel --system "aarch64-darwin" --impure && attic push system  && cachix push vijay ./result./result
 
 # Build and upload cache to attic for nami host
 cache-nami:
-  nix build -L --accept-flake-config .#nixosConfigurations.nami.config.system.build.toplevel --system "aarch64-linux" && attic push system ./result && cachix push vijay ./result
+    nix build -L --accept-flake-config .#nixosConfigurations.nami.config.system.build.toplevel --system "aarch64-linux" && attic push system ./result && cachix push vijay ./result

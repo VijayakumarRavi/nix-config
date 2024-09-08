@@ -125,6 +125,13 @@
               noLambdaArg = true;
             };
           };
+          just = {
+            enable = true;
+            files = "justfile";
+            name = "just-fmt";
+            pass_filenames = false;
+            entry = "just --fmt --unstable";
+          };
           statix = {
             enable = true;
             files = "\\.nix$";
