@@ -105,8 +105,8 @@
       gall = "git add .";
       addup = "git add -u";
       commit = "git commit --signoff -S -m";
-      gam = "git commit -S --signoff --amend";
       gc = "git clone --depth=1 --recursive";
+      gam = "git commit -S --signoff --amend --no-edit";
 
       # ssh commands
       nami = "ssh nami";

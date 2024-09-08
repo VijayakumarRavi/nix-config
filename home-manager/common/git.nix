@@ -46,7 +46,7 @@
       commit = "commit --signoff -S";
       a = "add";
       b = "branch";
-      c = "commit -S --signoff";
+      c = "commit -S --signoff --no-verify";
       d = "difftool";
       m = "mergetool";
       l = "log";
