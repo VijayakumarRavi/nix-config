@@ -89,7 +89,7 @@
       pv = "${pkgs.prettyping}/bin/prettyping vijayakumar.xyz";
       lg = "${pkgs.lazygit}/bin/lazygit";
       ld = "${pkgs.lazydocker}/bin/lazydocker";
-      tmux = "${pkgs.tmux}/bin/tmux -u new-session -A -s default_tmux";
+      dmux = "${pkgs.tmux}/bin/tmux -u new-session -A -s default_tmux";
       nfs = "${pkgs.nix}/bin/nix flake show --accept-flake-config --all-systems";
       nfc = "${pkgs.nix}/bin/nix flake check --accept-flake-config --all-systems";
       dvim = "XDG_CONFIG_HOME=~/.nix-config/home-manager/dotfiles/ XDG_DATA_HOME=~/.local/share/dev_nvim XDG_STATE_HOME=~/.local/state/dev_nvim nvim";
@@ -105,6 +105,7 @@
       gall = "git add .";
       addup = "git add -u";
       commit = "git commit --signoff -S -m";
+      gam = "git commit -S --signoff --amend";
       gc = "git clone --depth=1 --recursive";
 
       # ssh commands

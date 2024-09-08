@@ -57,10 +57,11 @@ repair:
 secrets-edit:
     sops secrets.yaml
 
+# generate new data encryption key and reencrypt all values
 secrets-rotate:
     sops --rotate --in-place secrets.yaml
 
-# update new secrets with new key
+# update/add new secrets with new keys
 secrets-sync:
     sops updatekeys --yes secrets.yaml
 
