@@ -18,7 +18,9 @@
       auto-optimise-store = true;
       connect-timeout = 5;
       warn-dirty = false;
-      sandbox = "relaxed";
+      # disabled sandbox because of below error after adding vjvim flake
+      # "> sandbox-exec: pattern serialization length 70044 exceeds maximum (65535)"
+      sandbox = false;
       substituters = [
         "https://cache.nixos.org"
         "https://vijay.cachix.org"
@@ -85,6 +87,7 @@
       coreutils # GNU core utilities for Mac
       alejandra # formatter for Nix
       pkg-config # Manage compile and link flags for libraries
+      inputs.nvim.packages.${pkgs.system}.default # custom neovim config
 
       # Git
       lazygit # git TUI
@@ -106,7 +109,6 @@
       python3 # Python lang
       unixtools.watch # Watch command line tool
       python311Packages.pip # install python dependencies
-      #nixfmt-rfc-style # nix lang formatter
 
       # Containers
       kubectl # Kubernetes CLI tool

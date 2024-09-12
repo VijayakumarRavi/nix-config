@@ -36,6 +36,7 @@ jobs:
           # We add all the config for extra platforms, other binary caches and to raise the number of connections that can be made
           extra-conf: |
             fallback = true
+            sandbox = false
             http-connections = 128
             max-substitution-jobs = 128
             accept-flake-config = true
@@ -114,6 +115,7 @@ jobs:
           # We add all the config for extra platforms, other binary caches and to raise the number of connections that can be made
           extra-conf: |
             fallback = true
+            sandbox = false
             http-connections = 128
             max-substitution-jobs = 128
             accept-flake-config = true
@@ -161,6 +163,7 @@ jobs:
           # We add all the config for extra platforms, other binary caches and to raise the number of connections that can be made
           extra-conf: |
             fallback = true
+            sandbox = false
             http-connections = 128
             max-substitution-jobs = 128
             accept-flake-config = true

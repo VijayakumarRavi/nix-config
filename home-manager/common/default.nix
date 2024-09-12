@@ -10,7 +10,6 @@
     ./git.nix
     ./tmux.nix
     ./starship.nix
-    ./nvim
   ];
 
   systemd.user.startServices = "sd-switch";

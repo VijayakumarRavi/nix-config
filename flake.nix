@@ -42,6 +42,10 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
+    # custom neovim config
+    nvim.url = "github:vijayakumarravi/vjvim";
+    nvim.inputs.nixpkgs.follows = "nixpkgs";
+
     # git pre commit hook
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
