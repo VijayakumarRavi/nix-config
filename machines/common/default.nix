@@ -38,7 +38,7 @@
       ];
     };
     registry = {
-      nixpkgs = {
+      nixpkgs = lib.mkForce {
         flake = inputs.nixpkgs;
       };
     };

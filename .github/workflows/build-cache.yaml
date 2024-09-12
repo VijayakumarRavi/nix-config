@@ -31,9 +31,8 @@ jobs:
       - name: Setup Nix
         uses: DeterminateSystems/nix-installer-action@main
         with:
-          # We set our custom GitHub token for any private flake inputs we might have
+          planner: macos
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          # We add all the config for extra platforms, other binary caches and to raise the number of connections that can be made
           extra-conf: |
             fallback = true
             sandbox = false
