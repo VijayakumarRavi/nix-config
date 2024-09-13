@@ -1,5 +1,5 @@
 <div align="center"><img src="https://raw.githubusercontent.com/TheMaxMur/NixOS-Configuration/master/assets/nixos-logo.png" width="300px"></div>
-<h1 align="center">Vijay ❄️ NixOS & MacOS Configuration</h1>
+<h1 align="center">❄️ Vijay's NixOS & MacOS Configuration ❄️</h1>
 
 <div align="center">
 
@@ -9,6 +9,9 @@
 ![license](https://img.shields.io/static/v1.svg?style=flat&label=License&message=Unlicense&colorA=24273A&colorB=91d7e3&logo=unlicense&logoColor=91d7e3&)
 
 </div>
+
+<h4 align="center">My configuration files for NixOS and MacBook. Feel free to look around and copy!</h4>
+
 
 [TODO]
 
