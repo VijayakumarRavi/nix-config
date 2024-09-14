@@ -5,10 +5,11 @@
   ...
 }: {
   imports = [
-    ./common.nix
+    ./yazi
     ./zsh.nix
     ./git.nix
     ./tmux.nix
+    ./common.nix
     ./starship.nix
   ];
 

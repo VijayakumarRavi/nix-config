@@ -8,7 +8,7 @@ deploy machine='':
       if command -v darwin-rebuild &> /dev/null 2>&1; then
         darwin-rebuild switch --flake .
       else
-        sudo nixos-rebuild switch --fast --flake .
+        nh os switch
       fi
     elif [ {{ machine }} = "nami" ]; then
       @just deploy-nami
@@ -75,12 +75,11 @@ pi-img:
 
 # Build and upload cache to attic for all host
 cache:
-    #@just up
-    @just iso
-    @just pi-img
-    @just cache-nami
+    @just up
     @just cache-zoro
     @just cache-usopp
+    @just cache-nixiso
+    @just cache-nami
     rm ./result
 
 # Build and upload cache to attic for zoro host
@@ -98,3 +97,7 @@ cache-kakashi:
 # Build and upload cache to attic for nami host
 cache-nami:
     nix build -L --accept-flake-config .#nixosConfigurations.nami.config.system.build.toplevel --system "aarch64-linux" && attic push system ./result && cachix push vijay ./result
+
+# Build and upload cache to attic for nixiso build
+cache-nixiso:
+    nix build -L --accept-flake-config .#nixosConfigurations.nixiso.config.system.build.toplevel && attic push system ./result && cachix push vijay ./result

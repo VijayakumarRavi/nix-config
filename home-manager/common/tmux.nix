@@ -69,6 +69,11 @@
       set -g pane-border-style "fg=#171717"
       set -g pane-active-border-style "fg=#171717"
 
+      # For Yazi Image Preview
+      set -g allow-passthrough on
+      set -ga update-environment TERM
+      set -ga update-environment TERM_PROGRAM
+
       # color of the window selection background
       set -g mode-style "bg=black"
 

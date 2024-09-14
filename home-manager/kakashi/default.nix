@@ -1,7 +1,6 @@
 {pkgs, ...}: {
   imports = [
     ../common
-    ./lf.nix
     ./kitty.nix
     ./wezterm.nix
     ./alacritty.nix
