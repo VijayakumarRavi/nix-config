@@ -67,15 +67,15 @@ secrets-sync:
 
 # Build nixos install ISO
 iso:
-    nix build -L .#nixosConfigurations.nixiso.config.system.build.isoImage && attic push system ./result && cachix push vijay ./result
+    nix build -L --accept-flake-config .#nixosConfigurations.nixiso.config.system.build.isoImage && attic push system ./result
 
 # build SdImage for pi(Nami)
 pi-img:
-    nix build -L --accept-flake-config .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux" && attic push system ./result && cachix push vijay ./result
+    nix build -L --accept-flake-config .#nixosConfigurations.nami.config.system.build.sdImage --system "aarch64-linux" && attic push system ./result
 
 # Build and upload cache to attic for all host
 cache:
-    @just up
+    # @just up
     @just cache-zoro
     @just cache-usopp
     @just cache-nixiso
@@ -84,11 +84,11 @@ cache:
 
 # Build and upload cache to attic for zoro host
 cache-zoro:
-    nix build -L --accept-flake-config .#nixosConfigurations.zoro.config.system.build.toplevel && attic push system ./result && cachix push vijay ./result
+    nix build -L --accept-flake-config .#nixosConfigurations.zoro.config.system.build.toplevel && cachix push vijay ./result
 
 # Build and upload cache to attic for usopp host
 cache-usopp:
-    nix build -L --accept-flake-config .#nixosConfigurations.usopp.config.system.build.toplevel && attic push system ./result && cachix push vijay ./result
+    nix build -L --accept-flake-config .#nixosConfigurations.usopp.config.system.build.toplevel && cachix push vijay ./result
 
 # Build and upload cache to attic for kakashi host
 cache-kakashi:
@@ -96,8 +96,8 @@ cache-kakashi:
 
 # Build and upload cache to attic for nami host
 cache-nami:
-    nix build -L --accept-flake-config .#nixosConfigurations.nami.config.system.build.toplevel --system "aarch64-linux" && attic push system ./result && cachix push vijay ./result
+    nix build -L --accept-flake-config .#nixosConfigurations.nami.config.system.build.toplevel --system "aarch64-linux" && cachix push vijay ./result
 
 # Build and upload cache to attic for nixiso build
 cache-nixiso:
-    nix build -L --accept-flake-config .#nixosConfigurations.nixiso.config.system.build.toplevel && attic push system ./result && cachix push vijay ./result
+    nix build -L --accept-flake-config .#nixosConfigurations.nixiso.config.system.build.toplevel && cachix push vijay ./result

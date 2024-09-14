@@ -1,10 +1,9 @@
----
 # inspo: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/keeping-your-actions-up-to-date-with-dependabot#example-dependabotyml-file-for-github-actions
 version: 2
 updates:
   - package-ecosystem: github-actions
-    directory: "/"
+    directory: '/'
     schedule:
       interval: daily
-      time: "10:00"
+      time: '10:00'
     open-pull-requests-limit: 10
