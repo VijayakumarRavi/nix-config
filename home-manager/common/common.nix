@@ -38,6 +38,12 @@ in {
     direnv = {
       enable = true;
       nix-direnv.enable = true;
+      config = {
+        global = {
+          # Hides the rather large block of text that is usually printed when entering the environment.
+          hide_env_diff = true;
+        };
+      };
       stdlib = ''
         # stolen from @i077; store .direnv in cache instead of project dir
         declare -A direnv_layout_dirs
