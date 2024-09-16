@@ -14,7 +14,9 @@ in {
     nix-index.enableZshIntegration = true;
     nix-index-database.comma.enable = true;
 
-    htop.enable = true;
+    k9s = {
+      enable = true;
+    };
 
     zoxide = {
       # smarter cd command

@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ../common
+    ../core
     ./homebrew.nix
     ./window-manageer.nix
   ];

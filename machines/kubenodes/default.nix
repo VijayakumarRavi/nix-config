@@ -6,8 +6,8 @@
   ...
 }: {
   imports = [
-    ../common
-    ../common/linux.nix
+    ../core
+    ../core/linux.nix
 
     # Include the results of the hardware scan.
     ./hardware-configuration.nix

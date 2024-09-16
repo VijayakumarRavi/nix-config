@@ -60,6 +60,7 @@
       "raycast" # Raycast - A better alternative to Alfred and spotlight
       "pearcleaner" # Application uninstaller
       "visual-studio-code" # Visual Studio Code editor
+      "cursor" # visual-studio-code alternative
     ];
     masApps = {
       "1Password for Safari" = 1569813296;

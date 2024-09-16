@@ -171,18 +171,6 @@
       };
     });
 
-    # NixOS boot disk with my SSH Keys integrated
-    # packages = forAllSystems (system: {
-    #   nixos-iso = nixos-generators.nixosGenerate {
-    #     specialArgs = {inherit inputs variables;};
-    #     inherit system;
-    #     format = "install-iso";
-    #     modules = [
-    #       ./machines/nixiso
-    #     ];
-    #   };
-    # });
-
     # Macos configurations
     darwinConfigurations.kakashi = darwin.lib.darwinSystem {
       system = darwinSystems.kakashi;

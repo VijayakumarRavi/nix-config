@@ -7,8 +7,8 @@
   imports = [
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
 
-    ../common
-    ../common/linux.nix
+    ../core
+    ../core/linux.nix
 
     # Containers
     ./compose.nix

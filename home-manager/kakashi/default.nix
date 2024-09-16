@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   imports = [
-    ../common
+    ../core
     ./kitty.nix
     ./wezterm.nix
     ./alacritty.nix
