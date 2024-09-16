@@ -6,7 +6,7 @@
   imports = [
     ../core
     ./homebrew.nix
-    ./window-manageer.nix
+    ./window-manager.nix
   ];
 
   nix = {
@@ -133,7 +133,7 @@
           "/System/Applications/Music.app/"
           "/System/Applications/Photos.app/"
           "/System/Applications/System Settings.app/"
-          #"${pkgs.kitty}/Applications/kitty.app/"
+          "${pkgs.kitty}/Applications/kitty.app/"
         ];
       };
 

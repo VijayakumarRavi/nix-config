@@ -46,7 +46,7 @@
       "arc" # Chromium based browser
       "hyperkey" # Convert your caps lock key or any of your modifier keys to the hyper key
       "the-unarchiver" # Unpacks archive files
-      "onyx" # Verify system files structure, run miscellaneous maintenance and more
+      # "onyx" # Verify system files structure, run miscellaneous maintenance and more
       "1password" # Best password manager imo
       "1password-cli" # 1Password manager CLI
       "bartender" # Menu bar icon organizer
@@ -59,7 +59,7 @@
       "stats" # System monitor for the menu bar
       "raycast" # Raycast - A better alternative to Alfred and spotlight
       "pearcleaner" # Application uninstaller
-      "visual-studio-code" # Visual Studio Code editor
+      # "visual-studio-code" # Visual Studio Code editor
       "cursor" # visual-studio-code alternative
     ];
     masApps = {
@@ -68,7 +68,7 @@
       "infuse video player" = 1136220934;
       "localsend" = 1661733229;
       "shortery" = 1594183810;
-      "Hyperduck" = 6444667067;
+      # "Hyperduck" = 6444667067;
       # "shelly ssh client" = 989642999;
     };
   };

@@ -20,10 +20,6 @@
     # called derivations that say how to build software.
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable"; # nixos-22.11
 
-    # Used to generate custom iso installer images
-    nixos-generators.url = "github:nix-community/nixos-generators";
-    nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
-
     # nix packages index to find it faster
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";

@@ -23,8 +23,8 @@
       };
       extraConfig = ''
         yabai -m rule --add app='System Settings' manage=off
-        yabai -m rule --add app='krisp' manage=off
-        yabai -m rule --add app='Leapp' manage=off
+        yabai -m rule --add app='Finder' manage=off
+        yabai -m rule --add app='Raycast' manage=off
         yabai -m config mouse_modifier cmd
         # Make non-resizable windows floating
         yabai -m signal --add event=window_created action='yabai -m query --windows --window $YABAI_WINDOW_ID |\
