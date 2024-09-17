@@ -14,10 +14,6 @@ in {
     nix-index.enableZshIntegration = true;
     nix-index-database.comma.enable = true;
 
-    k9s = {
-      enable = true;
-    };
-
     zoxide = {
       # smarter cd command
       enable = true;
@@ -44,6 +40,9 @@ in {
         global = {
           # Hides the rather large block of text that is usually printed when entering the environment.
           hide_env_diff = true;
+        };
+        whitelist = {
+          prefix = ["~/.nix-config"];
         };
       };
       stdlib = ''
