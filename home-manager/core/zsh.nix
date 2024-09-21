@@ -82,9 +82,6 @@
       ",," = "cd -";
       ".." = "cd ..";
       "..." = "cd ../..";
-      n = "${pkgs.neovim}/bin/nvim";
-      sn = "sudo ${pkgs.neovim}/bin/nvim";
-      sv = "sudo ${pkgs.vim}/bin/vim";
       pg = "${pkgs.prettyping}/bin/prettyping google.com";
       pv = "${pkgs.prettyping}/bin/prettyping vijayakumar.xyz";
       lg = "${pkgs.lazygit}/bin/lazygit";
@@ -92,11 +89,9 @@
       dmux = "${pkgs.tmux}/bin/tmux -u new-session -A -s default_tmux";
       nfs = "${pkgs.nix}/bin/nix flake show --accept-flake-config --all-systems";
       nfc = "${pkgs.nix}/bin/nix flake check --accept-flake-config --all-systems";
-      dvim = "XDG_CONFIG_HOME=~/.nix-config/home-manager/dotfiles/ XDG_DATA_HOME=~/.local/share/dev_nvim XDG_STATE_HOME=~/.local/state/dev_nvim nvim";
 
       # tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
-      pping = "prettyping";
-      note = "nvim ~/.notes.txt";
+      pping = "${pkgs.prettyping}/bin/prettyping";
       preview = "${pkgs.fzf}/bin/fzf --preview 'cat {}'";
 
       # Git

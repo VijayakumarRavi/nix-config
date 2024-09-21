@@ -6,11 +6,11 @@
       package = pkgs.jetbrains-mono;
       name = "JetBrains Mono";
     };
-    #theme = "Gruvbox Material Dark Hard";
-    theme = "Tokyo Night";
+    #themeFile = "GruvboxMaterialDarkHard";
+    themeFile = "tokyo_night_night";
     shellIntegration.mode = "no-cursor";
     settings = {
-      background_opacity = "0.8";
+      background_opacity = "1";
       bold_font = "auto";
       italic_font = "auto";
       bold_italic_font = "auto";
