@@ -39,10 +39,12 @@ deploy-usopp:
 
 # update flake.lock
 up:
+    git pull
     nix flake update
 
 # update flake.lock commit it
 up-commit:
+    git pull
     nix flake update --commit-lock-file
 
 # Nix garbage collect
@@ -75,7 +77,7 @@ pi-img:
 
 # Build and upload cache to attic for all host
 cache:
-    # just up
+    just up
     just cache-zoro
     just cache-usopp
     just cache-nixiso
@@ -84,20 +86,20 @@ cache:
 
 # Build and upload cache to attic for zoro host
 cache-zoro:
-    nix build -L --accept-flake-config .#nixosConfigurations.zoro.config.system.build.toplevel && cachix push vijay ./result
+    nix build --accept-flake-config .#nixosConfigurations.zoro.config.system.build.toplevel && cachix push vijay ./result
 
 # Build and upload cache to attic for usopp host
 cache-usopp:
-    nix build -L --accept-flake-config .#nixosConfigurations.usopp.config.system.build.toplevel && cachix push vijay ./result
+    nix build --accept-flake-config .#nixosConfigurations.usopp.config.system.build.toplevel && cachix push vijay ./result
 
 # Build and upload cache to attic for kakashi host
 cache-kakashi:
-    nix build -L --accept-flake-config .#darwinConfigurations.kakashi.config.system.build.toplevel --system "aarch64-darwin" --impure && attic push system  && cachix push vijay ./result./result
+    nix build --accept-flake-config .#darwinConfigurations.kakashi.config.system.build.toplevel --system "aarch64-darwin" --impure && attic push system  && cachix push vijay ./result./result
 
 # Build and upload cache to attic for nami host
 cache-nami:
-    nix build -L --accept-flake-config .#nixosConfigurations.nami.config.system.build.toplevel --system "aarch64-linux" && cachix push vijay ./result
+    nix build --accept-flake-config .#nixosConfigurations.nami.config.system.build.toplevel --system "aarch64-linux" && cachix push vijay ./result
 
 # Build and upload cache to attic for nixiso build
 cache-nixiso:
-    nix build -L --accept-flake-config .#nixosConfigurations.nixiso.config.system.build.toplevel && cachix push vijay ./result
+    nix build --accept-flake-config .#nixosConfigurations.nixiso.config.system.build.toplevel && cachix push vijay ./result
