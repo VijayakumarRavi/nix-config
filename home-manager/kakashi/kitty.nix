@@ -11,6 +11,8 @@
     shellIntegration.mode = "no-cursor";
     settings = {
       background_opacity = "1";
+      copy_on_select = true;
+      clipboard_control = "write-clipboard read-clipboard write-primary read-primary";
       bold_font = "auto";
       italic_font = "auto";
       bold_italic_font = "auto";
@@ -43,4 +45,34 @@
       "cmd+0" = "goto_tab 10r";
     };
   };
+  home.file.".config/kitty/diff.conf".text = ''
+    foreground #a9b1d6
+    background #1a1b26
+
+    title_fg #a9b1d6
+    title_bg #1a1b26
+
+    margin_bg #24283b
+    margin_fg #565f89
+
+    removed_bg           #3b2b3c
+    highlight_removed_bg #5c3f5c
+    removed_margin_bg    #4a3950
+
+    added_bg           #283b4d
+    highlight_added_bg #3d5a70
+    added_margin_bg    #324a5d
+
+    filler_bg #1f2335
+
+    margin_filler_bg #24283b
+
+    hunk_margin_bg #24283b
+    hunk_bg        #24283b
+
+    search_bg #3d59a1
+    search_fg #c0caf5
+    select_bg #33467c
+    select_fg #c0caf5
+  '';
 }

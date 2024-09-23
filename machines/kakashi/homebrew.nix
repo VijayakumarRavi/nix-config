@@ -44,7 +44,8 @@
       "shottr" # Screenshot util
       "brave-browser" # Web browser focusing on privacy
       "arc" # Chromium based browser
-      "hyperkey" # Convert your caps lock key or any of your modifier keys to the hyper key
+      # "hyperkey" # Convert your caps lock key or any of your modifier keys to the hyper key
+      "superkey" # Search and click text anywhere on screen and Convert your caps lock key to the hyper key
       "the-unarchiver" # Unpacks archive files
       # "onyx" # Verify system files structure, run miscellaneous maintenance and more
       "1password" # Best password manager imo

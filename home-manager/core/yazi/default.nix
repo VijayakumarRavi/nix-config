@@ -12,9 +12,15 @@
         sort_by = "natural";
         linemode = "size";
       };
+      preview = {
+        image_quality = 90;
+        max_width = 1920;
+        max_height = 1080;
+      };
     };
     plugins = {
       smart-enter = ./plugins/smart-enter;
+      max-preview = ./plugins/max-preview;
     };
     keymap = {
       manager.prepend_keymap = [
@@ -27,6 +33,11 @@
           run = "leave";
           on = ["<Backspace>"];
           desc = "Go back to the parent directory";
+        }
+        {
+          run = "plugin --sync max-preview";
+          on = ["T"];
+          desc = "Toggle preview";
         }
       ];
     };
