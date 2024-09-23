@@ -1,9 +1,12 @@
 {
+  imports = [
+    ../kubenodes
+  ];
   networking.interfaces = {
-    eno2 = {
+    eno1 = {
       ipv4.addresses = [
         {
-          address = "10.0.1.101";
+          address = "10.0.1.102";
           prefixLength = 16;
         }
       ];

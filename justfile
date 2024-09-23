@@ -1,28 +1,28 @@
 default:
-    @just --list --unsorted --list-heading $'Available repo commands\n'
+    just --list --unsorted --list-heading $'Available repo commands\n'
 
 # deploy locally - mention host name to deploy remotely
 deploy machine='':
     #!/usr/bin/env sh
     if [ -z "{{ machine }}" ]; then
       if command -v darwin-rebuild &> /dev/null 2>&1; then
-        darwin-rebuild switch --flake .
+        darwin-rebuild switch --flake ~/.nix-config
       else
         nh os switch
       fi
     elif [ {{ machine }} = "nami" ]; then
-      @just deploy-nami
+      just deploy-nami
     elif [ {{ machine }} = "zoro" ]; then
-      @just deploy-zoro
+      just deploy-zoro
     elif [ {{ machine }} = "usopp" ]; then
-      @just deploy-usopp
+      just deploy-usopp
     elif [ {{ machine }} = "kube" ]; then
-      @just deploy-zoro
-      @just deploy-usopp
+      just deploy-zoro
+      just deploy-usopp
     elif [ {{ machine }} = "all" ]; then
-      @just deploy-nami
-      @just deploy-zoro
-      @just deploy-usopp
+      just deploy-nami
+      just deploy-zoro
+      just deploy-usopp
     fi
 
 # Remote deploy nami
@@ -75,11 +75,11 @@ pi-img:
 
 # Build and upload cache to attic for all host
 cache:
-    # @just up
-    @just cache-zoro
-    @just cache-usopp
-    @just cache-nixiso
-    @just cache-nami
+    # just up
+    just cache-zoro
+    just cache-usopp
+    just cache-nixiso
+    just cache-nami
     rm ./result
 
 # Build and upload cache to attic for zoro host

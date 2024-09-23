@@ -1,6 +1,6 @@
 {
   pkgs,
-  meta,
+  hostname,
   config,
   variables,
   ...
@@ -14,9 +14,6 @@
 
     # Declarative disk partitioning config
     ./disk-config.nix
-
-    # Machine specific imports
-    ./${meta.hostname}.nix
   ];
 
   # Bootloader
@@ -100,17 +97,17 @@
         "--disable local-storage"
       ]
       ++ (
-        if meta.hostname == "zoro"
+        if hostname == "zoro"
         then []
         else ["--server https://zoro:6443"]
       )
     );
-    clusterInit = meta.hostname == "zoro";
+    clusterInit = hostname == "zoro";
   };
 
   services.openiscsi = {
     enable = true;
-    name = "iqn.2016-04.com.open-iscsi:${meta.hostname}";
+    name = "iqn.2016-04.com.open-iscsi:${hostname}";
   };
 
   # Fixes for longhorn

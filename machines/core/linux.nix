@@ -1,6 +1,6 @@
 {
   pkgs,
-  meta,
+  hostname,
   config,
   inputs,
   variables,
@@ -50,7 +50,7 @@
   # Enable networking
   networking = {
     # Hostname
-    hostName = meta.hostname;
+    hostName = hostname;
     # disable firewall
     firewall.enable = false;
     # Enabling WIFI
@@ -169,7 +169,7 @@
     '';
   };
   systemd =
-    if meta.hostname != "nami"
+    if hostname != "nami"
     then {
       # Given that systems are headless, emergency mode is useless.
       # We prefer the system to attempt to continue booting so

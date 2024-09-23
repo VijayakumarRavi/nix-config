@@ -1,4 +1,7 @@
 {
+  imports = [
+    ../kubenodes
+  ];
   networking.interfaces = {
     eno1 = {
       ipv4.addresses = [

@@ -1,5 +1,6 @@
 {
-  description = "My configs";
+  description = "Vijay's NixOS & MacOS Configuration";
+
   nixConfig = {
     extra-substituters = [
       "https://cache.nixos.org"
@@ -15,74 +16,68 @@
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
     ];
   };
-  inputs = {
-    # Where we get most of our software. Giant mono repo with recipes
-    # called derivations that say how to build software.
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable"; # nixos-22.11
 
-    # nix packages index to find it faster
+  inputs = {
+    # Core NixOS repo
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+
+    # Index for faster package search
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Manages configs links things into your home directory
+    # Home manager config
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Controls system level software and settings including fonts
+    # System-level config for MacOS
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Disko
+    # Disk partition management
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    # custom neovim config
+    # Neovim config
     nvim.url = "github:vijayakumarravi/vjvim";
     nvim.inputs.nixpkgs.follows = "nixpkgs";
 
-    # git pre commit hook
+    # Git pre-commit hooks
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
 
-    #Raspberry pi nix
+    # Raspberry Pi support
     raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
     raspberry-pi-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    # secrets management
+    # Secrets management with sops
     sops-nix.url = "github:mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Firefox nightly build flake
     firefox.url = "github:nix-community/flake-firefox-nightly";
     firefox.inputs.nixpkgs.follows = "nixpkgs";
 
-    # My custom suckless build
-    suckless.url = "github:VijayakumarRavi/suckless";
-    suckless.inputs.nixpkgs.follows = "nixpkgs";
-
-    # Homebrew
+    # Homebrew configuration
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
-
     homebrew-bundle.url = "github:homebrew/homebrew-bundle";
-    homebrew-bundle.flake = false;
-
     homebrew-core.url = "github:homebrew/homebrew-core";
-    homebrew-core.flake = false;
-
     homebrew-cask.url = "github:homebrew/homebrew-cask";
-    homebrew-cask.flake = false;
-
     homebrew-services.url = "github:homebrew/homebrew-services";
+
+    # Disable flakes for some Homebrew inputs
+    homebrew-bundle.flake = false;
+    homebrew-core.flake = false;
+    homebrew-cask.flake = false;
     homebrew-services.flake = false;
   };
+
   outputs = inputs @ {
     darwin,
     nixpkgs,
-    suckless,
     home-manager,
-    nix-index-database,
     ...
   }: let
-    # Config
+    # Configuration variables
     variables = {
       username = "vijay";
       user = "Vijayakumar Ravi";
@@ -90,19 +85,12 @@
       stateVersion = "24.11";
       stateVersionDarwin = 4;
     };
-    # Configured Hosts
-    darwinSystems = {kakashi = "aarch64-darwin";};
-    linuxSystems = {
-      nami = "aarch64-linux";
-      zoro = "x86_64-linux";
-      usopp = "x86_64-linux";
-      choppar = "x86_64-linux";
-      nixiso = "x86_64-linux";
-    };
 
+    # Supported systems for NixOS and MacOS
     supportedSystems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
     forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
 
+    # Pre-commit hooks configuration for all systems
     pre-commit = forAllSystems (system: {
       pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
         src = ./.;
@@ -155,11 +143,36 @@
         };
       };
     });
+
+    # Helper to create a system configuration
+    mkSystem = configurations: system: hostname:
+      configurations {
+        inherit system;
+        # Pass all relevant inputs and variables to imported files
+        specialArgs = {inherit inputs variables hostname;};
+        modules = [
+          ./machines/${hostname}
+          (
+            if system == "aarch64-darwin"
+            then home-manager.darwinModules.home-manager
+            else home-manager.nixosModules.home-manager
+          )
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              backupFileExtension = "backup";
+              extraSpecialArgs = {inherit inputs variables;};
+              users.${variables.username}.imports = [./home-manager/${hostname}];
+            };
+          }
+        ];
+      };
   in {
-    # Enables `nix fmt` at root of repo to format all nix files
+    # Formatter configuration for all systems
     formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
-    # devShell to enable pre-commit via direnv
+    # Development shell with pre-commit hooks
     devShells = forAllSystems (system: {
       default = nixpkgs.legacyPackages.${system}.mkShell {
         inherit (pre-commit.${system}.pre-commit-check) shellHook;
@@ -167,66 +180,18 @@
       };
     });
 
-    # Macos configurations
-    darwinConfigurations.kakashi = darwin.lib.darwinSystem {
-      system = darwinSystems.kakashi;
-      # makes all inputs & variables available in imported files
-      specialArgs = {inherit inputs variables;};
-      modules = [
-        ./machines/kakashi
-        nix-index-database.darwinModules.nix-index
-        home-manager.darwinModules.home-manager
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            backupFileExtension = "backup";
-            extraSpecialArgs = {inherit inputs variables;};
-            users.${variables.username}.imports = [./home-manager/kakashi];
-          };
-        }
-      ];
+    # NixOS system configurations
+    nixosConfigurations = {
+      zoro = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "zoro";
+      usopp = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "usopp";
+      nixiso = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "nixiso";
+      nami = mkSystem nixpkgs.lib.nixosSystem "aarch64-linux" "nami";
+      # choppar = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "choppar"; # Example of commented-out system
     };
 
-    nixosConfigurations = builtins.listToAttrs (map
-      (name: {
-        inherit name;
-        value =
-          nixpkgs.lib.nixosSystem
-          {
-            # makes all inputs & variables available in imported files
-            specialArgs = {
-              inherit inputs variables suckless;
-              meta = {hostname = name;};
-            };
-            system = linuxSystems.${name};
-            modules =
-              [
-                nix-index-database.nixosModules.nix-index
-                home-manager.nixosModules.home-manager
-                {
-                  home-manager = {
-                    useGlobalPkgs = true;
-                    useUserPackages = true;
-                    backupFileExtension = "backup";
-                    extraSpecialArgs = {inherit inputs variables;};
-                    users.${variables.username} = {
-                      imports =
-                        if name == "nami"
-                        then [./home-manager/nami]
-                        else [./home-manager/kubenodes];
-                    };
-                  };
-                }
-              ]
-              ++ (
-                if name == "nami"
-                then [./machines/nami]
-                else if name == "nixiso"
-                then [./machines/nixiso]
-                else [./machines/kubenodes]
-              );
-          };
-      }) ["zoro" "usopp" "choppar" "nami" "nixiso"]);
+    # MacOS configurations
+    darwinConfigurations = {
+      kakashi = mkSystem darwin.lib.darwinSystem "aarch64-darwin" "kakashi";
+    };
   };
 }

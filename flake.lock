@@ -951,8 +951,7 @@
         "nvim": "nvim",
         "pre-commit-hooks": "pre-commit-hooks_2",
         "raspberry-pi-nix": "raspberry-pi-nix",
-        "sops-nix": "sops-nix",
-        "suckless": "suckless"
+        "sops-nix": "sops-nix"
       }
     },
     "rpi-bluez-firmware-src": {
@@ -1075,26 +1074,6 @@
       "original": {
         "owner": "mic92",
         "repo": "sops-nix",
-        "type": "github"
-      }
-    },
-    "suckless": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1726632183,
-        "narHash": "sha256-Ukp8HrdlWaDg2JXJLdzzXkzKiPEPAxPnYt/aAqmIDHs=",
-        "owner": "VijayakumarRavi",
-        "repo": "suckless",
-        "rev": "1df4f30cf6a5a18964209978ecb2a07faf9b1932",
-        "type": "github"
-      },
-      "original": {
-        "owner": "VijayakumarRavi",
-        "repo": "suckless",
         "type": "github"
       }
     },
