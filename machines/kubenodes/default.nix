@@ -82,6 +82,7 @@
     killall
     cifs-utils
     nfs-utils
+    intel-gpu-tools # for intel gpu
   ];
 
   services.k3s = {

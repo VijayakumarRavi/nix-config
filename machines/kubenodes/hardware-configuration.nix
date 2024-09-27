@@ -2,6 +2,7 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
+  pkgs,
   config,
   lib,
   modulesPath,
@@ -32,4 +33,29 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      # Hardware transcoding.
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      libvdpau-va-gl
+      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but can work better for some applications)
+      vaapiVdpau
+      # HDR tone mapping.
+      intel-compute-runtime
+      ocl-icd
+    ];
+    extraPackages32 = with pkgs; [
+      # Hardware transcoding.
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      libvdpau-va-gl
+      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but can work better for some applications)
+      vaapiVdpau
+      # HDR tone mapping.
+      intel-compute-runtime
+      ocl-icd
+    ];
+  };
 }
