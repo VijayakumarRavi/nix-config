@@ -66,7 +66,7 @@
 
         cmd_duration = {
           min_time = 500;
-          show_notifications = true;
+          show_notifications = false;
           min_time_to_notify = 600000;
           format = "took [$duration]($style) ";
         };

@@ -35,14 +35,26 @@
       pull.rebase = true;
       pull.autostash = true;
       rebase.autostash = true;
-      merge.autostash = true;
       credential.helper = "osxkeychain";
       difftool.prompt = false;
+      init.defaultBranch = "master";
       # user.signingKey = "~/.ssh/id_ed25519.pub";
+      core = {
+        editor = "nvim";
+      };
       push = {
         default = "current";
         followTags = true;
         autoSetupRemote = true;
+      };
+      merge = {
+        prompt = false;
+        autostash = true;
+        tool = "nvimdiff4";
+        conflictstyle = "diff3";
+      };
+      mergetool.nvimdiff4 = {
+        cmd = "nvim -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'";
       };
       gpg = {
         format = "ssh";
