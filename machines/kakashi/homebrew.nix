@@ -62,6 +62,7 @@
       "pearcleaner" # Application uninstaller
       # "visual-studio-code" # Visual Studio Code editor
       "cursor" # visual-studio-code alternative
+      "amazon-workspaces" # amazon-workspaces for FPL
     ];
     masApps = {
       "1Password for Safari" = 1569813296;

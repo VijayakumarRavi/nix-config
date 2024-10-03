@@ -186,7 +186,7 @@
       usopp = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "usopp";
       nixiso = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "nixiso";
       nami = mkSystem nixpkgs.lib.nixosSystem "aarch64-linux" "nami";
-      # choppar = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "choppar"; # Example of commented-out system
+      # choppar = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "choppar";
     };
 
     # MacOS configurations

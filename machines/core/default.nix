@@ -6,6 +6,8 @@
   variables,
   ...
 }: {
+  # Import coustom pkgs
+  imports = [../../pkgs];
   nix = {
     package = pkgs.nix;
     settings = {

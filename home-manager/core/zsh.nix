@@ -98,8 +98,7 @@
       ga = "git add --patch";
       gs = "git status";
       gall = "git add .";
-      addup = "git add -u";
-      commit = "git commit --signoff -S -m";
+      gad = "git add";
       gc = "git clone --depth=1 --recursive";
       gam = "git commit -S --signoff --amend --no-edit";
 
