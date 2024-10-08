@@ -72,11 +72,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1727999297,
-        "narHash": "sha256-LTJuQPCsSItZ/8TieFeP30iY+uaLoD0mT0tAj1gLeyQ=",
+        "lastModified": 1728385805,
+        "narHash": "sha256-mUd38b0vhB7yzgAjNOaFz7VY9xIVzlbn3P2wjGBcVV0=",
         "owner": "lnl7",
         "repo": "nix-darwin",
-        "rev": "8c8388ade72e58efdeae71b4cbb79e872c23a56b",
+        "rev": "48b50b3b137be5cfb9f4d006835ce7c3fe558ccc",
         "type": "github"
       },
       "original": {
@@ -114,11 +114,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1728109432,
-        "narHash": "sha256-wmbErh8FG7dRKOtMMpHUqDtFjeqt9Zjx4zssSeTalwU=",
+        "lastModified": 1728334376,
+        "narHash": "sha256-CTKEKPzD/j8FK6H4DO3EjyixZd3HHvgAgfnCwpGFP5c=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "48ebb577855fb2398653f033b3b2208a9249203d",
+        "rev": "d39ee334984fcdae6244f5a8e6ab857479cbaefe",
         "type": "github"
       },
       "original": {
@@ -138,11 +138,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1728318113,
-        "narHash": "sha256-kz0oPTiT6v8R0nddrx3TS/oH4680XgF+ZwQP+XgQdIU=",
+        "lastModified": 1728390712,
+        "narHash": "sha256-YPDJqDlR2awXfdB4vrM+SqrDFSzYmMmHACmsicxp8Xo=",
         "owner": "nix-community",
         "repo": "flake-firefox-nightly",
-        "rev": "46022555ec8a1111d254cb36744d667b1c23bbbf",
+        "rev": "0b7e6768544b6a2afa8f2fdd969bad8dc7445bef",
         "type": "github"
       },
       "original": {
@@ -412,11 +412,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1728306985,
-        "narHash": "sha256-l/KpcWTv2SjxCnqFs5GYhvjeVYd40WQV4/F2+w9btd4=",
+        "lastModified": 1728337164,
+        "narHash": "sha256-VdRTjJFyq4Q9U7Z/UoC2Q5jK8vSo6E86lHc2OanXtvc=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "3ac39b2a8b7cbfc0f96628d8a84867c885bc988b",
+        "rev": "038630363e7de57c36c417fd2f5d7c14773403e4",
         "type": "github"
       },
       "original": {
@@ -451,11 +451,11 @@
     "homebrew-bundle": {
       "flake": false,
       "locked": {
-        "lastModified": 1728080527,
-        "narHash": "sha256-VCpoi9yyoMB1rYrSqu4OMQacCqCYnLxxRcDjcsvJFa4=",
+        "lastModified": 1728341009,
+        "narHash": "sha256-UUExG70b1gGlSz06jlvck6au2STfcgPb5eOK79JABxI=",
         "owner": "homebrew",
         "repo": "homebrew-bundle",
-        "rev": "b1f54020a4b7ac0df4477896b7af155b18abf030",
+        "rev": "61fa8774077c9f807639ca2cdc340a0bc3c65964",
         "type": "github"
       },
       "original": {
@@ -467,11 +467,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1728318568,
-        "narHash": "sha256-3UB7Dzo1EeguEsZ4yjskAUaln4zdLEehm4ToOmh+vao=",
+        "lastModified": 1728412626,
+        "narHash": "sha256-Pgy53UC6C1r6aTn+9wl0xn/R9CrP2SbF5K7xdnn++es=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "bcf58af9905a15a725fe77e9943cb97a2d885519",
+        "rev": "9ecf84fb34c43d0a7ff99dcf88605fce3f457c50",
         "type": "github"
       },
       "original": {
@@ -483,11 +483,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1728325427,
-        "narHash": "sha256-AmAepm+5Pzoh+aB2bGWVvHRRp0nM9sR1ifFLBSFTQvY=",
+        "lastModified": 1728412243,
+        "narHash": "sha256-4wte6PrjJqXPcbu3YyYq/553gXsaVwEXqminIt0oqR8=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "ed3717de918f3b4bca17167479c0e3883d75c3ad",
+        "rev": "47c2c5d97e522f82ed43be8b96bda050173a95b8",
         "type": "github"
       },
       "original": {
@@ -499,11 +499,11 @@
     "homebrew-services": {
       "flake": false,
       "locked": {
-        "lastModified": 1728281844,
-        "narHash": "sha256-nlW9ellAlvBu3mUGRja27fDFynmh8PXblskI75yp2yw=",
+        "lastModified": 1728399765,
+        "narHash": "sha256-dtUcOsNigJAGMqX68iRQpDLYMCUzvZhkSxDRjvy6VBU=",
         "owner": "homebrew",
         "repo": "homebrew-services",
-        "rev": "5eb425975cd0370c86d9b92e4638fb2fe9f2585f",
+        "rev": "052d11e0f2733f5d33f0af500de2607eb8a4ed54",
         "type": "github"
       },
       "original": {
@@ -768,11 +768,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1728249353,
-        "narHash": "sha256-7NBJm1jfMeAowE1J2oljYqWVvI9X7FyyxBY4O8uB/Os=",
+        "lastModified": 1728279793,
+        "narHash": "sha256-W3D5YpNrUVTFPVU4jiEiboaaUDShaiH5fRl9aJLqUnU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "c8a17040be4a20b29589cb4043a9e0c36af1930e",
+        "rev": "f85a2d005e83542784a755ca8da112f4f65c4aa4",
         "type": "github"
       },
       "original": {
@@ -798,11 +798,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1728225347,
-        "narHash": "sha256-5rEaZ3msvhUJ2s3n3bARF8/O8gczRkk2G/cs5hzGXDk=",
+        "lastModified": 1728320787,
+        "narHash": "sha256-k6uOqBw7ROiFrYezdhqlg1aQULLb8Sbgd+GY7CQGqx8=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "31acdd4b662e2243143d3091c4833d4a0448b424",
+        "rev": "a3dd64b30c1016342f8c96ef04806b49dc4339f3",
         "type": "github"
       },
       "original": {
@@ -846,11 +846,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1728239940,
-        "narHash": "sha256-boNwHpz47TCBjX7i8BUxJr0eLqZJLwTFclcuReg5PZg=",
+        "lastModified": 1728326437,
+        "narHash": "sha256-ajzjr42yb0KrWHrNgTp1lijkgtTKSxpETK7+E9vuiaE=",
         "owner": "vijayakumarravi",
         "repo": "vjvim",
-        "rev": "6569b147da5dd670a42b83eb333e7ecaa2764332",
+        "rev": "b4021d2a017917f3869f64d7d39b3915a76b1ff5",
         "type": "github"
       },
       "original": {
@@ -916,17 +916,17 @@
         "rpi-bluez-firmware-src": "rpi-bluez-firmware-src",
         "rpi-firmware-nonfree-src": "rpi-firmware-nonfree-src",
         "rpi-firmware-src": "rpi-firmware-src",
-        "rpi-linux-6_10_8-src": "rpi-linux-6_10_8-src",
-        "rpi-linux-6_6_47-src": "rpi-linux-6_6_47-src",
+        "rpi-linux-6_10_12-src": "rpi-linux-6_10_12-src",
+        "rpi-linux-6_6_54-src": "rpi-linux-6_6_54-src",
         "rpicam-apps-src": "rpicam-apps-src",
         "u-boot-src": "u-boot-src"
       },
       "locked": {
-        "lastModified": 1726837731,
-        "narHash": "sha256-+yZWOHSCwrdSiDviF40o0vb8D+9QfUhcVKWTAskV0Kk=",
+        "lastModified": 1728342950,
+        "narHash": "sha256-ivgUYs0fhoEqRN8bxAT72aQBD6z9yGKBv6hJL9N6RJI=",
         "owner": "nix-community",
         "repo": "raspberry-pi-nix",
-        "rev": "d342e97d257f946c16bf6b610cf58d95555be8e7",
+        "rev": "9126fc5c04fa840fd8c571411353d1c36d98f51e",
         "type": "github"
       },
       "original": {
@@ -991,28 +991,28 @@
     "rpi-firmware-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1725277507,
-        "narHash": "sha256-DN+NlesZ8YfuVwLKQSHckvpNZxqsbKRflOcS3ShO3Ss=",
+        "lastModified": 1727798811,
+        "narHash": "sha256-eavbshXGYmkYR33y9FLcQMJoAYdYTESVEy0g/RRXnb0=",
         "owner": "raspberrypi",
         "repo": "firmware",
-        "rev": "b5eb52b343e9bc1391a8059a38e12e470c109f5c",
+        "rev": "287e6a6c2d3b50eee3e2c5b2eacdd907e5cbe09a",
         "type": "github"
       },
       "original": {
         "owner": "raspberrypi",
-        "ref": "1.20240902",
+        "ref": "1.20241001",
         "repo": "firmware",
         "type": "github"
       }
     },
-    "rpi-linux-6_10_8-src": {
+    "rpi-linux-6_10_12-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1725639824,
-        "narHash": "sha256-ogItkH2cBiNGmenJUPAhAH591qufrWh1zeqAJCNAExw=",
+        "lastModified": 1728305462,
+        "narHash": "sha256-LtvNmGD1D5YYv+C9xxxddAeHw69o3OX/H9M7F663L74=",
         "owner": "raspberrypi",
         "repo": "linux",
-        "rev": "0c0217e02da43439fb08b2f6b09530723331ed15",
+        "rev": "26ee50d56618c2d98100b1bc672fd201aed4d00f",
         "type": "github"
       },
       "original": {
@@ -1022,14 +1022,14 @@
         "type": "github"
       }
     },
-    "rpi-linux-6_6_47-src": {
+    "rpi-linux-6_6_54-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1725956269,
-        "narHash": "sha256-zn1Totn8NU8MCJmWRGsdarNeSo8rzscrBnhdRVMBuT0=",
+        "lastModified": 1728155174,
+        "narHash": "sha256-/8RjW35XQMnshjAE4Ey8j3oWzE2GOntnBYY6PlvZGhs=",
         "owner": "raspberrypi",
         "repo": "linux",
-        "rev": "cc50cdbcf3e8f065bd7798a92689f54578b4169f",
+        "rev": "12f0f28db3afe451a81a34c5a444f6841c10067c",
         "type": "github"
       },
       "original": {
@@ -1042,16 +1042,16 @@
     "rpicam-apps-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1725543038,
-        "narHash": "sha256-rl5GVigiZWXkpfIteRWUMjtCaPweXRWrBrZOjQ1hiU8=",
+        "lastModified": 1727515047,
+        "narHash": "sha256-qCYGrcibOeGztxf+sd44lD6VAOGoUNwRqZDdAmcTa/U=",
         "owner": "raspberrypi",
         "repo": "rpicam-apps",
-        "rev": "d7a1a13b041ef2842cd56d7e395b8c9a0ffc3bf5",
+        "rev": "a8ccf9f3cd9df49875dfb834a2b490d41d226031",
         "type": "github"
       },
       "original": {
         "owner": "raspberrypi",
-        "ref": "v1.5.1",
+        "ref": "v1.5.2",
         "repo": "rpicam-apps",
         "type": "github"
       }
@@ -1064,11 +1064,11 @@
         "nixpkgs-stable": "nixpkgs-stable_3"
       },
       "locked": {
-        "lastModified": 1728230538,
-        "narHash": "sha256-sbsMJOZgykaSdFbxLKghc0QMtolzl4P5nqpttBA3d5M=",
+        "lastModified": 1728345710,
+        "narHash": "sha256-lpunY1+bf90ts+sA2/FgxVNIegPDKCpEoWwOPu4ITTQ=",
         "owner": "mic92",
         "repo": "sops-nix",
-        "rev": "2750ed784e93e745a33fb55be7c2657adfb57c00",
+        "rev": "06535d0e3d0201e6a8080dd32dbfde339b94f01b",
         "type": "github"
       },
       "original": {
