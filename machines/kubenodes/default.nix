@@ -96,7 +96,7 @@
         "--disable servicelb"
         "--disable traefik"
         "--disable local-storage"
-        "--tls-san \"10.0.1.100\""
+        "--tls-san \"cluster.home.vijayakumar.xyz\""
       ]
       ++ (
         if hostname == "zoro"
