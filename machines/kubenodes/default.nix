@@ -96,6 +96,7 @@
         "--disable servicelb"
         "--disable traefik"
         "--disable local-storage"
+        "--tls-san \"10.0.1.100\""
       ]
       ++ (
         if hostname == "zoro"
