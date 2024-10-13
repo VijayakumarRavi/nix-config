@@ -37,13 +37,14 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Neovim config
-    nvim.url = "github:vijayakumarravi/vjvim";
-    nvim.inputs.nixpkgs.follows = "nixpkgs";
-
     # Git pre-commit hooks
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Neovim config
+    nvim.url = "github:vijayakumarravi/vjvim";
+    nvim.inputs.nixpkgs.follows = "nixpkgs";
+    nvim.inputs.pre-commit-hooks.follows = "pre-commit-hooks";
 
     # Raspberry Pi support
     raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";

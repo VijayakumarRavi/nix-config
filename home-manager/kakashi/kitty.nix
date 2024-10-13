@@ -6,7 +6,7 @@
       package = pkgs.jetbrains-mono;
       name = "JetBrains Mono";
     };
-    #themeFile = "GruvboxMaterialDarkHard";
+    # themeFile = "GruvboxMaterialDarkHard";
     themeFile = "tokyo_night_night";
     shellIntegration.mode = "no-cursor";
     settings = {
@@ -28,6 +28,43 @@
       macos_option_as_alt = "yes";
       scrollback_lines = 999999;
       cursor_shape = "block";
+
+      # # Everblush for Kitty
+      # # Base colors
+      # foreground = "#dadada";
+      # background = "#141b1e";
+      # selection_foreground = "#dadada";
+      # selection_background = "#2d3437";
+      #
+      # # Cursor colors
+      # cursor = "#2d3437";
+      # cursor_text_color = "#dadada";
+      #
+      # # Normal colors
+      # color0 = "#232a2d";
+      # color1 = "#e57474";
+      # color2 = "#8ccf7e";
+      # color3 = "#e5c76b";
+      # color4 = "#67b0e8";
+      # color5 = "#c47fd5";
+      # color6 = "#6cbfbf";
+      # color7 = "#b3b9b8";
+      #
+      # # Bright colors
+      # color8 = "#2d3437";
+      # color9 = "#ef7e7e";
+      # color10 = "#96d988";
+      # color11 = "#f4d67a";
+      # color12 = "#71baf2";
+      # color13 = "#ce89df";
+      # color14 = "#67cbe7";
+      # color15 = "#bdc3c2";
+      #
+      # # Tab colors
+      # active_tab_foreground = "#e182e0";
+      # active_tab_background = "#1b2224";
+      # inactive_tab_foreground = "#cd69cc";
+      # inactive_tab_background = "#232a2c";
     };
     keybindings = {
       "ctrl+c" = "copy_or_interrupt";
@@ -45,34 +82,4 @@
       "cmd+0" = "goto_tab 10r";
     };
   };
-  home.file.".config/kitty/diff.conf".text = ''
-    foreground #a9b1d6
-    background #1a1b26
-
-    title_fg #a9b1d6
-    title_bg #1a1b26
-
-    margin_bg #24283b
-    margin_fg #565f89
-
-    removed_bg           #3b2b3c
-    highlight_removed_bg #5c3f5c
-    removed_margin_bg    #4a3950
-
-    added_bg           #283b4d
-    highlight_added_bg #3d5a70
-    added_margin_bg    #324a5d
-
-    filler_bg #1f2335
-
-    margin_filler_bg #24283b
-
-    hunk_margin_bg #24283b
-    hunk_bg        #24283b
-
-    search_bg #3d59a1
-    search_fg #c0caf5
-    select_bg #33467c
-    select_fg #c0caf5
-  '';
 }

@@ -89,6 +89,7 @@
       dmux = "${pkgs.tmux}/bin/tmux -u new-session -A -s default_tmux";
       nfs = "${pkgs.nix}/bin/nix flake show --accept-flake-config --all-systems";
       nfc = "${pkgs.nix}/bin/nix flake check --accept-flake-config --all-systems";
+      redns = "sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"; # reset DNS mac only option
 
       # tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
       pping = "${pkgs.prettyping}/bin/prettyping";
