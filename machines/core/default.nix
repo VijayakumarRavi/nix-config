@@ -8,7 +8,9 @@
 }: {
   # Import coustom pkgs
   imports = [../../pkgs];
-  nix = {
+  nix = let
+    flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+  in {
     package = pkgs.nix;
     settings = {
       allowed-users = ["${variables.username}"];
@@ -29,7 +31,6 @@
         "https://numtide.cachix.org"
         "https://nix-community.cachix.org"
       ];
-
       trusted-public-keys = [
         "vijay.cachix.org-1:6Re6EF3Q58sxaIobAWP1QTwMUCSA0nYMrSJGUedL3Zk="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -37,14 +38,8 @@
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       ];
     };
-    registry = {
-      nixpkgs = lib.mkForce {
-        flake = inputs.nixpkgs;
-      };
-    };
-    nixPath = [
-      "nixpkgs=${inputs.nixpkgs.outPath}"
-    ];
+    registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
+    nixPath = ["/etc/nix/path"] ++ lib.mapAttrsToList (flakeName: _: "${flakeName}=flake:${flakeName}") flakeInputs;
   };
 
   # BUG: if you remove these two lines you won't be able to access any nix programs
@@ -86,11 +81,6 @@
       alejandra # formatter for Nix
       pkg-config # Manage compile and link flags for libraries
       inputs.nvim.packages.${pkgs.system}.default # custom neovim config
-
-      # Git
-      lazygit # git TUI
-      git-crypt # file encryption in git
-      pre-commit # Git pre-commit hook
 
       # Ansible
       age # age is a simple, modern and secure file encryption tool.
