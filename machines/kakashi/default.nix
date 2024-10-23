@@ -23,8 +23,9 @@
   };
 
   environment = {
-    systemPath = ["/opt/homebrew/bin"];
     pathsToLink = ["/Applications"];
+    systemPath = ["/opt/homebrew/bin"];
+    systemPackages = with pkgs; [lens];
   };
 
   services.nix-daemon.enable = true;

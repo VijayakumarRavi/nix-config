@@ -43,6 +43,7 @@
       libvdpau-va-gl
       vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but can work better for some applications)
       vaapiVdpau
+      vainfo
       # HDR tone mapping.
       intel-compute-runtime
       ocl-icd

@@ -99,6 +99,7 @@
       python311Packages.pip # install python dependencies
 
       # Containers
+      fluxcd # Kubernetes GitOps
       kubectl # Kubernetes CLI tool
       helmfile # Declarative spec for deploying Helm charts
       kustomize # Customization of kubernetes YAML configurations
