@@ -39,7 +39,7 @@
       ];
     };
     registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
-    nixPath = ["/etc/nix/path"] ++ lib.mapAttrsToList (flakeName: _: "${flakeName}=flake:${flakeName}") flakeInputs;
+    nixPath = ["nixpkgs=${inputs.nixpkgs}"] ++ lib.mapAttrsToList (flakeName: _: "${flakeName}=flake:${flakeName}") flakeInputs;
   };
 
   # BUG: if you remove these two lines you won't be able to access any nix programs
@@ -91,6 +91,7 @@
       jq # JSON query tool
       gcc # c compiler
       tree # Tree command line tool
+      just # Command runner
       iperf # Network performance test
       cachix # Command-line client for Nix binary cache hosting https://cachix.org
       attic-client # Multi-tenant Nix Binary Cache (self-hostede)
@@ -101,6 +102,7 @@
       # Containers
       fluxcd # Kubernetes GitOps
       kubectl # Kubernetes CLI tool
+      kubeseal # Kubernetes controller and tool for one-way encrypted Secrets
       helmfile # Declarative spec for deploying Helm charts
       kustomize # Customization of kubernetes YAML configurations
       lazydocker # docker TUI

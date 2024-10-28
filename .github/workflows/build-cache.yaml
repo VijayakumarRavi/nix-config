@@ -59,7 +59,7 @@ jobs:
       - name: Commit and Push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'Bot 🤖(flake): bump flake.lock'
+          commit_message: ':robot_face: github bot: bump flake.lock'
           commit_user_name: Flake Bot
           commit_options: --no-verify --signoff
           commit_author: Flake Bot <github-actions@github.com>
