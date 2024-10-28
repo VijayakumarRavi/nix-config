@@ -91,20 +91,16 @@
     tokenFile = config.sops.secrets.kubetoken.path;
     extraFlags = toString (
       [
-        "--disable traefik"
-        "--disable servicelb"
-        "--disable local-storage"
-        "--etcd-expose-metrics true"
         "--write-kubeconfig-mode \"0644\""
-        "--kube-scheduler-arg bind-address=0.0.0.0"
+        "--cluster-init"
+        "--disable servicelb"
+        "--disable traefik"
+        "--disable local-storage"
         "--tls-san \"cluster.home.vijayakumar.xyz\""
-        "--kube-proxy-arg metrics-bind-address=0.0.0.0"
-        "--kube-controller-manager-arg bind-address=0.0.0.0"
-        "--kubelet-arg containerd=/run/k3s/containerd/containerd.sock"
       ]
       ++ (
         if hostname == "zoro"
-        then ["--cluster-init"]
+        then []
         else ["--server https://zoro:6443"]
       )
     );
