@@ -16,5 +16,5 @@ jobs:
         with:
           name: "VijayakumarRavi/nix-config"
           rolling: true
-          visibility: "Private"
+          visibility: "private"
           include-output-paths: true
