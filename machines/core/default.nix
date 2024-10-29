@@ -11,7 +11,7 @@
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
   in {
-    package = pkgs.nix;
+    package = lib.mkDefault pkgs.nix;
     settings = {
       allowed-users = ["${variables.username}"];
       trusted-users = ["root" "${variables.username}"];

@@ -1,5 +1,6 @@
 {
   pkgs,
+  inputs,
   variables,
   ...
 }: {
@@ -7,6 +8,8 @@
     ../core
     ./homebrew.nix
     ./window-manager.nix
+
+    inputs.determinate.darwinModules.default
   ];
 
   nix = {
