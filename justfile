@@ -98,7 +98,7 @@ cache-kakashi:
 
 # Build and upload cache to attic for nami host
 cache-nami:
-    nix build --accept-flake-config .#nixosConfigurations.nami.config.system.build.toplevel --system "aarch64-linux" && cachix push vijay ./result
+    nix build -L --accept-flake-config .#nixosConfigurations.nami.config.system.build.toplevel --system "aarch64-linux" && cachix push vijay ./result
 
 # Build and upload cache to attic for nixiso build
 cache-nixiso:

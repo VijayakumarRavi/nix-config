@@ -47,7 +47,7 @@
     nvim.inputs.pre-commit-hooks.follows = "pre-commit-hooks";
 
     # Raspberry Pi support
-    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
+    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix/v0.4.1";
     raspberry-pi-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     # Secrets management with sops
