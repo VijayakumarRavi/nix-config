@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   variables,
   ...
 }: {
@@ -8,8 +7,6 @@
     ../core
     ./homebrew.nix
     ./window-manager.nix
-
-    inputs.determinate.darwinModules.default
   ];
 
   nix = {
@@ -25,10 +22,12 @@
     };
   };
 
+  ids.gids.nixbld = 350;
+
   environment = {
     pathsToLink = ["/Applications"];
     systemPath = ["/opt/homebrew/bin"];
-    systemPackages = with pkgs; [lens];
+    systemPackages = with pkgs; [lens k9s];
   };
 
   services.nix-daemon.enable = true;

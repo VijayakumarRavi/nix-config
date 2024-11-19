@@ -58,8 +58,6 @@
     firefox.url = "github:nix-community/flake-firefox-nightly";
     firefox.inputs.nixpkgs.follows = "nixpkgs";
 
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
-
     # Homebrew configuration
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     homebrew-bundle.url = "github:homebrew/homebrew-bundle";

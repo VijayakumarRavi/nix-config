@@ -11,7 +11,8 @@
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
   in {
-    package = lib.mkDefault pkgs.nix;
+    package = pkgs.nix;
+    optimise.automatic = true;
     settings = {
       allowed-users = ["${variables.username}"];
       trusted-users = ["root" "${variables.username}"];
@@ -19,7 +20,6 @@
         ["nix-command" "flakes"]
         ++ lib.optional (lib.versionOlder (lib.versions.majorMinor config.nix.package.version) "2.22") "repl-flake";
       accept-flake-config = true;
-      auto-optimise-store = true;
       connect-timeout = 5;
       warn-dirty = false;
       # disabled sandbox because of below error after adding vjvim flake
