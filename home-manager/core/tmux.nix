@@ -1,9 +1,10 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  isMacOS = pkgs.stdenv.system == "x86_64-darwin" || pkgs.stdenv.system == "aarch64-darwin";
+in {
   programs.tmux = {
     enable = true;
     terminal = "tmux-256color";
     aggressiveResize = true;
-    newSession = true;
     baseIndex = 1;
     historyLimit = 100000000;
     # fix accidentally typing accent characters, etc. by forcing the terminal to not wait around
@@ -64,7 +65,13 @@
       set -g mode-style "bg=black"
 
       # very unique Mac bug
-      if-shell "type 'reattach-to-user-namespace' >/dev/null" "set -g default-command 'reattach-to-user-namespace -l $SHELL'"
+      ${
+        if isMacOS
+        then ''
+          if-shell "type '${pkgs.reattach-to-user-namespace}/bin/reattach-to-user-namespace' >/dev/null" "set -g default-command '${pkgs.reattach-to-user-namespace}/bin/reattach-to-user-namespace -l ${pkgs.zsh}/bin/zsh'"
+        ''
+        else ""
+      }
 
       # status line
       set -g status on
@@ -81,7 +88,6 @@
       # use a different prefix for nested
       bind-key -n C-y send-prefix
 
-      # pane colors and display
       # create more intuitive split key combos (same as modern screen)
       unbind '"'
       unbind %
