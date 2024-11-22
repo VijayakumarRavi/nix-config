@@ -41,14 +41,6 @@
   # List services that you want to enable
   services = {
     pi5_fan_controller.enable = true;
-
-    tailscale = {
-      enable = true;
-      openFirewall = true;
-      extraUpFlags = ["--advertise-tags=tag:cluster" "--accept-routes" "--reset"];
-      extraSetFlags = ["--advertise-routes=10.0.0.0/16" "--advertise-exit-node"];
-      authKeyFile = config.sops.secrets.tailscale_authkey.path;
-    };
   };
 
   hardware = {

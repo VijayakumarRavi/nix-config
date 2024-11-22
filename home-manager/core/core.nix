@@ -75,31 +75,26 @@ in {
     ssh = {
       enable = true;
       extraConfig = ''
-        Host unlock-zoro
-          Hostname 10.0.0.4
-          Port 22
-          User root
-          RemoteCommand /bin/cryptsetup-askpass
         Host sanji
-            HostName 10.0.0.3
+            HostName sanji
             User ${variables.username}
             Port 22
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux
         Host nami
-            HostName 10.0.0.2
+            HostName nami
             User ${variables.username}
             Port 22
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux
         Host zoro
-            HostName 10.0.1.101
+            HostName zoro
             User ${variables.username}
             Port 22
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux
         Host usopp
-            HostName 10.0.1.102
+            HostName usopp
             User ${variables.username}
             Port 22
             RequestTTY yes

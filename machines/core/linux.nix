@@ -11,6 +11,13 @@
   # Ensure a clean & sparkling /tmp on fresh boots.
   boot.tmp.cleanOnBoot = true;
 
+  # IP forwarding is required to use a Linux device as a Tailscale subnet router
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 60;
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.all.forwarding" = 1;
+  };
+
   # No mutable users by default i.e you're unable to add new users using useradd and groupadd
   users.mutableUsers = false;
 
@@ -162,6 +169,13 @@
     };
 
     libinput.enable = true;
+
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      extraUpFlags = ["--advertise-tags=tag:cluster" "--accept-routes" "--reset" "--advertise-routes=10.0.0.0/16" "--advertise-exit-node"];
+      authKeyFile = config.sops.secrets.tailscale_authkey.path;
+    };
   };
 
   system.activationScripts.diff = {
