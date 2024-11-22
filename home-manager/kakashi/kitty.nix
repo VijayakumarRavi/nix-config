@@ -27,7 +27,8 @@
       hide_window_decorations = "yes";
       macos_option_as_alt = "yes";
       scrollback_lines = 999999;
-      cursor_shape = "block";
+      cursor_shape = "underline";
+      cursor_blink_interval = 0.8;
 
       # # Everblush for Kitty
       # # Base colors
