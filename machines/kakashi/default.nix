@@ -6,7 +6,6 @@
   imports = [
     ../core
     ./homebrew.nix
-    ./window-manager.nix
   ];
 
   nix = {
@@ -79,6 +78,10 @@
         InitialKeyRepeat = 20;
         KeyRepeat = 1;
 
+        "com.apple.keyboard.fnState" = true;
+        "com.apple.mouse.tapBehavior" = 1;
+        "com.apple.trackpad.enableSecondaryClick" = true;
+
         # Disable "Natural" scrolling
         "com.apple.swipescrolldirection" = true;
         AppleEnableMouseSwipeNavigateWithScrolls = true;
@@ -100,6 +103,12 @@
 
         # Save to disk (not to iCloud) by default
         NSDocumentSaveNewDocumentsToCloud = true;
+
+        # Move windows by dragging any part of the window
+        NSWindowShouldDragOnGesture = true;
+
+        # Disable windows opening animations
+        NSAutomaticWindowAnimationsEnabled = false;
       };
       dock = {
         # Set icon size and dock orientation
