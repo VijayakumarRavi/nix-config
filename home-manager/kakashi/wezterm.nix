@@ -1,74 +1,170 @@
 {
   programs.wezterm = {
-    enable = false;
-    enableZshIntegration = true;
-    enableBashIntegration = true;
-    # coolnight colorscheme:
-    colorSchemes = {
-      coolnight = {
-        foreground = "#CBE0F0";
-        background = "#011423";
-        cursor_bg = "#47FF9C";
-        cursor_border = "#47FF9C";
-        cursor_fg = "#011423";
-        selection_bg = "#033259";
-        selection_fg = "#CBE0F0";
-        ansi = [
-          "#214969"
-          "#E52E2E"
-          "#44FFB1"
-          "#FFE073"
-          "#0FC5ED"
-          "#a277ff"
-          "#24EAF7"
-          "#24EAF7"
-        ];
-        brights = [
-          "#214969"
-          "#E52E2E"
-          "#44FFB1"
-          "#FFE073"
-          "#A277FF"
-          "#a277ff"
-          "#24EAF7"
-          "#24EAF7"
-        ];
-      };
-    };
-    extraConfig = ''
-      -- Pull in the wezterm API
-      local wezterm = require 'wezterm'
+    enable = true;
+    extraConfig =
+      /*
+      lua
+      */
+      ''
+        local wezterm = require("wezterm")
 
-      -- This will hold the configuration.
-      local config = wezterm.config_builder()
+        -- Font configuration
+        local font_name = "JetBrainsMono Nerd Font"
+        local font_config = wezterm.font_with_fallback({
+        	{ family = font_name, weight = "Regular" },
+        })
 
-      -- This is where you actually apply your config choices
+        local config = wezterm.config_builder() or {}
 
-      -- For example, changing the color scheme:
-      config.color_scheme = 'coolnight'
-      config.font = wezterm.font("JetBrainsMono Nerd Font")
-      config.font_size = 19.0
+        max_fps = 120
 
-      config.skip_close_confirmation_for_processes_named = {
-        'bash',
-        'sh',
-        'zsh',
-        'fish',
-        'tmux',
-      }
+        -- General configuration
+        config.font = font_config
+        config.tab_bar_at_bottom = true
+        config.check_for_updates = false
+        config.hide_tab_bar_if_only_one_tab = true
+        config.use_fancy_tab_bar = false
+        --- config.tab_max_width = 4
+        config.font_size = 18.5
+        config.color_scheme = "Catppuccin Mocha"
+        config.cursor_blink_rate = 500
+        config.use_cap_height_to_scale_fallback_fonts = true
+        config.default_cursor_style = "BlinkingUnderline"
+        config.bold_brightens_ansi_colors = true
+        config.front_end = "WebGpu"
+        config.audible_bell = "Disabled"
 
-      -- Tab bar settings
-      config.enable_tab_bar = true
-      config.hide_tab_bar_if_only_one_tab = true
-      config.use_fancy_tab_bar = true
-      config.show_tabs_in_tab_bar = true
-      config.show_new_tab_button_in_tab_bar = false
-      config.window_decorations = "RESIZE"
+        config.window_background_opacity = 0.8
+        config.macos_window_background_blur = 100
 
-      config.window_background_opacity = 0.8
-      config.macos_window_background_blur = 10
-      -- and finally, return the configuration to wezterm
-      return config
-    '';
+        -- Window settings
+        config.window_close_confirmation = "NeverPrompt"
+        config.window_decorations = "RESIZE"
+        -- config.window_padding = { left = 50, right = 50, top = 50, bottom = 50 }
+
+        config.colors = {
+        	tab_bar = {
+        		background = "None",
+        		active_tab = {
+        			bg_color = "None",
+        			fg_color = "#c0c0c0",
+        			intensity = "Normal",
+        			underline = "None",
+        			italic = false,
+        			strikethrough = false,
+        		},
+
+        		inactive_tab = {
+        			bg_color = "None",
+        			fg_color = "#808080",
+        		},
+        		inactive_tab_hover = {
+        			bg_color = "None",
+        			fg_color = "#909090",
+        			italic = true,
+        		},
+
+        		new_tab = {
+        			bg_color = "None",
+        			fg_color = "#808080",
+        		},
+        		new_tab_hover = {
+        			bg_color = "#494d64",
+        			fg_color = "#909090",
+        			italic = true,
+        		},
+        	},
+        }
+
+        wezterm.on("gui-startup", function(cmd)
+        	local active_screen = wezterm.gui.screens()["active"]
+        	local width = active_screen.width * 0.90
+        	local height = active_screen.height * 0.85
+        	local x = (active_screen.width - width) / 2 -- Center horizontally
+        	local y = (active_screen.height - height) / 2 -- Center vertically
+
+        	local _, _, window = wezterm.mux.spawn_window(cmd or {})
+
+        	window:gui_window():set_position(x, y)
+        	window:gui_window():set_inner_size(width, height)
+        end)
+
+        local process_icons = {
+        	["psql"] = "󱤢",
+        	["usql"] = "󱤢",
+        	["nvim"] = "",
+        	["make"] = "󱂟",
+        	["just"] = "󱂟",
+        	["vim"] = " ",
+        	["go"] = "",
+        	["python3"] = "",
+        	["zsh"] = " ",
+        	["bash"] = " ",
+        	["htop"] = "󱋊",
+        	["cargo"] = "󱘗",
+        	["sudo"] = "",
+        	["git"] = "",
+        	["lua"] = "󰢱",
+        	["zola"] = "󰘯 ",
+        	["zig"] = "",
+        }
+
+        local function get_process(tab)
+        	if not tab.active_pane or tab.active_pane.foreground_process_name == "" then
+        		return nil
+        	end
+
+        	local process_name = string.gsub(tab.active_pane.foreground_process_name, "(.*[/\\])(.*)", "%2")
+        	if string.find(process_name, "kubectl") then
+        		process_name = "kubectl"
+        	end
+
+        	return process_icons[process_name]
+        end
+
+        wezterm.on("format-tab-title", function(tab)
+        	local process = get_process(tab)
+        	local title = process and string.format(" %s  ", process) or "   "
+        	return {
+        		{ Text = title },
+        	}
+        end)
+
+        local act = wezterm.action
+
+        config.keys = {
+
+        	-- copy paste
+        	{ key = "c", mods = "ALT", action = act.CopyTo("Clipboard") },
+        	{ key = "v", mods = "ALT", action = act.PasteFrom("Clipboard") },
+
+        	-- goto last tab
+        	{ key = "Tab", mods = "ALT", action = act.ActivateTabRelative(1) },
+
+        	--- Copymode vi
+        	{ key = "u", mods = "CMD", action = act.ActivateCopyMode },
+
+        	--- Splits
+        	{ key = "-", mods = "CTRL", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+        	{ key = ";", mods = "CTRL", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+
+        	--- spawn new tab
+        	{ key = "t", mods = "ALT", action = act.SpawnTab("CurrentPaneDomain") },
+
+        	--- Pane switching
+        	{ key = "h", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Left") },
+        	{ key = "l", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Right") },
+        	{ key = "k", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Up") },
+        	{ key = "j", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Down") },
+        	{ key = "z", mods = "SHIFT|CTRL", action = "TogglePaneZoomState" },
+
+        	{ key = "h", mods = "SHIFT|ALT", action = wezterm.action({ AdjustPaneSize = { "Left", 5 } }) },
+        	{ key = "j", mods = "SHIFT|ALT", action = wezterm.action({ AdjustPaneSize = { "Down", 5 } }) },
+        	{ key = "k", mods = "SHIFT|ALT", action = wezterm.action({ AdjustPaneSize = { "Up", 5 } }) },
+        	{ key = "l", mods = "SHIFT|ALT", action = wezterm.action({ AdjustPaneSize = { "Right", 5 } }) },
+        }
+
+        return config
+      '';
   };
 }

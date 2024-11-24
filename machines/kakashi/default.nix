@@ -145,7 +145,7 @@
           "/System/Applications/Music.app/"
           "/System/Applications/Photos.app/"
           "/System/Applications/System Settings.app/"
-          "${pkgs.kitty}/Applications/kitty.app/"
+          "${pkgs.wezterm}/Applications/wezterm.app/"
         ];
       };
 
@@ -278,14 +278,6 @@
 
       # Allow opening apps from any source
       sudo spctl --master-disable
-
-      # Change the default apps
-      duti -s com.microsoft.VSCode .txt all
-      duti -s com.microsoft.VSCode .ass all
-      duti -s io.mpv .mkv all
-      duti -s com.colliderli.iina .mp4 all
-
-      ~/.config/os/darwin/power.sh
     '';
     # backwards compat; don't change
     stateVersion = variables.stateVersionDarwin;

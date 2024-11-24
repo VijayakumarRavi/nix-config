@@ -38,27 +38,31 @@
       }
     ];
 
-    initExtra = ''
-      function switch() {
-        if command -v darwin-rebuild &> /dev/null 2>&1; then
-          darwin-rebuild switch "$@" --flake /Users/${variables.username}/.nix-config#kakashi
-        else
-          sudo nixos-rebuild switch "$@" --accept-flake-config --flake /home/${variables.username}/.nix-config
-        fi
-      }
+    initExtra =
+      /*
+      bash
+      */
+      ''
+        function switch() {
+          if command -v darwin-rebuild &> /dev/null 2>&1; then
+            darwin-rebuild switch "$@" --flake /Users/${variables.username}/.nix-config#kakashi
+          else
+            sudo nixos-rebuild switch "$@" --accept-flake-config --flake /home/${variables.username}/.nix-config
+          fi
+        }
 
-      function gsync() {
-        for i in `git remote`; do
-          git pull $i `git branch --show-current`;
-        done;
+        function gsync() {
+          for i in `git remote`; do
+            git pull $i `git branch --show-current`;
+          done;
 
-        for i in `git remote`; do
-          git push $i `git branch --show-current`;
-        done;
-      }
+          for i in `git remote`; do
+            git push $i `git branch --show-current`;
+          done;
+        }
 
-      [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
-    '';
+        [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
+      '';
 
     shellAliases = {
       # System Aliases

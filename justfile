@@ -27,15 +27,15 @@ deploy machine='':
 
 # Remote deploy nami
 deploy-nami:
-    nixos-rebuild switch --fast --flake ".#nami" --accept-flake-config --use-remote-sudo --target-host "vijay@nami" --build-host "vijay@nami"
+    nixos-rebuild switch --fast --flake ".#nami" --accept-flake-config --use-remote-sudo --target-host "vijay@nami.hamlet-ide.ts.net" --build-host "vijay@nami.hamlet-ide.ts.net"
 
 # Remote deploy zoro
 deploy-zoro:
-    nixos-rebuild switch --fast --flake ".#zoro" --accept-flake-config --use-remote-sudo --target-host "vijay@zoro" --build-host "vijay@zoro"
+    nixos-rebuild switch --fast --flake ".#zoro" --accept-flake-config --use-remote-sudo --target-host "vijay@zoro.hamlet-ide.ts.net" --build-host "vijay@zoro.hamlet-ide.ts.net"
 
 # Remote deploy usopp
 deploy-usopp:
-    nixos-rebuild switch --fast --flake ".#usopp" --accept-flake-config --use-remote-sudo --target-host "vijay@usopp" --build-host "vijay@usopp"
+    nixos-rebuild switch --fast --flake ".#usopp" --accept-flake-config --use-remote-sudo --target-host "vijay@usopp.hamlet-ide.ts.net" --build-host "vijay@usopp.hamlet-ide.ts.net"
 
 # update flake.lock
 up:
