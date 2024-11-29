@@ -1,0 +1,2 @@
+# Frequent in nix module configurations
+disabled = ["repeated_keys"]
