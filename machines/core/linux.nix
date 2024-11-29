@@ -65,7 +65,7 @@
     firewall.enable = false;
     # Enabling WIFI
     wireless =
-      if hostname == "nami"
+      if hostname == "nami" && variables.hostname == "nixiso"
       then {
         enable = true;
         networks."vijay wifi".pskRaw = "9559e5edeed089f6c2834257d9f4de0cb442da4ddbee3a09e17707a9223f8958";
@@ -169,13 +169,6 @@
     };
 
     libinput.enable = true;
-
-    tailscale = {
-      enable = true;
-      openFirewall = true;
-      extraUpFlags = ["--advertise-tags=tag:cluster" "--accept-routes" "--reset" "--advertise-routes=10.0.0.0/16" "--advertise-exit-node"];
-      authKeyFile = config.sops.secrets.tailscale_authkey.path;
-    };
   };
 
   system.activationScripts.diff = {
