@@ -85,6 +85,8 @@
     intel-gpu-tools # for intel gpu
   ];
 
+  networking.usePredictableInterfaceNames = false;
+
   services.k3s = {
     enable = true;
     role = "server";

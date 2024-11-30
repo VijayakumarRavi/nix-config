@@ -7,7 +7,7 @@
     ../kubenodes
   ];
   networking.interfaces = {
-    eno1 = {
+    eth0 = {
       ipv4.addresses = [
         {
           address = "10.0.1.103";
