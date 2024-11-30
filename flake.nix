@@ -186,9 +186,9 @@
     nixosConfigurations = {
       zoro = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "zoro";
       usopp = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "usopp";
+      chopper = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "chopper";
       nixiso = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "nixiso";
       nami = mkSystem nixpkgs.lib.nixosSystem "aarch64-linux" "nami";
-      choppar = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "choppar";
     };
 
     # MacOS configurations

@@ -99,6 +99,12 @@ in {
             Port 22
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux
+        Host chopper
+            HostName chopper
+            User ${variables.username}
+            Port 22
+            RequestTTY yes
+            RemoteCommand tmux -u new-session -A -s ssh_mux
       '';
     };
   };

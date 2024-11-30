@@ -16,26 +16,34 @@ deploy machine='':
       just deploy-zoro
     elif [ {{ machine }} = "usopp" ]; then
       just deploy-usopp
+    elif [ {{ machine }} = "chopper" ]; then
+      just deploy-chopper
     elif [ {{ machine }} = "kube" ]; then
       just deploy-zoro
       just deploy-usopp
+      just deploy-chopper
     elif [ {{ machine }} = "all" ]; then
       just deploy-nami
       just deploy-zoro
       just deploy-usopp
+      just deploy-chopper
     fi
 
 # Remote deploy nami
 deploy-nami:
-    nixos-rebuild switch --fast --flake ".#nami" --accept-flake-config --use-remote-sudo --target-host "vijay@nami.hamlet-ide.ts.net" --build-host "vijay@nami.hamlet-ide.ts.net"
+    nixos-rebuild switch --fast --flake ".#nami" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.0.2" --build-host "vijay@10.0.0.2"
 
 # Remote deploy zoro
 deploy-zoro:
-    nixos-rebuild switch --fast --flake ".#zoro" --accept-flake-config --use-remote-sudo --target-host "vijay@zoro.hamlet-ide.ts.net" --build-host "vijay@zoro.hamlet-ide.ts.net"
+    nixos-rebuild switch --fast --flake ".#zoro" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.1.101" --build-host "vijay@10.0.1.101"
 
 # Remote deploy usopp
 deploy-usopp:
-    nixos-rebuild switch --fast --flake ".#usopp" --accept-flake-config --use-remote-sudo --target-host "vijay@usopp.hamlet-ide.ts.net" --build-host "vijay@usopp.hamlet-ide.ts.net"
+    nixos-rebuild switch --fast --flake ".#usopp" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.1.102" --build-host "vijay@10.0.1.102"
+
+# Remote deploy chopper
+deploy-chopper:
+    nixos-rebuild switch --fast --flake ".#chopper" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.1.103" --build-host "vijay@10.0.1.103"
 
 # update flake.lock
 up:

@@ -5,6 +5,7 @@ keys:
   - &host_usopp age1sx50q6uprsd0cnxtcd8cqchfywk89jqg2fgkw7d3krv6c3vyj37qy7v87e
   - &host_zoro age18pj9xkjs0vxxr3pm36vjmglmsjp0wc8glnuzjm55w0p6u342pa5sgyg86k
   - &host_nami age1sngmeyjqugqxp58eveqsyx5afay58affgexhgamvf2jx8g03h48q3qulhx
+  - &host_chopper age1h7j7gce6stwrrqy6cdwhe58nxj9h8h6et8juvpxn3ky5zpej9g7s9ymwnw
 creation_rules:
   - path_regex: secrets.yaml$
     key_groups:
@@ -14,3 +15,4 @@ creation_rules:
           - *host_usopp
           - *host_zoro
           - *host_nami
+          - *host_chopper

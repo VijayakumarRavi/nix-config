@@ -43,7 +43,7 @@
       github_oauth_token = {};
       zoro_hc_url = {};
       usopp_hc_url = {};
-      choppar_hc_url = {};
+      chopper_hc_url = {};
       id_ed25519 = {
         owner = config.users.users.${variables.username}.name;
         inherit (config.users.users.${variables.username}) group;

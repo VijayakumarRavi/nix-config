@@ -112,6 +112,7 @@
       zoro = "ssh zoro";
       sanji = "ssh sanji";
       usopp = "ssh usopp";
+      chopper = "ssh chopper";
       vault-ssh = "fly ssh console -a flyvault";
       tail-ssh = "fly ssh console -a flytailexit";
       time-ssh = "fly ssh console -a flytime";
