@@ -26,7 +26,7 @@
   environment = {
     pathsToLink = ["/Applications"];
     systemPath = ["/opt/homebrew/bin"];
-    systemPackages = with pkgs; [lens k9s cargo rustc];
+    systemPackages = with pkgs; [lens k9s obsidian];
   };
 
   services.nix-daemon.enable = true;

@@ -62,9 +62,9 @@
   # Unattended upgrades
   system.autoUpgrade = {
     enable = true;
-    dates = "*-*-* 04:00:00";
     allowReboot = true;
     persistent = true;
+    operation = "boot";
     rebootWindow = {
       lower = "03:00";
       upper = "05:00";
