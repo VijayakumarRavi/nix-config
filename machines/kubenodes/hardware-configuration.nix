@@ -22,6 +22,10 @@
     initrd.kernelModules = [];
     kernelModules = ["kvm-intel"];
     extraModulePackages = [];
+    kernelParams = [
+      "hugepagesz=2M" # Set the hugepage size to 2MiB
+      "hugepages=256" # Allocate 256 hugepages (adjust as needed)
+    ];
   };
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
