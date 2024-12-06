@@ -506,6 +506,22 @@
         "type": "github"
       }
     },
+    "homebrew-vijay": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1733508324,
+        "narHash": "sha256-ZXTYFliTbUklIIom0HWacHCqgAuMjuB5hSzyY4Y1YRw=",
+        "owner": "VijayakumarRavi",
+        "repo": "packages",
+        "rev": "7d3a2b7211c4e134badbe02ed380d32372c6e28b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "VijayakumarRavi",
+        "repo": "packages",
+        "type": "github"
+      }
+    },
     "ixx": {
       "inputs": {
         "flake-utils": [
@@ -905,6 +921,7 @@
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
         "homebrew-services": "homebrew-services",
+        "homebrew-vijay": "homebrew-vijay",
         "nix-homebrew": "nix-homebrew",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_2",

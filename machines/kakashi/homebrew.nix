@@ -17,6 +17,7 @@
       "homebrew/homebrew-cask" = inputs.homebrew-cask;
       "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
       "homebrew/homebrew-services" = inputs.homebrew-services;
+      "VijayakumarRavi/packages" = inputs.homebrew-vijay;
     };
   };
 
@@ -38,6 +39,7 @@
       "mas" # Mac appstore installer
       "pinentry-mac" # GPG key entry utility
       "node" # Node js
+      "minikube" # Kubernetes local cluster
     ];
     casks = [
       # Better mac
@@ -63,6 +65,9 @@
       # "visual-studio-code" # Visual Studio Code editor
       "cursor" # visual-studio-code alternative
       "amazon-workspaces" # amazon-workspaces for FPL
+      "rave" # App for watching videos and listening to music with friends in real-time
+      "headlamp" # user-friendly Kubernetes UI focused on extensibility
+      "docker" # Docker for Mac
     ];
     masApps = {
       "1Password for Safari" = 1569813296;

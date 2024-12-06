@@ -64,6 +64,7 @@
     homebrew-core.url = "github:homebrew/homebrew-core";
     homebrew-cask.url = "github:homebrew/homebrew-cask";
     homebrew-services.url = "github:homebrew/homebrew-services";
+    homebrew-vijay.url = "github:VijayakumarRavi/packages";
 
     # Disable flakes for some Homebrew inputs
     nix-homebrew.inputs.nixpkgs.follows = "nixpkgs";
@@ -71,6 +72,7 @@
     homebrew-core.flake = false;
     homebrew-cask.flake = false;
     homebrew-services.flake = false;
+    homebrew-vijay.flake = false;
   };
 
   outputs = inputs @ {
