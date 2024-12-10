@@ -24,7 +24,7 @@
     extraModulePackages = [];
     kernelParams = [
       "hugepagesz=2M" # Set the hugepage size to 2MiB
-      "hugepages=256" # Allocate 256 hugepages (adjust as needed)
+      "hugepages=2048" # Set the number of hugepages to 2048
     ];
   };
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

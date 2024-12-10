@@ -16,7 +16,7 @@
               priority = 1;
               name = "ESP";
               start = "1M";
-              end = "512M";
+              end = "1024M";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -50,13 +50,6 @@
                       "noatime"
                     ];
                     mountpoint = "/nix";
-                  };
-                  # Subvolume for the swapfile
-                  "/swap" = {
-                    mountpoint = "/.swapvol";
-                    swap = {
-                      swapfile.size = "8G";
-                    };
                   };
                 };
                 mountpoint = "/partition-root";

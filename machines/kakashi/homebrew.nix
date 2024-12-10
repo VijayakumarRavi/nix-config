@@ -39,7 +39,6 @@
       "mas" # Mac appstore installer
       "pinentry-mac" # GPG key entry utility
       "node" # Node js
-      "minikube" # Kubernetes local cluster
     ];
     casks = [
       # Better mac
