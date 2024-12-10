@@ -86,8 +86,8 @@
       username = "vijay";
       user = "Vijayakumar Ravi";
       useremail = "im@vijayakumar.xyz";
-      stateVersion = "24.11";
-      stateVersionDarwin = 4;
+      stateVersion = "25.05";
+      stateVersionDarwin = 5;
     };
 
     # Supported systems for NixOS and MacOS
