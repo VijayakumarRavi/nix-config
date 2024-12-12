@@ -41,7 +41,7 @@
     account_guest_in_cpu_meter=0
     color_scheme=0
     enable_mouse=1
-    delay=5
+    delay=15
     hide_function_bar=0
     header_layout=two_50_50
     column_meters_0=AllCPUs2 CPU Blank Memory HugePages
