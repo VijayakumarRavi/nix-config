@@ -95,7 +95,7 @@
       nfc = "${pkgs.nix}/bin/nix flake check --accept-flake-config --all-systems";
       redns = "sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"; # reset DNS mac only option
 
-      # tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
+      tailscale = "${pkgs.tailscale}/bin/tailscale";
       pping = "${pkgs.prettyping}/bin/prettyping";
       preview = "${pkgs.fzf}/bin/fzf --preview 'cat {}'";
 

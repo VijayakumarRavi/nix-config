@@ -153,7 +153,7 @@
       configurations {
         inherit system;
         # Pass all relevant inputs and variables to imported files
-        specialArgs = {inherit inputs variables hostname;};
+        specialArgs = {inherit inputs variables hostname system;};
         modules = [
           ./machines/${hostname}
           (
@@ -166,7 +166,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "backup";
-              extraSpecialArgs = {inherit inputs variables;};
+              extraSpecialArgs = {inherit inputs variables system;};
               users.${variables.username}.imports = [./home-manager/${hostname}];
             };
           }

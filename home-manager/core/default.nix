@@ -10,6 +10,7 @@
     ./htop.nix
     ./zsh.nix
     ./git.nix
+    ./k9s.nix
     ./tmux.nix
     ./starship.nix
   ];
