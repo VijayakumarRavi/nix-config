@@ -83,8 +83,8 @@ jobs:
             platform: x86_64-linux
           - host: nixiso
             platform: x86_64-linux
-          - host: nami
-            platform: aarch64-linux
+            # - host: nami
+            #   platform: aarch64-linux
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
