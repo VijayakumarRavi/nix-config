@@ -89,6 +89,7 @@
 
       # Dev utils
       jq # JSON query tool
+      yq # jq wrapper for YAML
       gcc # c compiler
       tree # Tree command line tool
       just # Command runner
@@ -97,6 +98,7 @@
       attic-client # Multi-tenant Nix Binary Cache (self-hostede)
       python3 # Python lang
       unixtools.watch # Watch command line tool
+      pre-commit # Tool to manage pre-commit hooks
       python311Packages.pip # install python dependencies
 
       # Containers
@@ -105,6 +107,7 @@
       kubeseal # Kubernetes controller and tool for one-way encrypted Secrets
       helmfile # Declarative spec for deploying Helm charts
       kustomize # Customization of kubernetes YAML configurations
+      kubeconform # Kubernetes manifests validator
       lazydocker # docker TUI
       kubernetes-helm # A package manager for kubernetes
     ];

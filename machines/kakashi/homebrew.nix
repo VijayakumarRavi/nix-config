@@ -73,6 +73,7 @@
       "infuse video player" = 1136220934;
       "localsend" = 1661733229;
       "shortery" = 1594183810;
+      "Bitwarden" = 1352778147;
       # "Hyperduck" = 6444667067;
       # "shelly ssh client" = 989642999;
     };
