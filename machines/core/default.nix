@@ -80,6 +80,7 @@
       coreutils # GNU core utilities for Mac
       alejandra # formatter for Nix
       pkg-config # Manage compile and link flags for libraries
+      tailscale
       inputs.nvim.packages.${pkgs.system}.default # custom neovim config
 
       # Ansible
