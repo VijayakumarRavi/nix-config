@@ -6,6 +6,7 @@
 }: {
   imports = [
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
+    inputs.raspberry-pi-nix.nixosModules.sd-image
 
     ../core
     ../core/linux.nix
@@ -24,6 +25,10 @@
   # See the docs at:
   # https://www.raspberrypi.com/documentation/computers/linux_kernel.html#native-build-configuration
   raspberry-pi-nix.board = "bcm2712";
+
+  # uboot not yet supported for pi5
+  # https://github.com/tstat/raspberry-pi-nix/issues/13#issuecomment-2090601812
+  raspberry-pi-nix.uboot.enable = false;
 
   sdImage = {
     imageName = "NixPi.img";
