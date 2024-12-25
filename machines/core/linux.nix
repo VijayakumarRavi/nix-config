@@ -147,7 +147,6 @@
       flake = "/home/${variables.username}/.nix-config";
       clean = {
         enable = true;
-        dates = "*-*-* 03:00:00";
       };
     };
   };

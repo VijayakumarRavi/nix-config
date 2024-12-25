@@ -18,6 +18,7 @@
   };
 
   system.autoUpgrade.dates = "Sun *-*-* 04:00:00";
+  programs.nh.clean.dates = "Sun *-*-* 03:00:00";
 
   systemd.services.nixos-upgrade = {
     serviceConfig = {
