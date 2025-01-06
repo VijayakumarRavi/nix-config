@@ -96,20 +96,18 @@
       just # Command runner
       iperf # Network performance test
       cachix # Command-line client for Nix binary cache hosting https://cachix.org
-      attic-client # Multi-tenant Nix Binary Cache (self-hostede)
       python3 # Python lang
       unixtools.watch # Watch command line tool
       pre-commit # Tool to manage pre-commit hooks
       python311Packages.pip # install python dependencies
 
       # Containers
+      kind # local clusters for testing Kubernetes
       fluxcd # Kubernetes GitOps
       kubectl # Kubernetes CLI tool
-      kubeseal # Kubernetes controller and tool for one-way encrypted Secrets
-      helmfile # Declarative spec for deploying Helm charts
       kustomize # Customization of kubernetes YAML configurations
       kubeconform # Kubernetes manifests validator
-      lazydocker # docker TUI
+      lazydocker # A simple terminal UI for both docker and docker-compose
       kubernetes-helm # A package manager for kubernetes
     ];
   };

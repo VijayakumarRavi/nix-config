@@ -61,6 +61,8 @@
           done;
         }
 
+        export PATH="${"KREW_ROOT:-$HOME/.krew"}/bin:$PATH"
+
         [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
       '';
 
@@ -116,6 +118,8 @@
       vault-ssh = "fly ssh console -a flyvault";
       tail-ssh = "fly ssh console -a flytailexit";
       time-ssh = "fly ssh console -a flytime";
+      guard-ssh = "fly ssh console -a flyguard";
+      fd = "fly deploy --remote-only --now --no-public-ips --strategy immediate --no-cache";
 
       # Docker container
       ds = "sudo docker start";

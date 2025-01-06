@@ -32,7 +32,6 @@
     };
     taps = builtins.attrNames config.nix-homebrew.taps;
     brews = [
-      "nginx" # Reverse proxy to use as a loadbalancer for kubectl
       "aria2" # download manager
       "flyctl" # fly.io cli tool
       "bitwarden-cli" # free password manager
@@ -45,10 +44,9 @@
       "shottr" # Screenshot util
       "brave-browser" # Web browser focusing on privacy
       "arc" # Chromium based browser
-      # "hyperkey" # Convert your caps lock key or any of your modifier keys to the hyper key
-      "superkey" # Search and click text anywhere on screen and Convert your caps lock key to the hyper key
+      "hyperkey" # Convert your caps lock key or any of your modifier keys to the hyper key
+      # "superkey" # Search and click text anywhere on screen and Convert your caps lock key to the hyper key
       "the-unarchiver" # Unpacks archive files
-      # "onyx" # Verify system files structure, run miscellaneous maintenance and more
       "1password" # Best password manager imo
       "1password-cli" # 1Password manager CLI
       "jordanbaird-ice" # macOS status bar icon organizer
@@ -66,6 +64,8 @@
       "amazon-workspaces" # amazon-workspaces for FPL
       "rave" # App for watching videos and listening to music with friends in real-time
       "headlamp" # user-friendly Kubernetes UI focused on extensibility
+      "docker" # Docker for Mac
+      "ghostty" # Ghostty is a fast, feature-rich, and cross-platform terminal emulator
     ];
     masApps = {
       "1Password for Safari" = 1569813296;
@@ -74,8 +74,6 @@
       "localsend" = 1661733229;
       "shortery" = 1594183810;
       "Bitwarden" = 1352778147;
-      # "Hyperduck" = 6444667067;
-      # "shelly ssh client" = 989642999;
     };
   };
 }
