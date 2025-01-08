@@ -73,7 +73,7 @@
       else {enable = false;};
     # Default nameservers
     nameservers = [
-      "10.0.2.2"
+      "137.66.25.173"
     ];
     # Default gateway
     defaultGateway = {

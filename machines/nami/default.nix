@@ -28,7 +28,10 @@
 
   # uboot not yet supported for pi5
   # https://github.com/tstat/raspberry-pi-nix/issues/13#issuecomment-2090601812
-  raspberry-pi-nix.uboot.enable = false;
+  # raspberry-pi-nix.uboot.enable = false;
+
+  # If enabled then the libcamera overlay is applied which overrides libcamera with the rpi fork.
+  raspberry-pi-nix.libcamera-overlay.enable = false;
 
   sdImage = {
     imageName = "NixPi.img";
@@ -46,6 +49,8 @@
   # List services that you want to enable
   services = {
     pi5_fan_controller.enable = true;
+
+    pipewire.enable = false;
 
     tailscale = {
       enable = true;
