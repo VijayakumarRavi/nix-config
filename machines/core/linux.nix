@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   hostname,
   config,
@@ -44,6 +45,12 @@
       zoro_hc_url = {};
       usopp_hc_url = {};
       chopper_hc_url = {};
+      "dnsproxy.yaml" = {
+        restartUnits = ["dnsproxy.service"];
+      };
+      "keepalived_${hostname}.conf" = {
+        restartUnits = ["keepalived.service"];
+      };
       id_ed25519 = {
         owner = config.users.users.${variables.username}.name;
         inherit (config.users.users.${variables.username}) group;
@@ -71,10 +78,9 @@
         networks."vijay wifi".pskRaw = "9559e5edeed089f6c2834257d9f4de0cb442da4ddbee3a09e17707a9223f8958";
       }
       else {enable = false;};
-    # Default nameservers
-    nameservers = [
-      "137.66.25.173"
-    ];
+    # Default nameserver to dnsproxy
+    nameservers = ["10.0.0.10"];
+    dhcpcd.extraConfig = "nohook resolv.conf";
     # Default gateway
     defaultGateway = {
       address = "10.0.0.1";
@@ -166,6 +172,9 @@
     };
 
     libinput.enable = true;
+
+    # disable resolved and use dnsproxy
+    resolved.enable = false;
   };
 
   system.activationScripts.diff = {
@@ -178,17 +187,18 @@
       fi
     '';
   };
-  systemd =
-    if hostname != "nami"
-    then {
-      # Given that systems are headless, emergency mode is useless.
-      # We prefer the system to attempt to continue booting so
-      # that we can hopefully still access it remotely.
-      enableEmergencyMode = false;
 
-      # For more detail, see:
-      #   https://0pointer.de/blog/projects/watchdog.html
-      watchdog = {
+  systemd = {
+    # Given that systems are headless, emergency mode is useless.
+    # We prefer the system to attempt to continue booting so
+    # that we can hopefully still access it remotely.
+    enableEmergencyMode = false;
+
+    # For more detail, see:
+    #   https://0pointer.de/blog/projects/watchdog.html
+    watchdog =
+      if hostname != "nami"
+      then {
         # systemd will send a signal to the hardware watchdog at half
         # the interval defined here, so every 10s.
         # If the hardware watchdog does not get a signal for 20s,
@@ -199,14 +209,47 @@
         # For more info, see:
         #   https://utcc.utoronto.ca/~cks/space/blog/linux/SystemdShutdownWatchdog
         rebootTime = "30s";
+      }
+      else {};
+
+    sleep.extraConfig = ''
+      AllowSuspend=no
+      AllowHibernation=no
+    '';
+
+    services.sshd.wantedBy = pkgs.lib.mkForce ["multi-user.target"];
+
+    services.dnsproxy = {
+      description = "Simple DNS proxy with DoH, DoT, DoQ and DNSCrypt support";
+      after = ["network.target" "nss-lookup.target"];
+      wantedBy = ["multi-user.target"];
+      serviceConfig = {
+        ExecStart =
+          "${pkgs.dnsproxy}/bin/dnsproxy"
+          + " --config-path=${config.sops.secrets."dnsproxy.yaml".path}";
+        ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
+        Restart = "always";
+        RestartSec = 10;
       };
-
-      sleep.extraConfig = ''
-        AllowSuspend=no
-        AllowHibernation=no
-      '';
-
-      services.sshd.wantedBy = pkgs.lib.mkForce ["multi-user.target"];
-    }
-    else {services.sshd.wantedBy = pkgs.lib.mkForce ["multi-user.target"];};
+    };
+    services.keepalived = {
+      description = "Keepalive Daemon For Dns Proxy";
+      after = ["network.target" "network-online.target" "dnsproxy.service"];
+      wants = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
+      serviceConfig = {
+        Type = "forking";
+        PIDFile = "/run/keepalived.pid";
+        KillMode = "process";
+        RuntimeDirectory = "keepalived";
+        ExecStart =
+          "${pkgs.keepalived}/bin/keepalived"
+          + " -f ${config.sops.secrets."keepalived_${hostname}.conf".path}"
+          + " -p /run/keepalived.pid";
+        ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
+        Restart = "always";
+        RestartSec = "1s";
+      };
+    };
+  };
 }
