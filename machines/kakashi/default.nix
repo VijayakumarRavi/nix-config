@@ -1,11 +1,13 @@
 {
   pkgs,
+  inputs,
   variables,
   ...
 }: {
   imports = [
     ../core
     ./homebrew.nix
+    inputs.sops-nix.darwinModules.sops
   ];
 
   nix = {
@@ -30,6 +32,21 @@
   };
 
   services.nix-daemon.enable = true;
+
+  sops = {
+    defaultSopsFile = ../../secrets.yaml;
+    validateSopsFiles = false;
+
+    age = {
+      sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+      keyFile = "/var/lib/sops-nix/key.txt";
+      generateKey = true;
+    };
+
+    secrets = {
+      "kakashi.yaml" = {};
+    };
+  };
 
   # Logging is disabled by default
   launchd.user.agents.skhd.serviceConfig = {

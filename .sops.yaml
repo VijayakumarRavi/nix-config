@@ -1,3 +1,4 @@
+---
 # NOTE: use 'sops updatekeys --yes secrets.yaml' to add/remove recipients.
 keys:
   - &user_vijay age1zgyq9gpx5wnwt3dl5gzy2zch97khe0f78dfeed7v4gzwurvkkays0pn4nd
