@@ -119,7 +119,7 @@
       tail-ssh = "fly ssh console -a flytailexit";
       time-ssh = "fly ssh console -a flytime";
       guard-ssh = "fly ssh console -a flyguard";
-      fd = "fly deploy --remote-only --now --no-public-ips --strategy immediate --no-cache";
+      flyd = "fly deploy --remote-only --now --no-public-ips --strategy immediate --no-cache";
 
       # Docker container
       ds = "sudo docker start";

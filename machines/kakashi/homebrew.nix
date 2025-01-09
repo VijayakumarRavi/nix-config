@@ -32,12 +32,12 @@
     };
     taps = builtins.attrNames config.nix-homebrew.taps;
     brews = [
-      "aria2" # download manager
       "flyctl" # fly.io cli tool
       "bitwarden-cli" # free password manager
       "mas" # Mac appstore installer
       "pinentry-mac" # GPG key entry utility
       "node" # Node js
+      "docker" # docker cli
     ];
     casks = [
       # Better mac
@@ -64,7 +64,6 @@
       "amazon-workspaces" # amazon-workspaces for FPL
       "rave" # App for watching videos and listening to music with friends in real-time
       "headlamp" # user-friendly Kubernetes UI focused on extensibility
-      "docker" # Docker for Mac
       "ghostty" # Ghostty is a fast, feature-rich, and cross-platform terminal emulator
     ];
     masApps = {

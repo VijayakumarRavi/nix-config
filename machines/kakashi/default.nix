@@ -7,6 +7,7 @@
   imports = [
     ../core
     ./homebrew.nix
+    ./launchDaemons.nix
     inputs.sops-nix.darwinModules.sops
   ];
 
@@ -57,6 +58,14 @@
   networking = {
     computerName = "kakashi";
     hostName = "kakashi";
+    dns = ["127.0.0.1"];
+    knownNetworkServices = [
+      "USB 10/100 LAN"
+      "Wi-Fi"
+      "iPhone USB"
+      "Thunderbolt Bridge"
+      "Tailscale"
+    ];
   };
 
   users.users.${variables.username} = {
