@@ -13,11 +13,6 @@
 
   nixpkgs.hostPlatform = "x86_64-linux";
 
-  isoImage = {
-    edition = lib.mkForce "custom";
-    isoName = lib.mkForce "NixOS.iso";
-  };
-
   # Nix bin settings
   nix = {
     package = pkgs.nix;
