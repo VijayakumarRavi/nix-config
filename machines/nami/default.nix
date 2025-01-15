@@ -28,7 +28,9 @@
 
   # uboot not yet supported for pi5
   # https://github.com/tstat/raspberry-pi-nix/issues/13#issuecomment-2090601812
-  # raspberry-pi-nix.uboot.enable = false;
+  raspberry-pi-nix.uboot.enable = false;
+  # https://github.com/nix-community/raspberry-pi-nix/issues/24#issuecomment-2185314220
+  boot.initrd.systemd.enable = false;
 
   # If enabled then the libcamera overlay is applied which overrides libcamera with the rpi fork.
   raspberry-pi-nix.libcamera-overlay.enable = false;
@@ -39,6 +41,7 @@
   };
 
   networking = {
+    networkmanager.enable = true;
     useDHCP = false;
     interfaces = {
       wlan0.useDHCP = true;
