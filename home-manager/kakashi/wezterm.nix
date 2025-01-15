@@ -83,48 +83,55 @@
         	local x = (active_screen.width - width) / 2 -- Center horizontally
         	local y = (active_screen.height - height) / 2 -- Center vertically
 
-        	local _, _, window = wezterm.mux.spawn_window(cmd or {})
+          if not cmd then
+            print("Starting tmux")
+            cmd = { args = { "/etc/profiles/per-user/vijay/bin/tmux", "-u", "new-session", "-A", "-s", "default_tmux" } }
+          end
+          local _, _, window = wezterm.mux.spawn_window(cmd)
 
         	window:gui_window():set_position(x, y)
         	window:gui_window():set_inner_size(width, height)
         end)
 
-        local process_icons = {
-        	["psql"] = "󱤢",
-        	["usql"] = "󱤢",
-        	["nvim"] = "",
-        	["make"] = "󱂟",
-        	["just"] = "󱂟",
-        	["vim"] = " ",
-        	["go"] = "",
-        	["python3"] = "",
-        	["zsh"] = " ",
-        	["bash"] = " ",
-        	["htop"] = "󱋊",
-        	["cargo"] = "󱘗",
-        	["sudo"] = "",
-        	["git"] = "",
-        	["lua"] = "󰢱",
-        	["zola"] = "󰘯 ",
-        	["zig"] = "",
-        }
-
-        local function get_process(tab)
-        	if not tab.active_pane or tab.active_pane.foreground_process_name == "" then
-        		return nil
-        	end
+        wezterm.on("format-tab-title", function(tab)
+        	local process_icons = {
+        		["psql"] = "󱤢",
+        		["usql"] = "󱤢",
+        		["nvim"] = "",
+        		["make"] = "󱂟",
+        		["just"] = "󱂟",
+        		["vim"] = " ",
+        		["go"] = "",
+        		["python3"] = "",
+        		["zsh"] = " ",
+        		["bash"] = " ",
+        		["htop"] = "󱋊",
+        		["cargo"] = "󱘗",
+        		["sudo"] = "",
+        		["git"] = "",
+        		["lua"] = "󰢱",
+        		["zola"] = "󰘯 ",
+        		["zig"] = "",
+        		["kubectl"] = "󱃾",
+        		["ssh"] = "󰍹",
+        		["tmux"] = "",
+        	}
 
         	local process_name = string.gsub(tab.active_pane.foreground_process_name, "(.*[/\\])(.*)", "%2")
         	if string.find(process_name, "kubectl") then
         		process_name = "kubectl"
         	end
 
-        	return process_icons[process_name]
-        end
+        	local function get_process()
+        		if not tab.active_pane or tab.active_pane.foreground_process_name == "" then
+        			return nil
+        		end
 
-        wezterm.on("format-tab-title", function(tab)
-        	local process = get_process(tab)
-        	local title = process and string.format(" %s  ", process) or "   "
+        		return process_icons[process_name]
+        	end
+
+        	local process = get_process()
+        	local title = process and string.format(" %s ", process) or "   "
         	return {
         		{ Text = title },
         	}
@@ -145,11 +152,15 @@
         	{ key = "u", mods = "CMD", action = act.ActivateCopyMode },
 
         	--- Splits
-        	{ key = "-", mods = "CTRL", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
-        	{ key = ";", mods = "CTRL", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+        	{ key = "-", mods = "ALT", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+        	{ key = "\\", mods = "ALT", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 
         	--- spawn new tab
         	{ key = "t", mods = "ALT", action = act.SpawnTab("CurrentPaneDomain") },
+        	{ key = "z", mods = "ALT", action = act.SpawnCommandInNewTab({ args = { "ssh", "zoro" } }) },
+        	{ key = "u", mods = "ALT", action = act.SpawnCommandInNewTab({ args = { "ssh", "usopp" } }) },
+        	{ key = "c", mods = "ALT", action = act.SpawnCommandInNewTab({ args = { "ssh", "chopper" } }) },
+        	{ key = "n", mods = "ALT", action = act.SpawnCommandInNewTab({ args = { "ssh", "nami" } }) },
 
         	--- Pane switching
         	{ key = "h", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Left") },
