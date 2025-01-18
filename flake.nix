@@ -128,14 +128,6 @@
             name = "statix-fix";
             entry = "statix fix";
           };
-          git-pull = {
-            enable = true;
-            name = "git-pull-remort";
-            always_run = true;
-            pass_filenames = false;
-            stages = ["post-commit"];
-            entry = "git pull --rebase --quiet --autostash";
-          };
           nix-flake-check = {
             enable = true;
             name = "nix-flake-check";
