@@ -24,8 +24,13 @@
     extraModulePackages = [];
     kernelParams = [
       "hugepagesz=2M" # Set the hugepage size to 2MiB
-      "hugepages=2048" # Set the number of hugepages to 2048
+      "hugepages=512" # Set the number of hugepages to 2048
     ];
+    kernel.sysctl = {
+      "fs.inotify.max_queued_events" = 524288;
+      "fs.inotify.max_user_instances" = 16383;
+      "fs.inotify.max_user_watches" = 524288;
+    };
   };
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
