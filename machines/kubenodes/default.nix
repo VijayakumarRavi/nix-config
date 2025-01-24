@@ -96,10 +96,8 @@
         "--write-kubeconfig-mode \"0644\""
         "--cluster-init"
         "--disable traefik"
-        "--disable=coredns"
         "--disable servicelb"
         "--disable local-storage"
-        "--disable=metrics-server"
         "--tls-san \"cluster.home.vijayakumar.xyz\""
       ]
       ++ (
