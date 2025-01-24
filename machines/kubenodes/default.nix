@@ -60,18 +60,18 @@
   };
 
   # Unattended upgrades
-  system.autoUpgrade = {
-    enable = true;
-    allowReboot = true;
-    persistent = true;
-    operation = "boot";
-    rebootWindow = {
-      lower = "03:00";
-      upper = "05:00";
-    };
-    flags = ["--accept-flake-config"];
-    flake = "github:VijayakumarRavi/nix-config";
-  };
+  # system.autoUpgrade = {
+  #   enable = true;
+  #   allowReboot = true;
+  #   persistent = true;
+  #   operation = "boot";
+  #   rebootWindow = {
+  #     lower = "03:00";
+  #     upper = "05:00";
+  #   };
+  #   flags = ["--accept-flake-config"];
+  #   flake = "github:VijayakumarRavi/nix-config";
+  # };
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
