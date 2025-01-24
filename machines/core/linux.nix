@@ -85,6 +85,12 @@
     defaultGateway = {
       address = "10.0.0.1";
     };
+    # Set the etc host
+    extraHosts = ''
+      ${variables.zoro_ip} zoro
+      ${variables.usopp_ip} usopp
+      ${variables.chopper_ip} chopper
+    '';
   };
 
   console = {

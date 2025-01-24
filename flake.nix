@@ -88,6 +88,9 @@
       useremail = "im@vijayakumar.xyz";
       stateVersion = "25.05";
       stateVersionDarwin = 5;
+      zoro_ip = "10.0.1.101";
+      usopp_ip = "10.0.1.102";
+      chopper_ip = "10.0.1.103";
     };
 
     # Supported systems for NixOS and MacOS

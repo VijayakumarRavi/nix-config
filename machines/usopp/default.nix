@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  variables,
   ...
 }: {
   imports = [
@@ -10,7 +11,7 @@
     eth0 = {
       ipv4.addresses = [
         {
-          address = "10.0.1.102";
+          address = "${variables.usopp_ip}";
           prefixLength = 16;
         }
       ];
