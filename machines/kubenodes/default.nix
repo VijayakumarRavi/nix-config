@@ -95,15 +95,17 @@
       [
         "--write-kubeconfig-mode \"0644\""
         "--cluster-init"
-        "--disable servicelb"
         "--disable traefik"
+        "--disable=coredns"
+        "--disable servicelb"
         "--disable local-storage"
+        "--disable=metrics-server"
         "--tls-san \"cluster.home.vijayakumar.xyz\""
       ]
       ++ (
         if hostname == "zoro"
         then []
-        else ["--server https://zoro:6443"]
+        else ["--server https://${variables.zoro_ip}:6443"]
       )
     );
     clusterInit = hostname == "zoro";

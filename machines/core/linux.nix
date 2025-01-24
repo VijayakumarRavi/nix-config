@@ -85,13 +85,17 @@
     defaultGateway = {
       address = "10.0.0.1";
     };
-    # Set the etc host
-    extraHosts = ''
-      ${variables.zoro_ip} zoro
-      ${variables.usopp_ip} usopp
-      ${variables.chopper_ip} chopper
-    '';
+    hosts = {};
   };
+
+  # Set the etc host
+  environment.etc."hosts".text = lib.mkForce ''
+    127.0.0.1 localhost
+    ::1 localhost
+    ${variables.zoro_ip} zoro
+    ${variables.usopp_ip} usopp
+    ${variables.chopper_ip} chopper
+  '';
 
   console = {
     earlySetup = true;
