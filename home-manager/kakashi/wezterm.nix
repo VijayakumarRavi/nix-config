@@ -1,6 +1,7 @@
 {
   programs.wezterm = {
     enable = true;
+    enableZshIntegration = true;
     extraConfig =
       /*
       lua
@@ -26,7 +27,7 @@
         config.use_fancy_tab_bar = false
         --- config.tab_max_width = 4
         config.font_size = 18.5
-        config.color_scheme = "Catppuccin Mocha"
+        config.color_scheme = 'rose-pine'
         config.cursor_blink_rate = 500
         config.use_cap_height_to_scale_fallback_fonts = true
         config.default_cursor_style = "BlinkingUnderline"

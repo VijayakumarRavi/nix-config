@@ -160,7 +160,7 @@
         # persistent apps in dock
         persistent-apps = [
           "/System/Applications/Launchpad.app/"
-          "/Applications/Arc.app/"
+          "/Applications/Zen Browser.app/"
           "/System/Cryptexes/App/System/Applications/Safari.app/"
           "/System/Applications/Messages.app/"
           "/System/Applications/Mail.app/"

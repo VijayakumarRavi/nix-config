@@ -10,7 +10,7 @@
     RunAtLoad = true;
     KeepAlive = true;
     UserName = "${variables.username}";
-    ProgramArguments = ["${pkgs.dnsproxy}/bin/dnsproxy" "--config-path=${config.sops.secrets."kakashi.yaml".path}"];
+    ProgramArguments = ["${pkgs.dnsproxy}/bin/dnsproxy" "--config-path=/etc/dnsproxy.yaml"];
     StandardOutPath = "/Users/${variables.username}/Library/Logs/dnsproxy/dnsproxy_output.log";
     StandardErrorPath = "/Users/${variables.username}/Library/Logs/dnsproxy/dnsproxy_output.log";
   };

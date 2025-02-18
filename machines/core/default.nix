@@ -105,6 +105,8 @@
       kind # local clusters for testing Kubernetes
       fluxcd # Kubernetes GitOps
       kubectl # Kubernetes CLI tool
+      kubectx # Switch faster between clusters and namespaces in kubectl
+      helmfile # Deploy Kubernetes Helm Charts
       kustomize # Customization of kubernetes YAML configurations
       kubeconform # Kubernetes manifests validator
       lazydocker # A simple terminal UI for both docker and docker-compose
