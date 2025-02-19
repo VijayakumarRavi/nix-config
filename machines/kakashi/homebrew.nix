@@ -43,9 +43,6 @@
       # Better mac
       "shottr" # Screenshot util
       "brave-browser" # Web browser focusing on privacy
-      "arc" # Chromium based browser
-      "hyperkey" # Convert your caps lock key or any of your modifier keys to the hyper key
-      # "superkey" # Search and click text anywhere on screen and Convert your caps lock key to the hyper key
       "the-unarchiver" # Unpacks archive files
       "1password" # Best password manager imo
       "1password-cli" # 1Password manager CLI
@@ -59,7 +56,7 @@
       "stats" # System monitor for the menu bar
       "raycast" # Raycast - A better alternative to Alfred and spotlight
       "pearcleaner" # Application uninstaller
-      # "visual-studio-code" # Visual Studio Code editor
+      "visual-studio-code" # Visual Studio Code editor
       "cursor" # visual-studio-code alternative
       "amazon-workspaces" # amazon-workspaces for FPL
       "rave" # App for watching videos and listening to music with friends in real-time
