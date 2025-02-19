@@ -12,7 +12,7 @@
   ];
 
   nix = {
-    configureBuildUsers = true;
+    enable = true;
     gc = {
       automatic = true;
       interval = {
@@ -31,8 +31,6 @@
     systemPath = ["/opt/homebrew/bin"];
     systemPackages = with pkgs; [obsidian];
   };
-
-  services.nix-daemon.enable = true;
 
   sops = {
     defaultSopsFile = ../../secrets.yaml;
