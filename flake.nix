@@ -20,6 +20,7 @@
   inputs = {
     # Core NixOS repo
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
 
     # Index for faster package search
     nix-index-database.url = "github:nix-community/nix-index-database";
@@ -76,121 +77,126 @@
   };
 
   outputs = inputs @ {
-    darwin,
     nixpkgs,
+    darwin,
     home-manager,
     ...
-  }: let
-    # Configuration variables
-    variables = {
-      username = "vijay";
-      user = "Vijayakumar Ravi";
-      useremail = "im@vijayakumar.xyz";
-      stateVersion = "25.05";
-      stateVersionDarwin = 5;
-      zoro_ip = "10.0.1.101";
-      usopp_ip = "10.0.1.102";
-      chopper_ip = "10.0.1.103";
-    };
+  }:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = ["aarch64-linux" "x86_64-linux" "aarch64-darwin" "x86_64-darwin"];
+      imports = [inputs.pre-commit-hooks.flakeModule];
+      perSystem = {
+        config,
+        pkgs,
+        ...
+      }: {
+        # Formatter configuration for all systems
+        formatter = pkgs.alejandra;
 
-    # Supported systems for NixOS and MacOS
-    supportedSystems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
-    forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-
-    # Pre-commit hooks configuration for all systems
-    pre-commit = forAllSystems (system: {
-      pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
-        src = ./.;
-        hooks = {
-          alejandra.enable = true;
-          actionlint.enable = true;
-          shellcheck.enable = true;
-          flake-checker.enable = true;
-          check-symlinks.enable = true;
-          end-of-file-fixer.enable = true;
-          detect-private-keys.enable = true;
-          trim-trailing-whitespace.enable = true;
-          trim-trailing-whitespace.stages = ["pre-commit"];
-          deadnix = {
-            enable = true;
-            settings = {
-              edit = true;
-              noLambdaArg = true;
+        # Pre-commit hooks configuration for all systems
+        pre-commit = {
+          settings.excludes = ["flake.lock"];
+          settings.hooks = {
+            alejandra.enable = true;
+            actionlint.enable = true;
+            shellcheck.enable = true;
+            flake-checker.enable = true;
+            check-symlinks.enable = true;
+            end-of-file-fixer.enable = true;
+            detect-private-keys.enable = true;
+            trim-trailing-whitespace.enable = true;
+            trim-trailing-whitespace.stages = ["pre-commit"];
+            deadnix = {
+              enable = true;
+              settings = {
+                edit = true;
+                noLambdaArg = true;
+              };
             };
-          };
-          just = {
-            enable = true;
-            files = "justfile";
-            name = "just-fmt";
-            pass_filenames = false;
-            entry = "just --fmt --unstable";
-          };
-          statix = {
-            enable = true;
-            files = "\\.nix$";
-            name = "statix-fix";
-            entry = "statix fix";
-          };
-          nix-flake-check = {
-            enable = true;
-            name = "nix-flake-check";
-            files = "\\.nix$";
-            stages = ["pre-push"];
-            pass_filenames = false;
-            entry = "nix flake check --accept-flake-config --all-systems";
+            just = {
+              enable = true;
+              files = "justfile";
+              name = "just-fmt";
+              pass_filenames = false;
+              entry = "just --fmt --unstable";
+            };
+            statix = {
+              enable = true;
+              files = "\\.nix$";
+              name = "statix-fix";
+              entry = "statix fix";
+            };
+            nix-flake-check = {
+              enable = true;
+              name = "nix-flake-check";
+              files = "\\.nix$";
+              stages = ["pre-push"];
+              pass_filenames = false;
+              entry = "nix flake check --accept-flake-config --all-systems";
+            };
           };
         };
-      };
-    });
 
-    # Helper to create a system configuration
-    mkSystem = configurations: system: hostname:
-      configurations {
-        inherit system;
-        # Pass all relevant inputs and variables to imported files
-        specialArgs = {inherit inputs variables hostname system;};
-        modules = [
-          ./machines/${hostname}
-          (
-            if system == "aarch64-darwin"
-            then home-manager.darwinModules.home-manager
-            else home-manager.nixosModules.home-manager
-          )
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              backupFileExtension = "backup";
-              extraSpecialArgs = {inherit inputs variables system;};
-              users.${variables.username}.imports = [./home-manager/${hostname}];
+        # Development shell with pre-commit hooks
+        devShells = {
+          default = with pkgs;
+            mkShell {
+              name = "nix config";
+              DIRENV_LOG_FORMAT = "";
+              shellHook = "${config.pre-commit.installationScript}";
+              buildInputs = with pkgs; [nixos-rebuild] ++ config.pre-commit.settings.enabledPackages;
             };
-          }
-        ];
+        };
       };
-  in {
-    # Formatter configuration for all systems
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+      flake = let
+        # Configuration variables
+        variables = {
+          username = "vijay";
+          user = "Vijayakumar Ravi";
+          useremail = "im@vijayakumar.xyz";
+          stateVersion = "25.05";
+          stateVersionDarwin = 5;
+          zoro_ip = "10.0.1.101";
+          usopp_ip = "10.0.1.102";
+          chopper_ip = "10.0.1.103";
+        };
 
-    # Development shell with pre-commit hooks
-    devShells = forAllSystems (system: {
-      default = nixpkgs.legacyPackages.${system}.mkShell {
-        inherit (pre-commit.${system}.pre-commit-check) shellHook;
-        buildInputs = with nixpkgs.legacyPackages.${system}; [nixos-rebuild] ++ pre-commit.${system}.pre-commit-check.enabledPackages;
+        # Helper to create a system configuration
+        mkSystem = configurations: hostname:
+          configurations {
+            # Pass all relevant inputs and variables to imported files
+            specialArgs = {inherit inputs variables hostname;};
+            modules = [
+              ./machines/${hostname}
+            ];
+          };
+
+        mkHome = configurations: username:
+          configurations {
+            extraSpecialArgs = {inherit inputs variables username;};
+            modules = [
+              ./home-manager/${username}
+            ];
+          };
+      in {
+        # NixOS system configurations
+        nixosConfigurations = {
+          zoro = mkSystem nixpkgs.lib.nixosSystem "zoro";
+          usopp = mkSystem nixpkgs.lib.nixosSystem "usopp";
+          chopper = mkSystem nixpkgs.lib.nixosSystem "chopper";
+          nixiso = mkSystem nixpkgs.lib.nixosSystem "nixiso";
+          nami = mkSystem nixpkgs.lib.nixosSystem "nami";
+        };
+
+        # MacOS configurations
+        darwinConfigurations = {
+          kakashi = mkSystem darwin.lib.darwinSystem "kakashi";
+        };
+
+        # Home manager configurations
+        homeConfigurations = {
+          vijay = mkHome home-manager.lib.homeManagerConfiguration "vijay";
+        };
       };
-    });
-
-    # NixOS system configurations
-    nixosConfigurations = {
-      zoro = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "zoro";
-      usopp = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "usopp";
-      chopper = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "chopper";
-      nixiso = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "nixiso";
-      nami = mkSystem nixpkgs.lib.nixosSystem "aarch64-linux" "nami";
     };
-
-    # MacOS configurations
-    darwinConfigurations = {
-      kakashi = mkSystem darwin.lib.darwinSystem "aarch64-darwin" "kakashi";
-    };
-  };
 }

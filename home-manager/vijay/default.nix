@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  #  system,
   variables,
   ...
 }: {
@@ -14,9 +15,19 @@
     ./tmux.nix
     ./starship.nix
   ];
+  # ++ (
+  #   if system == "aarch64-darwin"
+  #   then [./kakashi]
+  #   else []
+  # );
+
+  programs.home-manager.enable = true;
 
   systemd.user.startServices = "sd-switch";
   home = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    backupFileExtension = "backup";
     sessionPath = ["$HOME/.local/bin"];
     sessionVariables = {
       PAGER = "less";
