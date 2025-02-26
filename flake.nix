@@ -58,6 +58,9 @@
     firefox.url = "github:nix-community/flake-firefox-nightly";
     firefox.inputs.nixpkgs.follows = "nixpkgs";
 
+    talhelper.url = "github:budimanjojo/talhelper";
+    talhelper.inputs.nixpkgs.follows = "nixpkgs";
+
     # Homebrew configuration
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     homebrew-bundle.url = "github:homebrew/homebrew-bundle";
