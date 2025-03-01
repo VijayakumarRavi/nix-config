@@ -75,7 +75,7 @@
     nerd-fonts.jetbrains-mono
   ];
 
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   # here go the darwin preferences and config items
   system = {

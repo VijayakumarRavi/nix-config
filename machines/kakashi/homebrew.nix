@@ -38,6 +38,7 @@
       "pinentry-mac" # GPG key entry utility
       "node" # Node js
       "docker" # docker cli
+      "podman" # docker alternative
     ];
     casks = [
       # Better mac
