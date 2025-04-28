@@ -3,7 +3,7 @@
 in {
   programs.tmux = {
     enable = true;
-    terminal = "tmux-256color";
+    terminal = "screen-256color";
     aggressiveResize = true;
     baseIndex = 1;
     historyLimit = 100000000;
@@ -45,6 +45,8 @@ in {
         unbind C-b
         unbind C-a
         set -g prefix `
+
+        set -ga terminal-overrides ',xterm-256color:Tc'
 
         # Options
         set -g focus-events                 # form vim/tmux d/y buffer sync

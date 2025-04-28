@@ -64,6 +64,7 @@
     systemPackages = with pkgs; [
       # Linux utils
       fd # Simple, fast and user-friendly alternative to find
+      fzf #
       vim # a must needed text editor
       curl # A command line tool for transferring files with URL syntax
       less # A more advanced file pager than 'more'
@@ -75,13 +76,15 @@
       cowsay # ASCII cow
       rclone # Rsync for Cloud storage
       restic # A backup program that is fast, efficient and secure
+      ripgrep
       openssl # cryptographic library
       fastfetch # Fast, highly customisable system info script
       coreutils # GNU core utilities for Mac
       alejandra # formatter for Nix
       pkg-config # Manage compile and link flags for libraries
       tailscale
-      inputs.nvim.packages.${pkgs.system}.default # custom neovim config
+      neovim
+      #inputs.nvim.packages.${pkgs.system}.default # custom neovim config
 
       # Ansible
       age # age is a simple, modern and secure file encryption tool.
@@ -91,9 +94,12 @@
       # Dev utils
       jq # JSON query tool
       yq # jq wrapper for YAML
+      go
       gcc # c compiler
       tree # Tree command line tool
       just # Command runner
+      yarn
+      cmake
       iperf # Network performance test
       cachix # Command-line client for Nix binary cache hosting https://cachix.org
       python3 # Python lang

@@ -43,6 +43,8 @@
         config.window_decorations = "RESIZE"
         -- config.window_padding = { left = 50, right = 50, top = 50, bottom = 50 }
 
+        config.color_scheme = 'Black Metal (Gorgoroth) (base16)'
+
         config.colors = {
         	tab_bar = {
         		background = "None",

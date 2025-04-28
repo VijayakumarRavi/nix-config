@@ -61,7 +61,7 @@
       ## "cursor" # visual-studio-code alternative
       "amazon-workspaces" # amazon-workspaces for FPL
       "rave" # App for watching videos and listening to music with friends in real-time
-      ## "headlamp" # user-friendly Kubernetes UI focused on extensibility
+      "freelens" # user-friendly Kubernetes UI focused on extensibility
       ## "ghostty" # Ghostty is a fast, feature-rich, and cross-platform terminal emulator
     ];
     masApps = {
