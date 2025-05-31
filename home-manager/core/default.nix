@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
-    ./yazi
+    ./yazi.nix
     ./core.nix
     ./htop.nix
     ./zsh.nix

@@ -1,12 +1,12 @@
-{
-  # terminal file manager
+{pkgs, ...}: {
+  # terminal file mgr
   programs.yazi = {
     enable = true;
     # Changing working directory when exiting Yazi
     enableBashIntegration = true;
     enableZshIntegration = true;
     settings = {
-      manager = {
+      mgr = {
         show_hidden = true;
         sort_dir_first = true;
         sort_by = "natural";
@@ -19,13 +19,12 @@
       };
     };
     plugins = {
-      smart-enter = ./plugins/smart-enter;
-      max-preview = ./plugins/max-preview;
+      inherit (pkgs.yaziPlugins) smart-enter;
     };
     keymap = {
-      manager.prepend_keymap = [
+      mgr.prepend_keymap = [
         {
-          run = "plugin --sync smart-enter";
+          run = "plugin smart-enter";
           on = ["<Enter>"];
           desc = "Enter the child directory, or open the file";
         }
@@ -33,11 +32,6 @@
           run = "leave";
           on = ["<Backspace>"];
           desc = "Go back to the parent directory";
-        }
-        {
-          run = "plugin --sync max-preview";
-          on = ["T"];
-          desc = "Toggle preview";
         }
       ];
     };
