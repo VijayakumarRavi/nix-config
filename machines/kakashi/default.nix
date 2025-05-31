@@ -29,7 +29,6 @@
   environment = {
     pathsToLink = ["/Applications"];
     systemPath = ["/opt/homebrew/bin"];
-    systemPackages = with pkgs; [obsidian];
   };
 
   sops = {
@@ -79,6 +78,8 @@
 
   # here go the darwin preferences and config items
   system = {
+    primaryUser = "${variables.username}";
+
     keyboard.enableKeyMapping = true;
     # keyboard.remapCapsLockToEscape = true;
     defaults = {

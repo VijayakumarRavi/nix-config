@@ -38,14 +38,14 @@
       }
     ];
 
-    initExtra =
+    initContent =
       /*
       bash
       */
       ''
         function switch() {
           if command -v darwin-rebuild &> /dev/null 2>&1; then
-            darwin-rebuild switch "$@" --flake /Users/${variables.username}/.nix-config#kakashi
+            sudo darwin-rebuild switch "$@" --flake /Users/${variables.username}/.nix-config#kakashi
           else
             sudo nixos-rebuild switch "$@" --accept-flake-config --flake /home/${variables.username}/.nix-config
           fi

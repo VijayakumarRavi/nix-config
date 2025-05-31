@@ -70,7 +70,7 @@
     homebrew-vijay.url = "github:VijayakumarRavi/packages";
 
     # Disable flakes for some Homebrew inputs
-    nix-homebrew.inputs.nixpkgs.follows = "nixpkgs";
+    # nix-homebrew.inputs.nixpkgs.follows = "nixpkgs";
     homebrew-bundle.flake = false;
     homebrew-core.flake = false;
     homebrew-cask.flake = false;
