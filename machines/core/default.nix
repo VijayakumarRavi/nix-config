@@ -102,6 +102,7 @@
       cmake
       iperf # Network performance test
       cachix # Command-line client for Nix binary cache hosting https://cachix.org
+      go-task
       python3 # Python lang
       unixtools.watch # Watch command line tool
       pre-commit # Tool to manage pre-commit hooks
