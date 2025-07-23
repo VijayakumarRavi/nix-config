@@ -16,7 +16,7 @@
     userName = variables.user;
     userEmail = variables.useremail;
     signing = {
-      key = "~/.ssh/id_ed25519.pub";
+      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX";
       signByDefault = true;
     };
     # Diff tool
@@ -38,7 +38,6 @@
       credential.helper = "osxkeychain";
       difftool.prompt = false;
       init.defaultBranch = "master";
-      # user.signingKey = "~/.ssh/id_ed25519.pub";
       core = {
         editor = "nvim";
       };
@@ -60,7 +59,7 @@
         format = "ssh";
       };
       commit = {
-        # gpgsign = true;
+        gpgsign = true;
         template = "./gitmessage";
       };
       diff = {

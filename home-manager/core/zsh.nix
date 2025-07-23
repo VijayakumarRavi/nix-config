@@ -62,6 +62,7 @@
         }
 
         export PATH="${"KREW_ROOT:-$HOME/.krew"}/bin:$PATH"
+        export SSH_AUTH_SOCK=/Users/${variables.username}/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock
 
         [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
       '';

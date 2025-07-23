@@ -77,6 +77,7 @@ in {
       extraConfig = ''
         Host *
           IdentityAgent "~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock"
+          SetEnv TERM=xterm-256color
 
         Host sanji
             HostName sanji
@@ -112,6 +113,12 @@ in {
             HostName robin
             User ${variables.username}
             Port 69
+            RequestTTY yes
+            RemoteCommand tmux -u new-session -A -s ssh_mux
+        Host docker
+            HostName 10.0.2.2
+            User root
+            Port 22
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux
       '';
