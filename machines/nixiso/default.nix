@@ -44,13 +44,6 @@
   # Set your time zone.
   time.timeZone = "Asia/Kolkata";
 
-  # Networking settings
-  networking = {
-    wireless = {
-      enable = true;
-      networks."vijay wifi".pskRaw = "9559e5edeed089f6c2834257d9f4de0cb442da4ddbee3a09e17707a9223f8958";
-    };
-  };
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
     neovim
