@@ -105,6 +105,13 @@ in {
         unbind _
         bind _ split-window -v -c "#{pane_current_path}"
 
+        ##### Display Popups #####
+        bind C-s display-popup -E 'bash -i -c "read -p \"Session name: \" name; tmux new-session -d -s \$name && tmux switch-client -t \$name"'
+        bind C-g display-popup -d "#{pane_current_path}" -w 90% -h 90% -E "lazygit"
+        bind C-r display-popup -d "#{pane_current_path}" -w 90% -h 90% -E "yazi"
+        unbind t
+        bind t display-popup -d "#{pane_current_path}" -w 75% -h 75% -E "zsh"
+
         # open new windows in the current path
         bind c new-window -c "#{pane_current_path}"
 
