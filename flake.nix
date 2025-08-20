@@ -68,6 +68,7 @@
     homebrew-cask.url = "github:homebrew/homebrew-cask";
     homebrew-services.url = "github:homebrew/homebrew-services";
     homebrew-vijay.url = "github:VijayakumarRavi/packages";
+    homebrew-netbird.url = "github:netbirdio/homebrew-tap";
 
     # Disable flakes for some Homebrew inputs
     # nix-homebrew.inputs.nixpkgs.follows = "nixpkgs";
@@ -76,6 +77,7 @@
     homebrew-cask.flake = false;
     homebrew-services.flake = false;
     homebrew-vijay.flake = false;
+    homebrew-netbird.flake = false;
   };
 
   outputs = inputs @ {
@@ -187,6 +189,7 @@
       zoro = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "zoro";
       usopp = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "usopp";
       chopper = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "chopper";
+      robin = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "robin";
       nixiso = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "nixiso";
       nami = mkSystem nixpkgs.lib.nixosSystem "aarch64-linux" "nami";
     };

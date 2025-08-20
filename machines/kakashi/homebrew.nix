@@ -18,6 +18,7 @@
       "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
       "homebrew/homebrew-services" = inputs.homebrew-services;
       "VijayakumarRavi/packages" = inputs.homebrew-vijay;
+      "netbirdio/tap" = inputs.homebrew-netbird;
     };
   };
 
@@ -64,10 +65,11 @@
       "thunderbird" # Mail client
       "twingate"
       "ghostty" # Ghostty is a fast, feature-rich, and cross-platform terminal emulator
+      "netbird-ui"
     ];
     masApps = {
       "1Password for Safari" = 1569813296;
-      "Tailscale" = 1475387142;
+      # "Tailscale" = 1475387142;
       "infuse video player" = 1136220934;
       "localsend" = 1661733229;
       "shortery" = 1594183810;
