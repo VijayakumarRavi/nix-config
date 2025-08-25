@@ -63,9 +63,9 @@
       "rave" # App for watching videos and listening to music with friends in real-time
       "freelens" # user-friendly Kubernetes UI focused on extensibility
       "thunderbird" # Mail client
-      "twingate"
       "ghostty" # Ghostty is a fast, feature-rich, and cross-platform terminal emulator
       "netbird-ui"
+      "kopiaui"
     ];
     masApps = {
       "1Password for Safari" = 1569813296;

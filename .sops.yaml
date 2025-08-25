@@ -2,7 +2,7 @@
 # NOTE: use 'sops updatekeys --yes secrets.yaml' to add/remove recipients.
 keys:
   - &user_vijay age1zgyq9gpx5wnwt3dl5gzy2zch97khe0f78dfeed7v4gzwurvkkays0pn4nd
-  - &host_kakashi age17yq2w5vv6akhvdm7s306qx055uuj9fg42me27vsrghpgvtgt443shg24qd
+  - &host_kakashi age1xt2sxr7cegrrut84q49tczqgsmhn0kkahk8sclyt02jqwwywpq8sq49tq8
   - &host_usopp age1sx50q6uprsd0cnxtcd8cqchfywk89jqg2fgkw7d3krv6c3vyj37qy7v87e
   - &host_zoro age1mp9z7cghnua972jzjvrjl7v5nafplwytwceaf35ma8ae9j23kues7xqzr4
   - &host_nami age1sngmeyjqugqxp58eveqsyx5afay58affgexhgamvf2jx8g03h48q3qulhx
