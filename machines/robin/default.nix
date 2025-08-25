@@ -12,6 +12,8 @@
 
     ../core
 
+    # docker configuration
+    ./docker.nix
     # Declarative disk partitioning config
     ./disk-config.nix
   ];
@@ -19,7 +21,7 @@
   boot = {
     initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk"];
     initrd.kernelModules = [];
-    kernelModules = [];
+    kernelModules = ["br_netfilter"];
     extraModulePackages = [];
     # Ensure a clean & sparkling /tmp on fresh boots.
     tmp.cleanOnBoot = true;
@@ -28,6 +30,9 @@
       "vm.swappiness" = 60;
       "net.ipv4.ip_forward" = 1;
       "net.ipv6.conf.all.forwarding" = 1;
+      "fs.inotify.max_queued_events" = 524288;
+      "fs.inotify.max_user_instances" = 16383;
+      "fs.inotify.max_user_watches" = 524288;
     };
     loader = {
       efi = {
@@ -81,6 +86,12 @@
     hostName = hostname;
     useDHCP = lib.mkDefault true;
     nameservers = ["1.1.1.1"];
+
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [69];
+      allowedUDPPorts = [69];
+    };
   };
 
   # Set your time zone.
@@ -98,11 +109,9 @@
     isNormalUser = true;
     extraGroups = [
       "users"
+      "docker"
       "wheel"
       "disk"
-      "power"
-      "video"
-      "networkmanager"
     ];
     description = "Default user account";
     openssh.authorizedKeys.keys = [
@@ -115,12 +124,13 @@
 
   services = {
     fstrim.enable = true;
+    qemuGuest.enable = true;
   };
 
   # Enable ssh
   services.openssh = {
     enable = true;
-    ports = [22];
+    ports = [69];
     settings = {
       PasswordAuthentication = false;
       AllowUsers = ["${variables.username}"];
