@@ -89,8 +89,8 @@
 
     firewall = {
       enable = true;
-      allowedTCPPorts = [22];
-      allowedUDPPorts = [22];
+      allowedTCPPorts = [69];
+      allowedUDPPorts = [69];
     };
   };
 
@@ -130,7 +130,7 @@
   # Enable ssh
   services.openssh = {
     enable = true;
-    ports = [22];
+    ports = [69];
     settings = {
       PasswordAuthentication = false;
       AllowUsers = ["${variables.username}"];

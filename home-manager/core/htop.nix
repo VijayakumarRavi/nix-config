@@ -10,7 +10,7 @@
   home.file.".config/htop/htoprc".text = ''
     # Beware! This file is rewritten by htop when settings are changed in the interface.
     # The parser is also very primitive, and not human-friendly.
-    htop_version=3.3.0
+    htop_version=3.4.1
     config_reader_min_version=3
     fields=0 48 17 18 38 39 40 2 46 47 49 1
     hide_kernel_threads=1
@@ -37,6 +37,7 @@
     show_cpu_frequency=0
     show_cpu_temperature=1
     degree_fahrenheit=0
+    show_cached_memory=1
     update_process_names=1
     account_guest_in_cpu_meter=0
     color_scheme=0
@@ -47,7 +48,7 @@
     column_meters_0=AllCPUs2 CPU Blank Memory Swap
     column_meter_modes_0=1 1 2 1 1
     column_meters_1=Hostname Uptime DateTime Blank DiskIO NetworkIO
-    column_meter_modes_1=2 2 2 2 2 2 2
+    column_meter_modes_1=2 2 2 2 2 2
     tree_view=0
     sort_key=46
     tree_sort_key=0

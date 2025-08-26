@@ -115,6 +115,10 @@ in {
             Port 69
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux
+        Host robin-build
+            HostName robin
+            User ${variables.username}
+            Port 69
         Host docker
             HostName 10.0.2.2
             User root
