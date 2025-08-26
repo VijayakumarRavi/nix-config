@@ -44,7 +44,7 @@
     delay=15
     hide_function_bar=0
     header_layout=two_50_50
-    column_meters_0=AllCPUs2 CPU Blank Memory HugePages
+    column_meters_0=AllCPUs2 CPU Blank Memory Swap
     column_meter_modes_0=1 1 2 1 1
     column_meters_1=Hostname Uptime DateTime LoadAverage Blank DiskIO NetworkIO
     column_meter_modes_1=2 2 2 2 2 2 2

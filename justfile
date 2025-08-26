@@ -45,6 +45,9 @@ deploy-usopp:
 deploy-chopper:
     nixos-rebuild switch --fast --flake ".#chopper" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.1.103" --build-host "vijay@10.0.1.103"
 
+deploy-robin:
+    nixos-rebuild switch --fast --flake ".#robin" --accept-flake-config --use-remote-sudo --target-host "vijay@robin" --build-host "vijay@robin"
+
 # update flake.lock
 up:
     git pull

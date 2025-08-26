@@ -1,5 +1,22 @@
 {inputs, ...}: {
   imports = [inputs.disko.nixosModules.disko];
+
+  services.snapper.configs.docker = {
+    SUBVOLUME = "/opt/docker";
+
+    ALLOW_GROUPS = ["wheel"];
+
+    TIMELINE_CREATE = true;
+    TIMELINE_CLEANUP = true;
+
+    TIMELINE_LIMIT_HOURLY = 12;
+    TIMELINE_LIMIT_DAILY = 7;
+    TIMELINE_LIMIT_WEEKLY = 4;
+    TIMELINE_LIMIT_MONTHLY = 12;
+    TIMELINE_LIMIT_QUARTERLY = 2;
+    TIMELINE_LIMIT_YEARLY = 1;
+  };
+
   disko.devices = {
     disk = {
       nixos = {
@@ -45,6 +62,10 @@
                   "/opt/docker" = {
                     mountpoint = "/opt/docker";
                     mountOptions = ["subvol=docker" "compress=zstd" "noatime"];
+                  };
+                  "/opt/docker/.snapshots" = {
+                    mountpoint = "/opt/docker/.snapshots";
+                    mountOptions = ["subvol=docker_snapshots" "compress=zstd" "noatime"];
                   };
                   # Parent is not mounted so the mountpoint must be set
                   "/nix" = {
