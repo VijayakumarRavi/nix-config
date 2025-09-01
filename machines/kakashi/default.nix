@@ -50,12 +50,6 @@
     };
   };
 
-  # Logging is disabled by default
-  launchd.user.agents.skhd.serviceConfig = {
-    StandardOutPath = "/tmp/skhd.out.log";
-    StandardErrorPath = "/tmp/skhd.error.log";
-  };
-
   networking = {
     computerName = "kakashi";
     hostName = "kakashi";

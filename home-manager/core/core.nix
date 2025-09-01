@@ -74,11 +74,22 @@ in {
 
     ssh = {
       enable = true;
+      enableDefaultConfig = false;
+      matchBlocks."*" = {
+        forwardAgent = false;
+        addKeysToAgent = "no";
+        compression = false;
+        serverAliveInterval = 0;
+        serverAliveCountMax = 3;
+        hashKnownHosts = false;
+        userKnownHostsFile = "~/.ssh/known_hosts";
+        controlMaster = "no";
+        controlPath = "~/.ssh/master-%r@%n:%p";
+        controlPersist = "no";
+        identityAgent = "~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock";
+        setEnv = {TERM = "xterm-256color";};
+      };
       extraConfig = ''
-        Host *
-          IdentityAgent "~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock"
-          SetEnv TERM=xterm-256color
-
         Host sanji
             HostName sanji
             User ${variables.username}
@@ -127,7 +138,7 @@ in {
             RemoteCommand tmux -u new-session -A -s ssh_mux
         Host tank
             HostName tank
-            User vijay
+            User ${variables.username}
             Port 22
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux

@@ -4,7 +4,7 @@
     ./kitty.nix
     ./wezterm.nix
     ./alacritty.nix
-    ./aerospace.nix
+    #  ./aerospace.nix
   ];
 
   programs = {
