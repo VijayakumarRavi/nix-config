@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   inputs,
   variables,
   ...
@@ -42,7 +43,10 @@
     };
 
     secrets = {
-      "kakashi.yaml" = {};
+      "kakashi.yaml" = {
+        owner = config.users.users.${variables.username}.name;
+        path = "/etc/dnsproxy.yaml";
+      };
     };
   };
 

@@ -125,6 +125,12 @@ in {
             Port 22
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux
+        Host tank
+            HostName tank
+            User vijay
+            Port 22
+            RequestTTY yes
+            RemoteCommand tmux -u new-session -A -s ssh_mux
       '';
     };
   };
