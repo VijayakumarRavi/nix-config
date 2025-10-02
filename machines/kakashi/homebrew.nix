@@ -48,7 +48,8 @@
       "the-unarchiver" # Unpacks archive files
       "1password" # Best password manager imo
       "1password-cli" # 1Password manager CLI
-      "jordanbaird-ice" # macOS status bar icon organizer
+      # "jordanbaird-ice" # macOS status bar icon organizer
+      "jordanbaird-ice@beta" # switching to beta to fix https://github.com/jordanbaird/Ice/issues/709
       "google-drive" # Google cloud storage
       "beeper" # Universal chat app powered by Matrix
       "github" # Desktop client for GitHub repositories
@@ -64,9 +65,9 @@
       "freelens" # user-friendly Kubernetes UI focused on extensibility
       "thunderbird" # Mail client
       "ghostty" # Ghostty is a fast, feature-rich, and cross-platform terminal emulator
-      "netbird-ui"
-      "kopiaui"
-      "zen"
+      "netbird-ui" # Zero trust vpn client
+      "kopiaui" # Backup/restore tool
+      "zen" # Gecko based web browser
     ];
     masApps = {
       "1Password for Safari" = 1569813296;
