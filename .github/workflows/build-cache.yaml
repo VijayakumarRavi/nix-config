@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   # daily at 12:03 India Standard Time
   schedule:
-    - cron: 33 18 * * *
+    - cron: 33 18 * * 1
 # Workflow permissions
 permissions:
   contents: write
@@ -91,10 +91,12 @@ jobs:
             platform: x86_64-linux
           - host: usopp
             platform: x86_64-linux
-          - host: nixiso
-            platform: x86_64-linux
           - host: nami
             platform: aarch64-linux
+          - host: robin
+            platform: aarch64-linux
+          - host: nixiso
+            platform: x86_64-linux
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -131,8 +133,7 @@ jobs:
         with:
           name: flake.lock
       - name: Build & upload cache
-        run: nix build .#nixosConfigurations.${{matrix.machine.host}}.config.system.build.toplevel
-          --system ${{matrix.machine.platform}}
+        run: nix build .#nixosConfigurations.${{matrix.machine.host}}.config.system.build.toplevel --system ${{matrix.machine.platform}}
   NixISO:
     name: Buildig & Release 👷‍♂️ New NixOS ISO 📀
     needs: Linux
