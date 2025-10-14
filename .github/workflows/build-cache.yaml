@@ -129,7 +129,7 @@ jobs:
           name: vijay
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - name: Download flake.lock
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: flake.lock
       - name: Build & upload cache
@@ -171,7 +171,7 @@ jobs:
         id: nix-cache
         uses: DeterminateSystems/flakehub-cache-action@v2
       - name: Download flake.lock
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: flake.lock
       - name: Build NixOS ISO
