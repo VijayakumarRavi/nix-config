@@ -89,13 +89,7 @@ jobs:
         machine:
           - host: zoro
             platform: x86_64-linux
-          - host: usopp
-            platform: x86_64-linux
-          - host: nami
-            platform: aarch64-linux
           - host: robin
-            platform: aarch64-linux
-          - host: nixiso
             platform: x86_64-linux
     steps:
       - name: Checkout repository
@@ -134,59 +128,60 @@ jobs:
           name: flake.lock
       - name: Build & upload cache
         run: nix build .#nixosConfigurations.${{matrix.machine.host}}.config.system.build.toplevel --system ${{matrix.machine.platform}}
-  NixISO:
-    name: Buildig & Release 👷‍♂️ New NixOS ISO 📀
-    needs: Linux
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        machine:
-          - host: kakashi
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - name: Setup Nix
-        uses: DeterminateSystems/nix-installer-action@v20
-        with:
-          # We set our custom GitHub token for any private flake inputs we might have
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          # We add all the config for extra platforms, other binary caches and to raise the number of connections that can be made
-          extra-conf: |
-            fallback = true
-            sandbox = false
-            http-connections = 128
-            max-substitution-jobs = 128
-            accept-flake-config = true
-            extra-platforms = aarch64-linux
-            substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
-      - name: Get current date
-        id: date
-        run: echo "date=$(TZ="Asia/Kolkata" date +'%d-%m-%Y')" >> "$GITHUB_OUTPUT"
-      - name: Enable Github Cache for Nix store
-        id: nix-cache
-        uses: DeterminateSystems/flakehub-cache-action@v2
-      - name: Download flake.lock
-        uses: actions/download-artifact@v5
-        with:
-          name: flake.lock
-      - name: Build NixOS ISO
-        run: nix build .#nixosConfigurations.nixiso.config.system.build.isoImage
-      - name: Upload ISO to GitHub artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: nixos-iso
-          path: ./result/iso/*.iso
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          name: Nixos Daily Build ${{ steps.date.outputs.date }}
-          tag_name: ${{ steps.date.outputs.date }}
-          make_latest: true
-          generate_release_notes: true
-          files: |-
-            ./result/iso/*.iso
+#   NixISO:
+#     name: Buildig & Release 👷‍♂️ New NixOS ISO 📀
+#     needs: Linux
+#     runs-on: ubuntu-latest
+#     timeout-minutes: 30
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         machine:
+#           - host: kakashi
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v5
+#         with:
+#           fetch-depth: 0
+#       - name: Setup Nix
+#         uses: DeterminateSystems/nix-installer-action@v20
+#         with:
+#           # We set our custom GitHub token for any private flake inputs we might have
+#           github-token: ${{ secrets.GITHUB_TOKEN }}
+#           # We add all the config for extra platforms, other binary caches and to raise the number of connections that can be made
+#           extra-conf: |
+#             fallback = true
+#             sandbox = false
+#             http-connections = 128
+#             max-substitution-jobs = 128
+#             accept-flake-config = true
+#             extra-platforms = aarch64-linux
+#             substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
+#             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
+#       - name: Get current date
+#         id: date
+#         run: echo "date=$(TZ="Asia/Kolkata" date +'%d-%m-%Y')" >> "$GITHUB_OUTPUT"
+#       - name: Enable Github Cache for Nix store
+#         id: nix-cache
+#         uses: DeterminateSystems/flakehub-cache-action@v2
+#       - name: Download flake.lock
+#         uses: actions/download-artifact@v5
+#         with:
+#           name: flake.lock
+#       - name: Build NixOS ISO
+#         run: nix build .#nixosConfigurations.nixiso.config.system.build.isoImage
+#       - name: Upload ISO to GitHub artifacts
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: nixos-iso
+#           path: ./result/iso/*.iso
+#       - name: Create GitHub Release
+#         uses: softprops/action-gh-release@v2
+#         with:
+#           name: Nixos Daily Build ${{ steps.date.outputs.date }}
+#           tag_name: ${{ steps.date.outputs.date }}
+#           make_latest: true
+#           generate_release_notes: true
+#           files: |-
+#             ./result/iso/*.iso
+#

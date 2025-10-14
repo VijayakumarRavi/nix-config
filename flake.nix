@@ -108,7 +108,6 @@
         src = ./.;
         hooks = {
           alejandra.enable = true;
-          actionlint.enable = true;
           shellcheck.enable = true;
           flake-checker.enable = true;
           check-symlinks.enable = true;
@@ -187,11 +186,11 @@
     # NixOS system configurations
     nixosConfigurations = {
       zoro = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "zoro";
-      usopp = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "usopp";
-      chopper = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "chopper";
+      #usopp = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "usopp";
+      #chopper = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "chopper";
       robin = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "robin";
-      nixiso = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "nixiso";
-      nami = mkSystem nixpkgs.lib.nixosSystem "aarch64-linux" "nami";
+      #nixiso = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "nixiso";
+      #nami = mkSystem nixpkgs.lib.nixosSystem "aarch64-linux" "nami";
     };
 
     # MacOS configurations
