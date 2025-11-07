@@ -7,6 +7,7 @@ keys:
   - &host_zoro age1mp9z7cghnua972jzjvrjl7v5nafplwytwceaf35ma8ae9j23kues7xqzr4
   - &host_nami age1sngmeyjqugqxp58eveqsyx5afay58affgexhgamvf2jx8g03h48q3qulhx
   - &host_chopper age1eszjmjjsmn9npdlv23dvv9y9qy769qnut7xp663yflu9qmsgc9lsvnuvrm
+  - &host_franky age1a3lp6tzzzztevneuc52yll8zdyxe0qvpj74qcx30hplt7xug69zsz8q2v8
 creation_rules:
   - path_regex: secrets.yaml$
     key_groups:
@@ -17,3 +18,4 @@ creation_rules:
           - *host_zoro
           - *host_nami
           - *host_chopper
+          - *host_franky

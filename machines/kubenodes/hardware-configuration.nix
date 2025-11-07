@@ -50,8 +50,8 @@
       # Hardware transcoding.
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
       libvdpau-va-gl
-      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but can work better for some applications)
-      vaapiVdpau
+      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but can work better for some applications)
+      libva-vdpau-driver
       libva-utils
       # HDR tone mapping.
       intel-compute-runtime
@@ -61,8 +61,8 @@
       # Hardware transcoding.
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
       libvdpau-va-gl
-      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but can work better for some applications)
-      vaapiVdpau
+      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but can work better for some applications)
+      libva-vdpau-driver
       libva-utils
       # HDR tone mapping.
       intel-compute-runtime

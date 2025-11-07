@@ -119,6 +119,7 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.groups.${variables.username} = {};
   users.users.${variables.username} = {
     isNormalUser = true;
     description = variables.user;

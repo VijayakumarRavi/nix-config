@@ -44,8 +44,12 @@
 
   # BUG: if you remove these two lines you won't be able to access any nix programs
   programs.zsh.enable = true;
-  users.users.${variables.username}.shell = pkgs.zsh;
-
+  users.groups.${variables.username} = {};
+  users.users.${variables.username} = {
+    group = "${variables.username}";
+    isNormalUser = true;
+    shell = pkgs.zsh;
+  };
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 

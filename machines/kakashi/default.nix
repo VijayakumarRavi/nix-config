@@ -62,9 +62,11 @@
       "Tailscale"
     ];
   };
-
+  users.groups.${variables.username} = {};
   users.users.${variables.username} = {
     home = /Users/${variables.username};
+    isNormalUser = true;
+    group = "${variables.username}";
   };
 
   fonts.packages = with pkgs; [

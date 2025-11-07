@@ -106,7 +106,6 @@
 
   # user account.
   users.users.${variables.username} = {
-    isNormalUser = true;
     extraGroups = [
       "users"
       "docker"
@@ -132,10 +131,15 @@
     enable = true;
     ports = [69];
     settings = {
+      challengeResponseAuthentication = false;
       PasswordAuthentication = false;
       AllowUsers = ["${variables.username}"];
       PermitRootLogin = "no";
     };
+    extraConfig = ''
+      ClientAliveInterval 300
+      ClientAliveCountMax 2
+    '';
   };
   systemd.services.sshd.wantedBy = pkgs.lib.mkForce ["multi-user.target"];
 
