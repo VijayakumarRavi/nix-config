@@ -51,7 +51,7 @@ jobs:
       - name: Update flake.lock
         run: nix flake update
       - name: upload flake.lock
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: flake.lock
           path: flake.lock
@@ -171,7 +171,7 @@ jobs:
 #       - name: Build NixOS ISO
 #         run: nix build .#nixosConfigurations.nixiso.config.system.build.isoImage
 #       - name: Upload ISO to GitHub artifacts
-#         uses: actions/upload-artifact@v4
+#         uses: actions/upload-artifact@v5
 #         with:
 #           name: nixos-iso
 #           path: ./result/iso/*.iso
