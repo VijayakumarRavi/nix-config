@@ -27,7 +27,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup Nix
-        uses: DeterminateSystems/nix-installer-action@v20
+        uses: DeterminateSystems/nix-installer-action@v21
         with:
           planner: macos
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -100,7 +100,7 @@ jobs:
         if: matrix.machine.platform == 'aarch64-linux'
         uses: docker/setup-qemu-action@v3
       - name: Setup Nix
-        uses: DeterminateSystems/nix-installer-action@v20
+        uses: DeterminateSystems/nix-installer-action@v21
         with:
           # We set our custom GitHub token for any private flake inputs we might have
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -144,7 +144,7 @@ jobs:
 #         with:
 #           fetch-depth: 0
 #       - name: Setup Nix
-#         uses: DeterminateSystems/nix-installer-action@v20
+#         uses: DeterminateSystems/nix-installer-action@v21
 #         with:
 #           # We set our custom GitHub token for any private flake inputs we might have
 #           github-token: ${{ secrets.GITHUB_TOKEN }}
