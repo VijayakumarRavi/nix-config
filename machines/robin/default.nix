@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  inputs,
   hostname,
   variables,
   modulesPath,
@@ -16,6 +17,12 @@
     ./docker.nix
     # Declarative disk partitioning config
     ./disk-config.nix
+
+    # Proxmox Backup Server backup configuration
+    ./pbs-backup.nix
+
+    # Sops module
+    inputs.sops-nix.nixosModules.sops
   ];
 
   boot = {
@@ -58,6 +65,22 @@
   # Nix bin settings
   nixpkgs.hostPlatform = "x86_64-linux";
   nix.settings.auto-optimise-store = true;
+
+  sops = {
+    defaultSopsFile = ../../secrets.yaml;
+    validateSopsFiles = false;
+
+    age = {
+      sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+      keyFile = "/var/lib/sops-nix/key.txt";
+      generateKey = true;
+    };
+
+    secrets = {
+      pbs-encryption = {};
+      pbs-creds = {};
+    };
+  };
 
   # Console font size
   console = {

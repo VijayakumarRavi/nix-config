@@ -14,6 +14,7 @@
     package = pkgs.nix;
     optimise.automatic = true;
     settings = {
+      download-buffer-size = 524288000; # 500 MiB
       allowed-users = ["${variables.username}"];
       trusted-users = ["root" "${variables.username}"];
       experimental-features =
@@ -89,6 +90,7 @@
       # tailscale
       neovim
       #inputs.nvim.packages.${pkgs.system}.default # custom neovim config
+      proxmox-backup-client
 
       # Ansible
       age # age is a simple, modern and secure file encryption tool.
