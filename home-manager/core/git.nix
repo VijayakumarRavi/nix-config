@@ -17,6 +17,7 @@
     signing = {
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8O84V4KrHZGAtdgY9vTYOGdH/BPcI846sM+MbCYuLX";
       signByDefault = true;
+      format = "ssh";
     };
     settings = {
       user.name = "${variables.user}";

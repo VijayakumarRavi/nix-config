@@ -1,8 +1,8 @@
 _: {
   virtualisation.oci-containers.backend = "docker";
 
-  networking.firewall.allowedTCPPorts = [25 80 110 143 443 465 587 993 995 4190 24957 5001 10000 10001 50180 8090 8091 8092 8093 8100];
-  networking.firewall.allowedUDPPorts = [25 80 110 143 443 465 587 993 995 4190 24957 5001 10000 10001 50180 8090 8091 8092 8093 8100];
+  networking.firewall.allowedTCPPorts = [25 80 110 143 443 465 587 993 995 4190 24957];
+  networking.firewall.allowedUDPPorts = [25 80 110 143 443 465 587 993 995 4190 24957];
 
   virtualisation.docker = {
     enable = true;
