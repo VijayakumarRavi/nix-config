@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Nix
-        uses: DeterminateSystems/nix-installer-action@v20
+        uses: DeterminateSystems/nix-installer-action@v21
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           extra-conf: |
@@ -80,7 +80,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Nix
-        uses: DeterminateSystems/nix-installer-action@v20
+        uses: DeterminateSystems/nix-installer-action@v21
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           extra-conf: |
@@ -132,7 +132,7 @@ jobs:
         uses: docker/setup-qemu-action@v3
 
       - name: Setup Nix
-        uses: DeterminateSystems/nix-installer-action@v20
+        uses: DeterminateSystems/nix-installer-action@v21
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           extra-conf: |
