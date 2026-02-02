@@ -46,11 +46,8 @@
   # BUG: if you remove these two lines you won't be able to access any nix programs
   programs.zsh.enable = true;
   users.groups.${variables.username} = {};
-  users.users.${variables.username} = {
-    group = "${variables.username}";
-    isNormalUser = true;
-    shell = pkgs.zsh;
-  };
+  users.users.${variables.username}.shell = pkgs.zsh;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -89,8 +86,7 @@
       pkg-config # Manage compile and link flags for libraries
       # tailscale
       neovim
-      #inputs.nvim.packages.${pkgs.system}.default # custom neovim config
-      proxmox-backup-client
+      #inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.default # custom neovim config
 
       # Ansible
       age # age is a simple, modern and secure file encryption tool.
@@ -127,7 +123,7 @@
       kubeconform # Kubernetes manifests validator
       lazydocker # A simple terminal UI for both docker and docker-compose
       kubernetes-helm # A package manager for kubernetes
-      inputs.talhelper.packages.${pkgs.system}.default # A tool to help creating Talos kubernetes cluster
+      inputs.talhelper.packages.${pkgs.stdenv.hostPlatform.system}.default # A tool to help creating Talos kubernetes cluster
     ];
   };
 }

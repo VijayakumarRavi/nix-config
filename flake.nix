@@ -186,12 +186,12 @@
     # NixOS system configurations
     nixosConfigurations = {
       zoro = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "zoro";
-      #usopp = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "usopp";
-      #chopper = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "chopper";
-      robin = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "robin";
-      franky = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "franky";
-      #nixiso = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "nixiso";
-      #nami = mkSystem nixpkgs.lib.nixosSystem "aarch64-linux" "nami";
+      # usopp = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "usopp";
+      # chopper = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "chopper";
+      # robin = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "robin";
+      # franky = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "franky";
+      # nixiso = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "nixiso";
+      # nami = mkSystem nixpkgs.lib.nixosSystem "aarch64-linux" "nami";
     };
 
     # MacOS configurations

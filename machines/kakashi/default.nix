@@ -26,6 +26,7 @@
   };
 
   ids.gids.nixbld = 350;
+  users.users.${variables.username}.home = /Users/${variables.username};
 
   environment = {
     pathsToLink = ["/Applications"];
@@ -61,12 +62,6 @@
       "Thunderbolt Bridge"
       "Tailscale"
     ];
-  };
-  users.groups.${variables.username} = {};
-  users.users.${variables.username} = {
-    home = /Users/${variables.username};
-    isNormalUser = true;
-    group = "${variables.username}";
   };
 
   fonts.packages = with pkgs; [
@@ -158,7 +153,6 @@
 
         # persistent apps in dock
         persistent-apps = [
-          "/System/Applications/Launchpad.app/"
           "/Applications/Zen.app/"
           "/System/Cryptexes/App/System/Applications/Safari.app/"
           "/System/Applications/Messages.app/"
