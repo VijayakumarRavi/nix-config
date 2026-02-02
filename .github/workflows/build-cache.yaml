@@ -1,5 +1,5 @@
-# yamllint disable rule:line-length rule:document-start rule:truthy
-name: 🏗️ Nix, NixOS and MacOS config Build, release and upload cache
+# yamllint disable rule:line-length
+name: 🏗️ Nix Build & Cache
 on:
   workflow_dispatch:
   schedule:
@@ -10,15 +10,11 @@ permissions:
   id-token: write
 
 jobs:
-  Macos:
-    name: Build 👷‍♂️ & Upload Cache 📀 For Macos Machines
-    runs-on: macos-latest
-    timeout-minutes: 45
-    strategy:
-      fail-fast: false
-      matrix:
-        machine:
-          - host: kakashi
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      linux_matrix: ${{ steps.set-matrix.outputs.linux }}
+      macos_matrix: ${{ steps.set-matrix.outputs.macos }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -28,7 +24,6 @@ jobs:
       - name: Setup Nix
         uses: DeterminateSystems/nix-installer-action@v20
         with:
-          planner: macos
           github-token: ${{ secrets.GITHUB_TOKEN }}
           extra-conf: |
             fallback = true
@@ -39,72 +34,51 @@ jobs:
             extra-platforms = aarch64-linux
             substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
-      - name: Enable Github Cache for Nix store
-        id: nix-cache
-        uses: DeterminateSystems/flakehub-cache-action@v2
-
-      - name: Enable Cachix binary cache
-        uses: cachix/cachix-action@v16
-        with:
-          name: vijay
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Update flake.lock
         run: nix flake update
 
-      - name: upload flake.lock
+      - name: Upload flake.lock
         uses: actions/upload-artifact@v4
         with:
           name: flake-lock
           path: flake.lock
           overwrite: true
 
-      - name: Build & upload cache
+      - name: Generate Job Matrix
+        id: set-matrix
         run: |
-          nix build .#darwinConfigurations.${{matrix.machine.host}}.config.system.build.toplevel
-          nix develop .# --profile dev-profile --command true
+          MATRIX_JSON=$(nix eval --json --impure --expr '
+          let
+            flake = builtins.getFlake (toString ./.);
+            mkList = attrs: builtins.map (name: {
+              host = name;
+              platform = attrs.${name}.config.nixpkgs.system;
+            }) (builtins.attrNames attrs);
+          in
+          {
+            linux = mkList (flake.nixosConfigurations or {});
+            macos = mkList (flake.darwinConfigurations or {});
+          }
+          ')
+          echo "linux=$(echo $MATRIX_JSON | jq -c '.linux')" >> "$GITHUB_OUTPUT"
+          echo "macos=$(echo $MATRIX_JSON | jq -c '.macos')" >> "$GITHUB_OUTPUT"
 
-      - name: Import GPG key
-        id: import-gpg
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
-
-      - name: commit and push flake.lock
-        uses: stefanzweifel/git-auto-commit-action@v6
-        with:
-          commit_message: ':robot_face: github bot: bump flake.lock'
-          commit_options: -S --no-verify --signoff
-          commit_author: ${{ steps.import-gpg.outputs.name }} <${{ steps.import-gpg.outputs.email }}>
-          commit_user_name: ${{ steps.import-gpg.outputs.name }}
-          commit_user_email: ${{ steps.import-gpg.outputs.email }}
-          branch: master
-          file_pattern: flake.lock
-          skip_dirty_check: false
-          skip_fetch: true
-  Linux:
-    name: Build 👷‍♂️ & Upload Cache 📀 For Linux Machines
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    needs: Macos
+  macos-build:
+    needs: setup
+    if: ${{ fromJson(needs.setup.outputs.macos_matrix)[0] != null }}
+    runs-on: macos-latest
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
-        machine:
-          - host: zoro
-            platform: x86_64-linux
-
+        include: ${{ fromJson(needs.setup.outputs.macos_matrix) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - name: Setup QEMU for ARM builds
-        if: matrix.machine.platform == 'aarch64-linux'
-        uses: docker/setup-qemu-action@v3
+
       - name: Setup Nix
         uses: DeterminateSystems/nix-installer-action@v20
         with:
@@ -118,9 +92,7 @@ jobs:
             extra-platforms = aarch64-linux
             substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
-      - name: Enable Github Cache for Nix store
-        id: nix-cache
-        uses: DeterminateSystems/flakehub-cache-action@v2
+
       - name: Enable Cachix binary cache
         uses: cachix/cachix-action@v16
         with:
@@ -135,64 +107,89 @@ jobs:
           merge-multiple: true
 
       - name: Build System
-        run: |
-          nix build .#nixosConfigurations.${{matrix.machine.host}}.config.system.build.toplevel --system ${{matrix.machine.platform}}
-          nix develop .# --profile dev-profile --command true
+        run: nix build .#darwinConfigurations.${{ matrix.host }}.config.system.build.toplevel
 
-#   NixISO:
-#     name: Buildig & Release 👷‍♂️ New NixOS ISO 📀
-#     needs: Linux
-#     runs-on: ubuntu-latest
-#     timeout-minutes: 30
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         machine:
-#           - host: kakashi
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v5
-#         with:
-#           fetch-depth: 0
-#       - name: Setup Nix
-#         uses: DeterminateSystems/nix-installer-action@v20
-#         with:
-#           # We set our custom GitHub token for any private flake inputs we might have
-#           github-token: ${{ secrets.GITHUB_TOKEN }}
-#           # We add all the config for extra platforms, other binary caches and to raise the number of connections that can be made
-#           extra-conf: |
-#             fallback = true
-#             sandbox = false
-#             http-connections = 128
-#             max-substitution-jobs = 128
-#             accept-flake-config = true
-#             extra-platforms = aarch64-linux
-#             substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
-#             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
-#       - name: Get current date
-#         id: date
-#         run: echo "date=$(TZ="Asia/Kolkata" date +'%d-%m-%Y')" >> "$GITHUB_OUTPUT"
-#       - name: Enable Github Cache for Nix store
-#         id: nix-cache
-#         uses: DeterminateSystems/flakehub-cache-action@v2
-#       - name: Download flake.lock
-#         uses: actions/download-artifact@v5
-#         with:
-#           name: flake.lock
-#       - name: Build NixOS ISO
-#         run: nix build .#nixosConfigurations.nixiso.config.system.build.isoImage
-#       - name: Upload ISO to GitHub artifacts
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: nixos-iso
-#           path: ./result/iso/*.iso
-#       - name: Create GitHub Release
-#         uses: softprops/action-gh-release@v2
-#         with:
-#           name: Nixos Daily Build ${{ steps.date.outputs.date }}
-#           tag_name: ${{ steps.date.outputs.date }}
-#           make_latest: true
-#           generate_release_notes: true
-#           files: |-
-#             ./result/iso/*.iso
-#
+      - name: Build DevShell
+        run: nix develop .# --profile dev-profile --command true
+
+  linux-build:
+    needs: setup
+    if: ${{ fromJson(needs.setup.outputs.linux_matrix)[0] != null }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.setup.outputs.linux_matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup QEMU for ARM builds
+        if: matrix.machine.platform == 'aarch64-linux'
+        uses: docker/setup-qemu-action@v3
+
+      - name: Setup Nix
+        uses: DeterminateSystems/nix-installer-action@v20
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          extra-conf: |
+            fallback = true
+            sandbox = false
+            http-connections = 128
+            max-substitution-jobs = 128
+            accept-flake-config = true
+            extra-platforms = aarch64-linux
+            substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
+
+      - name: Enable Cachix binary cache
+        uses: cachix/cachix-action@v16
+        with:
+          name: vijay
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Download flake.lock
+        uses: actions/download-artifact@v5
+        with:
+          name: flake-lock
+          path: .
+          merge-multiple: true
+
+      - name: Build System
+        run: nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel --system ${{ matrix.platform }}
+
+      - name: Build DevShell
+        run: nix develop .# --profile dev-profile --command true --system ${{ matrix.platform }}
+
+  commit-lock:
+    needs: [macos-build, linux-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref }}
+
+      - uses: actions/download-artifact@v5
+        with:
+          name: flake-lock
+          path: .
+          merge-multiple: true
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: Push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: update flake.lock'
+          commit_options: -S --no-verify --signoff
+          branch: master
+          file_pattern: flake.lock
