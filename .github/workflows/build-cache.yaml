@@ -100,7 +100,7 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Download flake.lock
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: flake-lock
           path: .
@@ -152,7 +152,7 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Download flake.lock
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: flake-lock
           path: .
@@ -172,7 +172,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: flake-lock
           path: .
