@@ -91,7 +91,7 @@
       username = "vijay";
       user = "Vijayakumar Ravi";
       useremail = "im@vijayakumar.xyz";
-      stateVersion = "25.05";
+      stateVersion = "26.05";
       stateVersionDarwin = 5;
       zoro_ip = "10.0.1.101";
       usopp_ip = "10.0.1.102";

@@ -205,7 +205,7 @@
     # that we can hopefully still access it remotely.
     enableEmergencyMode = false;
 
-    sleep.extraConfig = ''
+    sleep.settings.Sleep = ''
       AllowSuspend=no
       AllowHibernation=no
     '';

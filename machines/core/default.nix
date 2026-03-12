@@ -108,7 +108,7 @@
       python3 # Python lang
       unixtools.watch # Watch command line tool
       pre-commit # Tool to manage pre-commit hooks
-      python311Packages.pip # install python dependencies
+      python3Packages.pip # install python dependencies
 
       # Containers
       kind # local clusters for testing Kubernetes
