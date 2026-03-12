@@ -68,6 +68,7 @@
       "netbird-ui" # Zero trust vpn client
       "kopiaui" # Backup/restore tool
       "zen" # Gecko based web browser
+      "ente" # Desktop client for Ente Photos
     ];
     masApps = {
       "1Password for Safari" = 1569813296;
