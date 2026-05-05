@@ -79,7 +79,7 @@
       }
       else {enable = false;};
     # Default nameserver to dnsproxy
-    nameservers = ["10.0.0.10"];
+    nameservers = ["1.1.1.1"];
     dhcpcd.extraConfig = "nohook resolv.conf";
     # Default gateway
     defaultGateway = {
@@ -205,44 +205,12 @@
     # that we can hopefully still access it remotely.
     enableEmergencyMode = false;
 
-    sleep.settings.Sleep = ''
-      AllowSuspend=no
-      AllowHibernation=no
-    '';
+    sleep.settings.Sleep = {
+      AllowSuspend = "no";
+      AllowHibernation = "no";
+      HibernateDelaySec = "1h";
+    };
 
     services.sshd.wantedBy = pkgs.lib.mkForce ["multi-user.target"];
-
-    services.dnsproxy = {
-      description = "Simple DNS proxy with DoH, DoT, DoQ and DNSCrypt support";
-      after = ["network.target" "nss-lookup.target"];
-      wantedBy = ["multi-user.target"];
-      serviceConfig = {
-        ExecStart =
-          "${pkgs.dnsproxy}/bin/dnsproxy"
-          + " --config-path=${config.sops.secrets."dnsproxy.yaml".path}";
-        ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
-        Restart = "always";
-        RestartSec = 10;
-      };
-    };
-    services.keepalived = {
-      description = "Keepalive Daemon For Dns Proxy";
-      after = ["network.target" "network-online.target" "dnsproxy.service"];
-      wants = ["network-online.target"];
-      wantedBy = ["multi-user.target"];
-      serviceConfig = {
-        Type = "forking";
-        PIDFile = "/run/keepalived.pid";
-        KillMode = "process";
-        RuntimeDirectory = "keepalived";
-        ExecStart =
-          "${pkgs.keepalived}/bin/keepalived"
-          + " -f ${config.sops.secrets."keepalived_${hostname}.conf".path}"
-          + " -p /run/keepalived.pid";
-        ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
-        Restart = "always";
-        RestartSec = "1s";
-      };
-    };
   };
 }

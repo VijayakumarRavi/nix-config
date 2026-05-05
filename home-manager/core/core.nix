@@ -90,49 +90,9 @@ in {
         setEnv = {TERM = "xterm-256color";};
       };
       extraConfig = ''
-        Host sanji
-            HostName sanji
-            User ${variables.username}
-            Port 22
-            RequestTTY yes
-            RemoteCommand tmux -u new-session -A -s ssh_mux
-        Host nami
-            HostName nami
-            User ${variables.username}
-            Port 22
-            RequestTTY yes
-            RemoteCommand tmux -u new-session -A -s ssh_mux
-        Host zoro
-            HostName zoro
-            User ${variables.username}
-            Port 22
-            RequestTTY yes
-            RemoteCommand tmux -u new-session -A -s ssh_mux
-        Host usopp
-            HostName usopp
-            User ${variables.username}
-            Port 22
-            RequestTTY yes
-            RemoteCommand tmux -u new-session -A -s ssh_mux
-        Host chopper
-            HostName chopper
-            User ${variables.username}
-            Port 22
-            RequestTTY yes
-            RemoteCommand tmux -u new-session -A -s ssh_mux
-        Host robin
-            HostName robin
-            User ${variables.username}
-            Port 69
-            RequestTTY yes
-            RemoteCommand tmux -u new-session -A -s ssh_mux
-        Host robin-build
-            HostName robin
-            User ${variables.username}
-            Port 69
         Host docker
             HostName 10.0.2.2
-            User root
+            User ${variables.username}
             Port 22
             RequestTTY yes
             RemoteCommand tmux -u new-session -A -s ssh_mux
