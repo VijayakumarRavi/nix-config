@@ -129,7 +129,7 @@ jobs:
 
       - name: Setup QEMU for ARM builds
         if: matrix.machine.platform == 'aarch64-linux'
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
 
       - name: Setup Nix
         uses: DeterminateSystems/nix-installer-action@v21
