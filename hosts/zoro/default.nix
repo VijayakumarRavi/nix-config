@@ -5,7 +5,9 @@
   ...
 }: {
   imports = [
-    ../kubenodes
+    ../../modules/nixos/k3s-node.nix
+    ./hardware-configuration.nix
+    ./disk-config.nix
   ];
   networking.interfaces = {
     eth0 = {

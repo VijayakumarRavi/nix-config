@@ -75,7 +75,7 @@ in {
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks."*" = {
+      settings."*" = {
         forwardAgent = false;
         addKeysToAgent = "no";
         compression = false;
@@ -87,7 +87,7 @@ in {
         controlPath = "~/.ssh/master-%r@%n:%p";
         controlPersist = "no";
         identityAgent = "~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock";
-        setEnv = {TERM = "xterm-256color";};
+        setEnv = "TERM=xterm-256color";
       };
       extraConfig = ''
         Host docker

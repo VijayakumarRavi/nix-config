@@ -9,3 +9,4 @@ lazy-lock.json
 *.iso
 *.zst
 host_keys
+.ignore

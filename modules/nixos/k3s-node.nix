@@ -6,14 +6,8 @@
   ...
 }: {
   imports = [
-    ../core
-    ../core/linux.nix
-
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-
-    # Declarative disk partitioning config
-    ./disk-config.nix
+    ../common
+    ./default.nix
   ];
 
   # Bootloader

@@ -1,6 +1,6 @@
 {lib, ...}: {
   imports = [
-    ../core
+    ../common
   ];
   # file.".kube/config".source = /etc/rancher/k3s/k3s.yaml;
   home.activation = {

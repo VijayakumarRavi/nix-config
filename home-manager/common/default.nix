@@ -5,14 +5,14 @@
   ...
 }: {
   imports = [
-    ./yazi.nix
     ./core.nix
-    ./htop.nix
-    ./zsh.nix
-    ./git.nix
-    ./k9s.nix
-    ./tmux.nix
-    ./starship.nix
+    ./programs/yazi.nix
+    ./programs/htop.nix
+    ./programs/git.nix
+    ./programs/k9s.nix
+    ./programs/tmux.nix
+    ./shell/zsh.nix
+    ./shell/starship.nix
   ];
 
   systemd.user.startServices = "sd-switch";

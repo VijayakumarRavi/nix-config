@@ -18,7 +18,6 @@
       "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
       "homebrew/homebrew-services" = inputs.homebrew-services;
       "VijayakumarRavi/packages" = inputs.homebrew-vijay;
-      "netbirdio/tap" = inputs.homebrew-netbird;
     };
   };
 
@@ -53,7 +52,6 @@
       "google-drive" # Google cloud storage
       "beeper" # Universal chat app powered by Matrix
       "github" # Desktop client for GitHub repositories
-      "balenaetcher" # Tool to flash OS images to SD cards & USB drives
       "raspberry-pi-imager" # Raspberry Pi Imager to flash sd cards
       "background-music" # macOS audio utility to record system audio
       "stats" # System monitor for the menu bar
@@ -62,13 +60,11 @@
       "visual-studio-code" # Visual Studio Code editor
       "amazon-workspaces" # amazon-workspaces for FPL
       "rave" # App for watching videos and listening to music with friends in real-time
-      "freelens" # user-friendly Kubernetes UI focused on extensibility
-      "thunderbird" # Mail client
       "ghostty" # Ghostty is a fast, feature-rich, and cross-platform terminal emulator
-      "netbird-ui" # Zero trust vpn client
-      "kopiaui" # Backup/restore tool
       "zen" # Gecko based web browser
       "ente" # Desktop client for Ente Photos
+      "antigravity" # Google Antigravity AI
+      "antigravity-cli" # Google Antigravity AI CLI
     ];
     masApps = {
       "1Password for Safari" = 1569813296;

@@ -43,8 +43,6 @@
       tailscale_authkey = {};
       github_oauth_token = {};
       zoro_hc_url = {};
-      usopp_hc_url = {};
-      chopper_hc_url = {};
       "dnsproxy.yaml" = {
         restartUnits = ["dnsproxy.service"];
       };
@@ -93,8 +91,6 @@
     127.0.0.1 localhost
     ::1 localhost
     ${variables.zoro_ip} zoro
-    ${variables.usopp_ip} usopp
-    ${variables.chopper_ip} chopper
   '';
 
   console = {

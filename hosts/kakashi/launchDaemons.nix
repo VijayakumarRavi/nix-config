@@ -1,7 +1,6 @@
 {
-  variables,
-  config,
   pkgs,
+  variables,
   ...
 }: {
   launchd.agents.dnsproxy.serviceConfig = {

@@ -46,10 +46,6 @@
     nvim.inputs.nixpkgs.follows = "nixpkgs";
     nvim.inputs.pre-commit-hooks.follows = "pre-commit-hooks";
 
-    # Raspberry Pi support
-    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
-    # raspberry-pi-nix.inputs.nixpkgs.follows = "nixpkgs";
-
     # Secrets management with sops
     sops-nix.url = "github:mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -68,7 +64,6 @@
     homebrew-cask.url = "github:homebrew/homebrew-cask";
     homebrew-services.url = "github:homebrew/homebrew-services";
     homebrew-vijay.url = "github:VijayakumarRavi/packages";
-    homebrew-netbird.url = "github:netbirdio/homebrew-tap";
 
     # Disable flakes for some Homebrew inputs
     # nix-homebrew.inputs.nixpkgs.follows = "nixpkgs";
@@ -77,7 +72,6 @@
     homebrew-cask.flake = false;
     homebrew-services.flake = false;
     homebrew-vijay.flake = false;
-    homebrew-netbird.flake = false;
   };
 
   outputs = inputs @ {
@@ -94,8 +88,6 @@
       stateVersion = "26.05";
       stateVersionDarwin = 5;
       zoro_ip = "10.0.1.101";
-      usopp_ip = "10.0.1.102";
-      chopper_ip = "10.0.1.103";
     };
 
     # Supported systems for NixOS and MacOS
@@ -154,7 +146,7 @@
         # Pass all relevant inputs and variables to imported files
         specialArgs = {inherit inputs variables hostname system;};
         modules = [
-          ./machines/${hostname}
+          ./hosts/${hostname}
           (
             if system == "aarch64-darwin"
             then home-manager.darwinModules.home-manager
@@ -166,7 +158,7 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               extraSpecialArgs = {inherit inputs variables system;};
-              users.${variables.username}.imports = [./home-manager/${hostname}];
+              users.${variables.username}.imports = [./home-manager/hosts/${hostname}.nix];
             };
           }
         ];
@@ -186,12 +178,6 @@
     # NixOS system configurations
     nixosConfigurations = {
       zoro = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "zoro";
-      # usopp = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "usopp";
-      # chopper = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "chopper";
-      # robin = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "robin";
-      # franky = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "franky";
-      # nixiso = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "nixiso";
-      # nami = mkSystem nixpkgs.lib.nixosSystem "aarch64-linux" "nami";
     };
 
     # MacOS configurations
