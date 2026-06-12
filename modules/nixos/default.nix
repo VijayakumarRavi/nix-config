@@ -43,12 +43,8 @@
       tailscale_authkey = {};
       github_oauth_token = {};
       zoro_hc_url = {};
-      "dnsproxy.yaml" = {
-        restartUnits = ["dnsproxy.service"];
-      };
-      "keepalived_${hostname}.conf" = {
-        restartUnits = ["keepalived.service"];
-      };
+      robin_hc_url = {};
+
       id_ed25519 = {
         owner = config.users.users.${variables.username}.name;
         inherit (config.users.users.${variables.username}) group;
@@ -66,8 +62,6 @@
   networking = {
     # Hostname
     hostName = hostname;
-    # disable firewall
-    firewall.enable = false;
     # Enabling WIFI
     wireless =
       if hostname == "nami" && hostname == "nixiso"
@@ -166,7 +160,13 @@
 
   services = {
     # Enable the OpenSSH daemon.
-    openssh.enable = true;
+    openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        PermitRootLogin = "no";
+      };
+    };
 
     fstrim.enable = true;
 

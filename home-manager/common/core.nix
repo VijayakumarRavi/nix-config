@@ -86,7 +86,7 @@ in {
         controlMaster = "no";
         controlPath = "~/.ssh/master-%r@%n:%p";
         controlPersist = "no";
-        identityAgent = "~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock";
+        identityAgent = lib.mkIf pkgs.stdenv.isDarwin "~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock";
         setEnv = "TERM=xterm-256color";
       };
       extraConfig = ''

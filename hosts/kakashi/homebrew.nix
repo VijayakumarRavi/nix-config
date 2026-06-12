@@ -66,13 +66,13 @@
       "antigravity" # Google Antigravity AI
       "antigravity-cli" # Google Antigravity AI CLI
     ];
-    masApps = {
-      "1Password for Safari" = 1569813296;
-      "Tailscale" = 1475387142;
-      "infuse video player" = 1136220934;
-      "localsend" = 1661733229;
-      "shortery" = 1594183810;
-      "Bitwarden" = 1352778147;
-    };
+    # masApps = {
+    #   "1Password for Safari" = 1569813296;
+    #   "Tailscale" = 1475387142;
+    #   "infuse video player" = 1136220934;
+    #   "localsend" = 1661733229;
+    #   "shortery" = 1594183810;
+    #   "Bitwarden" = 1352778147;
+    # };
   };
 }

@@ -20,6 +20,9 @@
     };
   };
 
+  # Disable firewall for K3s/Talos
+  networking.firewall.enable = false;
+
   system.autoUpgrade.dates = "Fri *-*-* 04:00:00";
   programs.nh.clean.dates = "Fri *-*-* 04:00:00";
 

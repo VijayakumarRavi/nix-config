@@ -31,22 +31,22 @@ deploy machine='':
 
 # Remote deploy nami
 deploy-nami:
-    nixos-rebuild switch --fast --flake ".#nami" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.0.2" --build-host "vijay@10.0.0.2"
+    nixos-rebuild switch --no-reexec --flake ".#nami" --accept-flake-config --elevate=sudo --target-host "vijay@10.0.0.2" --build-host "vijay@10.0.0.2"
 
 # Remote deploy zoro
 deploy-zoro:
-    nixos-rebuild switch --fast --flake ".#zoro" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.1.101" --build-host "vijay@10.0.1.101"
+    nixos-rebuild switch --no-reexec --flake ".#zoro" --accept-flake-config --elevate=sudo --target-host "vijay@10.0.1.101" --build-host "vijay@10.0.1.101"
 
 # Remote deploy usopp
 deploy-usopp:
-    nixos-rebuild switch --fast --flake ".#usopp" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.1.102" --build-host "vijay@10.0.1.102"
+    nixos-rebuild switch --no-reexec --flake ".#usopp" --accept-flake-config --elevate=sudo --target-host "vijay@10.0.1.102" --build-host "vijay@10.0.1.102"
 
 # Remote deploy chopper
 deploy-chopper:
-    nixos-rebuild switch --fast --flake ".#chopper" --accept-flake-config --use-remote-sudo --target-host "vijay@10.0.1.103" --build-host "vijay@10.0.1.103"
+    nixos-rebuild switch --no-reexec --flake ".#chopper" --accept-flake-config --elevate=sudo --target-host "vijay@10.0.1.103" --build-host "vijay@10.0.1.103"
 
 deploy-robin:
-    nixos-rebuild switch --fast --flake ".#robin" --accept-flake-config --use-remote-sudo --target-host "robin-build" --build-host "robin-build"
+    nixos-rebuild switch --no-reexec --flake ".#robin" --accept-flake-config --elevate=sudo --target-host "robin-build" --build-host "robin-build"
 
 # update flake.lock
 up:

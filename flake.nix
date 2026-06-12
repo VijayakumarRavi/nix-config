@@ -50,6 +50,9 @@
     sops-nix.url = "github:mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Impermanence
+    impermanence.url = "github:nix-community/impermanence";
+
     # Firefox nightly build flake
     firefox.url = "github:nix-community/flake-firefox-nightly";
     firefox.inputs.nixpkgs.follows = "nixpkgs";
@@ -178,6 +181,7 @@
     # NixOS system configurations
     nixosConfigurations = {
       zoro = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "zoro";
+      robin = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "robin";
     };
 
     # MacOS configurations
