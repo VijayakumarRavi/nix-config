@@ -27,8 +27,10 @@
     inherit (variables) stateVersion;
   };
   home.activation.report-changes = config.lib.dag.entryAnywhere ''
-    echo "--- home manager diff to current-system"
-    ${pkgs.nvd}/bin/nvd --nix-bin-dir=${config.nix.package}/bin diff $oldGenPath $newGenPath
-    echo "---"
+    if [[ -n "''${oldGenPath:-}" ]] && [[ -e "''${oldGenPath:-}" ]]; then
+      echo "--- home manager diff to current-system"
+      ${pkgs.nvd}/bin/nvd --nix-bin-dir=${config.nix.package}/bin diff $oldGenPath $newGenPath
+      echo "---"
+    fi
   '';
 }

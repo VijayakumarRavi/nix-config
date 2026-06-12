@@ -30,7 +30,10 @@
     validateSopsFiles = false;
 
     age = {
-      sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+      sshKeyPaths = [
+        "/etc/ssh/ssh_host_ed25519_key"
+        "/persist/etc/ssh/ssh_host_ed25519_key"
+      ];
       keyFile = "/var/lib/sops-nix/key.txt";
       generateKey = true;
     };
@@ -208,5 +211,9 @@
     };
 
     services.sshd.wantedBy = pkgs.lib.mkForce ["multi-user.target"];
+
+    tmpfiles.rules = [
+      "d /home/${variables.username}/.ssh 0700 ${config.users.users.${variables.username}.name} ${config.users.users.${variables.username}.group} - -"
+    ];
   };
 }
