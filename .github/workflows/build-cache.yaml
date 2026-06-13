@@ -128,7 +128,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup QEMU for ARM builds
-        if: matrix.machine.platform == 'aarch64-linux'
+        if: matrix.platform == 'aarch64-linux'
         uses: docker/setup-qemu-action@v4
 
       - name: Setup Nix
