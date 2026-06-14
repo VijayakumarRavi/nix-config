@@ -93,11 +93,13 @@ jobs:
             substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
 
-      - name: Enable Cachix binary cache
-        uses: cachix/cachix-action@v17
+      - name: Setup Attic cache
+        uses: ryanccn/attic-action@v0.5.0
         with:
-          name: vijay
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          endpoint: https://atticfly.fly.dev/
+          cache: system
+          token: ${{ secrets.ATTIC_TOKEN }}
+          push-args: -j 2
 
       - name: Download flake.lock
         uses: actions/download-artifact@v8
@@ -145,11 +147,12 @@ jobs:
             substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
 
-      - name: Enable Cachix binary cache
-        uses: cachix/cachix-action@v17
+      - name: Setup Attic cache
+        uses: ryanccn/attic-action@v0.5.0
         with:
-          name: vijay
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          endpoint: https://atticfly.fly.dev/
+          cache: system
+          token: ${{ secrets.ATTIC_TOKEN }}
 
       - name: Download flake.lock
         uses: actions/download-artifact@v8
