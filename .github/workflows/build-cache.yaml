@@ -1,4 +1,3 @@
-# yamllint disable rule:line-length
 name: 🏗️ Nix Build & Cache
 on:
   workflow_dispatch:
@@ -192,7 +191,7 @@ jobs:
       - name: Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'chore: update flake.lock'
+          commit_message: "chore: update flake.lock"
           commit_options: -S --no-verify --signoff
           branch: master
           file_pattern: flake.lock

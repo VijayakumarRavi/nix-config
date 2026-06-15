@@ -66,7 +66,7 @@
     systemPackages = with pkgs; [
       # Linux utils
       fd # Simple, fast and user-friendly alternative to find
-      fzf #
+      fzf # fuzzy finder
       vim # a must needed text editor
       curl # A command line tool for transferring files with URL syntax
       less # A more advanced file pager than 'more'
@@ -78,12 +78,13 @@
       cowsay # ASCII cow
       rclone # Rsync for Cloud storage
       restic # A backup program that is fast, efficient and secure
-      ripgrep
+      ripgrep # grep alternative
       openssl # cryptographic library
       fastfetch # Fast, highly customisable system info script
       coreutils # GNU core utilities for Mac
       alejandra # formatter for Nix
       pkg-config # Manage compile and link flags for libraries
+      attic-client # client for attic cache
       # tailscale
       neovim
       #inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.default # custom neovim config
