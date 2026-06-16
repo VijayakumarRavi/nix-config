@@ -118,8 +118,8 @@ in {
 
       # ── SSL (Let's Encrypt) ──
       ssl = true;
-      ssl_cert_file = "${acmeCertDir}/fullchain.pem";
-      ssl_key_file = "${acmeCertDir}/key.pem";
+      ssl_cert_file = "${pgDataDir}/certs/fullchain.pem";
+      ssl_key_file = "${pgDataDir}/certs/key.pem";
 
       # ── Authentication ──
       password_encryption = "scram-sha-256";
@@ -235,13 +235,14 @@ in {
       "process-max=2"
       "log-level-console=info"
       "log-level-file=detail"
-      "log-path=/var/log/pgbackrest"
+      "log-path=${pgDataDir}/pgbackrest-log"
       "start-fast=y"
-      "stop-auto=y"
       "delta=y"
       ""
       "[${stanzaName}]"
       "pg1-path=${pgDataDir}"
+      "pg1-port=${toString config.services.postgresql.settings.port}"
+      "pg1-socket-path=/run/postgresql"
     ];
     owner = "postgres";
     group = "postgres";
@@ -252,12 +253,18 @@ in {
   # §4  PostgreSQL preStart / postStart Hooks
   # ════════════════════════════════════════════════════════════════════════
 
-  # Create pgBackRest stanza on first boot after initdb
+  # Copy Let's Encrypt certificates to be owned by postgres
+  # and create pgBackRest stanza on first boot after initdb
   systemd.services.postgresql.preStart = lib.mkAfter ''
+    mkdir -p ${pgDataDir}/certs
+    cp ${acmeCertDir}/fullchain.pem ${pgDataDir}/certs/fullchain.pem
+    cp ${acmeCertDir}/key.pem ${pgDataDir}/certs/key.pem
+    chmod 600 ${pgDataDir}/certs/key.pem
+
     if [ -f "${pgDataDir}/global/pg_control" ]; then
-      if ! ${pkgs.util-linux}/bin/runuser -u postgres -- ${pgbackrestCmd} info >/dev/null 2>&1; then
+      if ! ${pgbackrestCmd} info >/dev/null 2>&1; then
         echo "pgBackRest: Creating stanza '${stanzaName}'..."
-        ${pkgs.util-linux}/bin/runuser -u postgres -- ${pgbackrestCmd} stanza-create --no-online
+        ${pgbackrestCmd} stanza-create --no-online
         echo "pgBackRest: Stanza created successfully."
       fi
     fi
@@ -265,29 +272,27 @@ in {
 
   # Set superuser password + take initial backup after PostgreSQL starts
   systemd.services.postgresql.postStart = let
-    pgPasswordScript = pkgs.writeShellScript "pg-set-password" ''
-      set -euo pipefail
-      PSQL_CMD="$1"
-      SECRET_PATH="$2"
-      PW=$(tr -d '\n' < "$SECRET_PATH")
-      PGPASSWORD_NEW="$PW" $PSQL_CMD -d postgres \
-        -c "ALTER USER postgres WITH PASSWORD :'pw'" \
-        --set pw="$PW" >/dev/null 2>&1
-    '';
     jqFilter = ".[0].backup // [] | length";
   in
     lib.mkAfter ''
-      ${pgPasswordScript} "$PSQL" "${config.sops.secrets.pg_superuser_password.path}"
+      PW=$(${pkgs.coreutils}/bin/tr -d '\n' < "${config.sops.secrets.pg_superuser_password.path}")
+      echo "ALTER USER postgres WITH PASSWORD :'pw';" | PGPASSWORD_NEW="$PW" ${pgPackage}/bin/psql -p ${toString config.services.postgresql.settings.port} -d postgres -v pw="$PW" >/dev/null 2>&1
       echo "PostgreSQL: Superuser password synchronized from sops."
 
-      BACKUP_INFO=$(${pkgs.util-linux}/bin/runuser -u postgres -- ${pgbackrestCmd} info --output=json 2>/dev/null || echo "[]")
+      if ! ${pgbackrestCmd} info >/dev/null 2>&1; then
+        echo "pgBackRest: Creating stanza '${stanzaName}'..."
+        ${pgbackrestCmd} stanza-create
+        echo "pgBackRest: Stanza created successfully."
+      fi
+
+      BACKUP_INFO=$(${pgbackrestCmd} info --output=json 2>/dev/null || echo "[]")
       BACKUP_COUNT=$(echo "$BACKUP_INFO" | ${jq} -r '${jqFilter}' 2>/dev/null || echo "0")
 
       if [ "$BACKUP_COUNT" = "0" ] || [ "$BACKUP_COUNT" = "null" ] || [ -z "$BACKUP_COUNT" ]; then
         echo "pgBackRest: No backups found. Taking initial full backup..."
-        ${pkgs.util-linux}/bin/runuser -u postgres -- ${pgbackrestCmd} backup --type=full
+        ${pgbackrestCmd} backup --type=full
         echo "pgBackRest: Verifying initial backup..."
-        ${pkgs.util-linux}/bin/runuser -u postgres -- ${pgbackrestCmd} check
+        ${pgbackrestCmd} check
         echo "pgBackRest: Initial backup completed and verified."
       fi
     '';
@@ -567,6 +572,6 @@ in {
 
   # Ensure pgBackRest log directory exists with correct ownership
   systemd.tmpfiles.rules = [
-    "d /var/log/pgbackrest 0750 postgres postgres -"
+    "d ${pgDataDir}/pgbackrest-log 0750 postgres postgres -"
   ];
 }
