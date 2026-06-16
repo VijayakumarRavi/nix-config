@@ -55,7 +55,7 @@
     useDHCP = lib.mkDefault true;
     nameservers = ["1.1.1.1"];
     # PostgreSQL: SSL-only remote connections
-    firewall.allowedTCPPorts = [5432];
+    firewall.allowedTCPPorts = [24957];
   };
 
   # List packages installed in system profile.

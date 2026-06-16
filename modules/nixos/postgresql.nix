@@ -98,7 +98,7 @@ in {
     settings = {
       # ── Connection ──
       listen_addresses = lib.mkForce "*";
-      port = 5432;
+      port = 24957;
       max_connections = 100;
 
       # ── Memory ──
