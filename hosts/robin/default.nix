@@ -14,6 +14,7 @@
     inputs.impermanence.nixosModules.impermanence
     ../../modules/common
     ../../modules/nixos
+    ../../modules/nixos/postgresql.nix
 
     ./disk-config.nix
   ];
@@ -53,6 +54,8 @@
     hostName = hostname;
     useDHCP = lib.mkDefault true;
     nameservers = ["1.1.1.1"];
+    # PostgreSQL: SSL-only remote connections
+    firewall.allowedTCPPorts = [5432];
   };
 
   # List packages installed in system profile.
@@ -69,6 +72,8 @@
       "/var/lib/nixos"
       "/var/log"
       "/var/lib/systemd/coredump"
+      "/var/lib/postgresql" # PostgreSQL data
+      "/var/lib/acme" # Let's Encrypt certificates
     ];
     files = [
       "/etc/machine-id"
