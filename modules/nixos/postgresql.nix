@@ -93,7 +93,7 @@ in {
     enable = true;
     package = pgPackage;
     dataDir = pgDataDir;
-    extraPlugins = pgExtensions;
+    extensions = pgExtensions;
 
     settings = {
       # ── Connection ──
