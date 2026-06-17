@@ -23,6 +23,19 @@
       };
       options = "--delete-old";
     };
+    distributedBuilds = true;
+    buildMachines = [
+      {
+        hostName = "nix-builder";
+        system = "x86_64-linux";
+        protocol = "ssh-ng";
+        maxJobs = 8;
+        sshKey = config.sops.secrets.id_ed25519.path;
+        sshUser = variables.username;
+        supportedFeatures = ["kvm" "big-parallel"];
+        systems = ["x86_64-linux" "aarch64-linux"];
+      }
+    ];
   };
 
   ids.gids.nixbld = 350;
@@ -47,6 +60,10 @@
       "kakashi.yaml" = {
         owner = config.users.users.${variables.username}.name;
         path = "/etc/dnsproxy.yaml";
+      };
+      id_ed25519 = {
+        owner = config.users.users.${variables.username}.name;
+        path = "/Users/${variables.username}/.ssh/id_ed25519";
       };
     };
   };
