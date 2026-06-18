@@ -152,4 +152,4 @@ bootstrap machine ip:
     sops updatekeys --yes secrets.yaml
 
     echo "🚀 Running nixos-anywhere..."
-    nix run github:nix-community/nixos-anywhere -- --build-on remote --extra-files "$TEMP" --flake ".#{{ machine }}" --target-host "nixos@{{ ip }}"
+    nix run github:nix-community/nixos-anywhere -- --extra-files "$TEMP" --flake ".#{{ machine }}" --target-host "root@{{ ip }}"

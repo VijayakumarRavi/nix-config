@@ -19,7 +19,6 @@
   pkgs,
   lib,
   hostname,
-  variables,
   ...
 }: let
   # ── Configuration ──────────────────────────────────────────────────────
@@ -34,6 +33,7 @@
   pgExtensions = with pgPackage.pkgs; [
     timescaledb
     vectorchord
+    system_stats
   ];
 
   # ── Derived paths ─────────────────────────────────────────────────────
@@ -94,7 +94,36 @@ in {
     package = pgPackage;
     dataDir = pgDataDir;
     extensions = pgExtensions;
+    checkConfig = true;
+    ensureDatabases = ["lldap" "pocket-id" "ente"];
 
+    ensureUsers = [
+      {
+        name = "postgres";
+        ensureClauses = {
+          superuser = true;
+          createrole = true;
+          createdb = true;
+          replication = true;
+          login = true;
+        };
+      }
+      {
+        name = "lldap";
+        ensureDBOwnership = true;
+        ensureClauses.login = true;
+      }
+      {
+        name = "pocket-id";
+        ensureDBOwnership = true;
+        ensureClauses.login = true;
+      }
+      {
+        name = "ente";
+        ensureDBOwnership = true;
+        ensureClauses.login = true;
+      }
+    ];
     settings = {
       # ── Connection ──
       listen_addresses = lib.mkForce "*";
@@ -118,8 +147,8 @@ in {
 
       # ── SSL (Let's Encrypt) ──
       ssl = true;
-      ssl_cert_file = "${pgDataDir}/certs/fullchain.pem";
-      ssl_key_file = "${pgDataDir}/certs/key.pem";
+      ssl_cert_file = "/var/lib/postgresql-certs/fullchain.pem";
+      ssl_key_file = "/var/lib/postgresql-certs/key.pem";
 
       # ── Authentication ──
       password_encryption = "scram-sha-256";
@@ -130,28 +159,12 @@ in {
       log_line_prefix = "%m [%p] %q%u@%d ";
     };
 
-    # Local: peer for postgres (pgBackRest + maintenance), SCRAM for others
-    # Remote: SSL required, SCRAM authentication — no non-SSL remote access
+    # Peer authentication: OS user must match DB user (Unix socket only)
     authentication = lib.mkForce ''
-      local     all       postgres                 peer
-      local     all       all                      scram-sha-256
+      local     all       all                      peer
       hostssl   all       all       0.0.0.0/0      scram-sha-256
       hostssl   all       all       ::/0           scram-sha-256
     '';
-  };
-
-  # ════════════════════════════════════════════════════════════════════════
-  # §2  ACME / Let's Encrypt (DNS-01 via Cloudflare)
-  # ════════════════════════════════════════════════════════════════════════
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = variables.useremail;
-    certs.${acmeDomain} = {
-      dnsProvider = "cloudflare";
-      environmentFile = config.sops.templates."cloudflare-dns-env".path;
-      group = "postgres"; # cert files readable by postgres
-      reloadServices = ["postgresql"]; # reload PG on cert renewal
-    };
   };
 
   # PostgreSQL must start after ACME obtains the certificate
@@ -168,10 +181,6 @@ in {
 
   # -- Secret declarations --
   sops.secrets = {
-    pg_superuser_password = {
-      owner = "postgres";
-      group = "postgres";
-    };
     pg_backup_hc_url = {
       owner = "postgres";
       group = "postgres";
@@ -204,13 +213,6 @@ in {
       owner = "postgres";
       group = "postgres";
     };
-    cloudflare_dns_api_token = {};
-  };
-
-  # -- Cloudflare environment file for ACME --
-  sops.templates."cloudflare-dns-env" = {
-    content = "CF_DNS_API_TOKEN=${config.sops.placeholder.cloudflare_dns_api_token}";
-    mode = "0400";
   };
 
   # -- pgBackRest configuration (S3-only, encrypted) --
@@ -235,7 +237,7 @@ in {
       "process-max=2"
       "log-level-console=info"
       "log-level-file=detail"
-      "log-path=${pgDataDir}/pgbackrest-log"
+      "log-path=/var/lib/postgresql/pgbackrest-log"
       "start-fast=y"
       "delta=y"
       ""
@@ -250,40 +252,62 @@ in {
   };
 
   # ════════════════════════════════════════════════════════════════════════
-  # §4  PostgreSQL preStart / postStart Hooks
+  # §4  PostgreSQL preStart / postStart Hooks and Systemd overrides
   # ════════════════════════════════════════════════════════════════════════
 
-  # Copy Let's Encrypt certificates to be owned by postgres
-  # and create pgBackRest stanza on first boot after initdb
-  systemd.services.postgresql.preStart = lib.mkAfter ''
-    mkdir -p ${pgDataDir}/certs
-    cp ${acmeCertDir}/fullchain.pem ${pgDataDir}/certs/fullchain.pem
-    cp ${acmeCertDir}/key.pem ${pgDataDir}/certs/key.pem
-    chmod 600 ${pgDataDir}/certs/key.pem
+  # Relax NixOS's strict ProcSubset="pid" default so the `system_stats` extension
+  # can read /proc/stat, /proc/meminfo, and /proc/loadavg
+  systemd.services.postgresql.serviceConfig.ProcSubset = lib.mkForce "all";
 
-    if [ -f "${pgDataDir}/global/pg_control" ]; then
-      if ! ${pgbackrestCmd} info >/dev/null 2>&1; then
-        echo "pgBackRest: Creating stanza '${stanzaName}'..."
-        ${pgbackrestCmd} stanza-create --no-online
-        echo "pgBackRest: Stanza created successfully."
-      fi
-    fi
-  '';
+  systemd.paths.postgresql-cert-sync = {
+    description = "Watch ACME cert for PostgreSQL";
+    wantedBy = ["multi-user.target"];
+    pathConfig = {
+      PathChanged = "${acmeCertDir}/fullchain.pem";
+    };
+  };
 
-  # Set superuser password + take initial backup after PostgreSQL starts
+  systemd.services.postgresql-cert-sync = {
+    description = "Sync ACME certs to PostgreSQL";
+    after = ["acme-${acmeDomain}.service"];
+    wants = ["acme-${acmeDomain}.service"];
+    before = ["postgresql.service"];
+    wantedBy = ["postgresql.service"];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.writeShellScript "cert-sync" ''
+        set -euo pipefail
+        cp ${acmeCertDir}/fullchain.pem /var/lib/postgresql-certs/fullchain.pem
+        cp ${acmeCertDir}/key.pem /var/lib/postgresql-certs/key.pem
+        chown -R postgres:postgres /var/lib/postgresql-certs
+        chmod 600 /var/lib/postgresql-certs/key.pem
+
+        # On renewal, reload PostgreSQL if it is running
+        if ${pkgs.systemd}/bin/systemctl is-active --quiet postgresql.service; then
+          ${pkgs.systemd}/bin/systemctl try-reload-or-restart --no-block postgresql.service
+        fi
+      ''}";
+    };
+  };
+
+  # Take initial backup after PostgreSQL starts
   systemd.services.postgresql.postStart = let
     jqFilter = ".[0].backup // [] | length";
   in
     lib.mkAfter ''
-      PW=$(${pkgs.coreutils}/bin/tr -d '\n' < "${config.sops.secrets.pg_superuser_password.path}")
-      echo "ALTER USER postgres WITH PASSWORD :'pw';" | PGPASSWORD_NEW="$PW" ${pgPackage}/bin/psql -p ${toString config.services.postgresql.settings.port} -d postgres -v pw="$PW" >/dev/null 2>&1
-      echo "PostgreSQL: Superuser password synchronized from sops."
+      echo "Waiting for PostgreSQL to complete WAL recovery and promote to primary..."
+      while true; do
+        IS_RECOVERING=$(${pgPackage}/bin/psql -p ${toString config.services.postgresql.settings.port} -U postgres -d postgres -tAc "SELECT pg_is_in_recovery();" 2>/dev/null || echo "error")
+        if [ "$IS_RECOVERING" = "f" ]; then
+          break
+        fi
+        sleep 5
+      done
+      echo "PostgreSQL is now a primary."
 
-      if ! ${pgbackrestCmd} info >/dev/null 2>&1; then
-        echo "pgBackRest: Creating stanza '${stanzaName}'..."
-        ${pgbackrestCmd} stanza-create
-        echo "pgBackRest: Stanza created successfully."
-      fi
+      echo "pgBackRest: Running stanza-create..."
+      ${pgbackrestCmd} stanza-create
+      echo "pgBackRest: Stanza creation successful (or already exists)."
 
       BACKUP_INFO=$(${pgbackrestCmd} info --output=json 2>/dev/null || echo "[]")
       BACKUP_COUNT=$(echo "$BACKUP_INFO" | ${jq} -r '${jqFilter}' 2>/dev/null || echo "0")
@@ -316,10 +340,10 @@ in {
     };
 
     script = ''
-      set -euo pipefail
+      set -u -o pipefail
       echo "=== pgBackRest Repository Validation ==="
 
-      OUTPUT=$(${pgbackrestBase} info 2>&1) || {
+      OUTPUT=$(${pgbackrestBase} repo-ls 2>&1) || {
         echo "FATAL: Cannot access S3 backup repository"
         echo "Error output:"
         echo "$OUTPUT"
@@ -336,7 +360,6 @@ in {
       }
 
       echo "S3 repository is accessible."
-      echo "$OUTPUT"
       echo "=== Validation passed ==="
     '';
   };
@@ -365,25 +388,49 @@ in {
       set -euo pipefail
       echo "=== pgBackRest Auto-Restore Check ==="
 
-      if [ -f "${pgDataDir}/PG_VERSION" ]; then
-        echo "PostgreSQL data directory is initialized. Skipping restore."
-        exit 0
+      if [ -f "${pgDataDir}/global/pg_control" ]; then
+        if CONTROL_OUTPUT=$(${pgPackage}/bin/pg_controldata "${pgDataDir}" 2>/dev/null); then
+          CLUSTER_STATE=$(echo "$CONTROL_OUTPUT" | ${pkgs.gnugrep}/bin/grep "Database cluster state:" | ${pkgs.gawk}/bin/awk -F: '{print $2}' | ${pkgs.gnused}/bin/sed 's/^[ \t]*//')
+          case "$CLUSTER_STATE" in
+            "in production"|"shut down"|"shut down in recovery"|"in archive recovery")
+              echo "PostgreSQL cluster is healthy (State: $CLUSTER_STATE). Skipping restore."
+              exit 0
+              ;;
+            *)
+              echo "WARNING: Cluster exists but state is '$CLUSTER_STATE'. Resuming interrupted restore..."
+              ;;
+          esac
+        else
+          echo "WARNING: pg_control exists but pg_controldata failed. Resuming interrupted restore..."
+        fi
       fi
-
-      echo "PostgreSQL data directory is empty or uninitialized."
 
       BACKUP_INFO=$(${pgbackrestCmd} info --output=json 2>/dev/null || echo "[]")
       BACKUP_COUNT=$(echo "$BACKUP_INFO" | ${jq} -r '${jqFilter}' 2>/dev/null || echo "0")
 
       if [ "$BACKUP_COUNT" = "0" ] || [ "$BACKUP_COUNT" = "null" ] || [ -z "$BACKUP_COUNT" ]; then
-        echo "No backups found in repository. This is a fresh installation."
-        echo "PostgreSQL will initialize a new cluster."
+        echo "No backups found. This is a fresh installation. Initializing cluster..."
         exit 0
       fi
 
-      echo "Found $BACKUP_COUNT backup(s). Restoring from latest backup..."
+      # Cleanup legacy log directory if it exists inside the data dir
+      if [ -d "${pgDataDir}/pgbackrest-log" ]; then
+        rm -rf "${pgDataDir}/pgbackrest-log"
+      fi
 
-      ${pgbackrestCmd} restore --delta
+      if [ -d "${pgDataDir}" ] && [ "$(${pkgs.coreutils}/bin/ls -A ${pgDataDir})" ]; then
+        echo "Directory is not empty (partially-restored). Resuming with --delta..."
+        ${pgbackrestCmd} restore --delta
+      else
+        echo "Directory is empty. Performing fresh restore..."
+        ${pgbackrestCmd} restore
+      fi
+
+      echo "Validating restored directory structure..."
+      ${pgPackage}/bin/pg_controldata ${pgDataDir} >/dev/null || {
+        echo "FATAL: pg_controldata validation failed after restore."
+        exit 1
+      }
 
       echo "=== Restore completed successfully ==="
     '';
@@ -496,12 +543,12 @@ in {
         echo "ssl = off"
       } >> "$VERIFY_DIR/postgresql.conf"
 
-      rm -f "$VERIFY_DIR/recovery.signal" "$VERIFY_DIR/standby.signal"
-
-      echo "[3/5] Starting temporary PostgreSQL instance..."
+      echo "[3/5] Starting temporary PostgreSQL instance and allowing WAL replay..."
       "$PG_BIN/pg_ctl" -D "$VERIFY_DIR" start -w -t 120
 
       echo "[4/5] Running health checks..."
+      # If pg_ctl successfully started and accepts connections, then WAL replay has reached consistency
+      # Note: We do NOT require pg_is_in_recovery() to be false, since valid restores can stay in recovery mode
       "$PG_BIN/psql" -h "$VERIFY_DIR" -p "$VERIFY_PORT" -U postgres -d postgres -c "SELECT 1 AS health_check;"
       "$PG_BIN/psql" -h "$VERIFY_DIR" -p "$VERIFY_PORT" -U postgres -d postgres -c "SELECT version() AS pg_version;"
       "$PG_BIN/psql" -h "$VERIFY_DIR" -p "$VERIFY_PORT" -U postgres -d postgres -c "SELECT pg_is_in_recovery() AS is_recovering;"
@@ -572,6 +619,7 @@ in {
 
   # Ensure pgBackRest log directory exists with correct ownership
   systemd.tmpfiles.rules = [
-    "d ${pgDataDir}/pgbackrest-log 0750 postgres postgres -"
+    "d /var/lib/postgresql/pgbackrest-log 0750 postgres postgres -"
+    "d /var/lib/postgresql-certs 0700 postgres postgres -"
   ];
 }

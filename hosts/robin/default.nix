@@ -14,9 +14,14 @@
     inputs.impermanence.nixosModules.impermanence
     ../../modules/common
     ../../modules/nixos
-    ../../modules/nixos/postgresql.nix
-
     ./disk-config.nix
+
+    ./proxy.nix
+    ./postgresql.nix
+    ./pocketid.nix
+    ./lldap.nix
+    ./ente.nix
+    ./fail2ban.nix
   ];
 
   boot = {
@@ -74,6 +79,10 @@
       "/var/lib/systemd/coredump"
       "/var/lib/postgresql" # PostgreSQL data
       "/var/lib/acme" # Let's Encrypt certificates
+      "/var/lib/pocket-id" # Pocket ID OIDC data
+      "/var/lib/nginx" # Nginx state and log directories
+      "/var/lib/private/lldap" # LLDAP data and bootstrapped secrets
+      "/var/lib/ente" # Ente state directories
     ];
     files = [
       "/etc/machine-id"
@@ -128,7 +137,7 @@
     ${config.sops.placeholder.restic-repository}/${config.networking.hostName}
   '';
 
-  services.restic.backups.containers = {
+  services.restic.backups.apps = {
     repositoryFile = config.sops.templates."restic-repository-${config.networking.hostName}".path;
     passwordFile = config.sops.secrets.restic-password.path;
     environmentFile = config.sops.secrets.restic-env.path;
@@ -139,22 +148,22 @@
       RandomizedDelaySec = "5m";
     };
 
-    paths = ["/opt/containers-backup-snapshot"];
+    paths = ["/persist-backup-snapshot"];
     pruneOpts = ["--keep-hourly 24" "--keep-daily 7" "--keep-weekly 4" "--keep-monthly 6"];
 
     backupPrepareCommand = ''
       PING_URL=$(cat ${config.sops.secrets.robin_hc_url.path})
       ${pkgs.curl}/bin/curl -fsS -m 10 --retry 5 -o /dev/null $PING_URL/start || true
 
-      if [ -d /opt/containers-backup-snapshot ]; then
+      if [ -d /persist-backup-snapshot ]; then
         echo "WARNING: previous run did not cleanly finish, removing old snapshot"
-        ${pkgs.btrfs-progs}/bin/btrfs subvolume delete /opt/containers-backup-snapshot
+        ${pkgs.btrfs-progs}/bin/btrfs subvolume delete /persist-backup-snapshot
       fi
-      ${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r /opt/containers /opt/containers-backup-snapshot
+      ${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r /persist /persist-backup-snapshot
     '';
 
     backupCleanupCommand = ''
-      ${pkgs.btrfs-progs}/bin/btrfs subvolume delete /opt/containers-backup-snapshot
+      ${pkgs.btrfs-progs}/bin/btrfs subvolume delete /persist-backup-snapshot
       PING_URL=$(cat ${config.sops.secrets.robin_hc_url.path})
       if [ "$EXIT_STATUS" = "0" ]; then
         ${pkgs.curl}/bin/curl -fsS -m 10 --retry 5 -o /dev/null $PING_URL || true
@@ -165,7 +174,7 @@
   };
 
   # Disable PrivateMounts so restic ExecStart can see the snapshot created in ExecStartPre
-  systemd.services."restic-backups-containers".serviceConfig.PrivateMounts = lib.mkForce false;
+  systemd.services."restic-backups-apps".serviceConfig.PrivateMounts = lib.mkForce false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

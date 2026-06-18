@@ -4,7 +4,7 @@
     disk = {
       nixos = {
         type = "disk";
-        device = "/dev/sda";
+        device = "/dev/vda";
         content = {
           type = "gpt";
           partitions = {
@@ -40,11 +40,6 @@
                   "/home" = {
                     mountpoint = "/home";
                     mountOptions = ["subvol=home" "compress=zstd" "noatime"];
-                  };
-                  # Subvolume name is the same as the mountpoint
-                  "/opt/containers" = {
-                    mountpoint = "/opt/containers";
-                    mountOptions = ["subvol=containers" "compress=zstd" "noatime"];
                   };
                   # Parent is not mounted so the mountpoint must be set
                   "/nix" = {
