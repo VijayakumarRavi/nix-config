@@ -156,6 +156,10 @@ in {
     };
 
     # Frontends (configured by services.ente.web)
+    "photos.ente.vjlab.dev" = {
+      useACMEHost = "ente.vjlab.dev";
+      forceSSL = true;
+    };
     "accounts.ente.vjlab.dev" = {
       useACMEHost = "ente.vjlab.dev";
       forceSSL = true;
@@ -164,17 +168,17 @@ in {
       useACMEHost = "ente.vjlab.dev";
       forceSSL = true;
     };
+
+    # Additional Ente web frontends (configured manually)
     "albums.ente.vjlab.dev" = {
       useACMEHost = "ente.vjlab.dev";
       forceSSL = true;
+      locations."/" = {
+        root = webPackage "albums";
+        tryFiles = "$uri $uri.html /index.html";
+        extraConfig = "add_header Access-Control-Allow-Origin 'https://ente.vjlab.dev';";
+      };
     };
-    "photos.ente.vjlab.dev" = {
-      useACMEHost = "ente.vjlab.dev";
-      serverAliases = ["albums.ente.vjlab.dev"];
-      forceSSL = true;
-    };
-
-    # Additional Ente web frontends (configured manually)
     "share.ente.vjlab.dev" = {
       useACMEHost = "ente.vjlab.dev";
       forceSSL = true;
