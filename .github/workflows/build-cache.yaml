@@ -12,6 +12,7 @@ jobs:
     runs-on: nixos
     outputs:
       linux_matrix: ${{ steps.set-matrix.outputs.linux }}
+      darwin_matrix: ${{ steps.set-matrix.outputs.darwin }}
     steps:
       - name: Checkout repository
         uses: https://github.com/actions/checkout@v6
@@ -22,7 +23,9 @@ jobs:
         id: set-matrix
         run: |
           MATRIX_JSON=$(nix eval --json '.#nixosConfigurations' --apply 'attrs: { linux = builtins.map (name: { host = name; platform = attrs.${name}.pkgs.stdenv.hostPlatform.system; }) (builtins.attrNames attrs); }')
+          DARWIN_JSON=$(nix eval --json '.#darwinConfigurations' --apply 'attrs: { darwin = builtins.map (name: { host = name; platform = attrs.${name}.pkgs.stdenv.hostPlatform.system; }) (builtins.attrNames attrs); }')
           echo "linux=$(echo $MATRIX_JSON | jq -c '.linux')" >> "$GITHUB_OUTPUT"
+          echo "darwin=$(echo $DARWIN_JSON | jq -c '.darwin')" >> "$GITHUB_OUTPUT"
 
   linux-build:
     needs: setup
@@ -55,3 +58,22 @@ jobs:
         run: |
           nix develop .# --profile dev-profile --command true --system ${{ matrix.platform }}
           attic push system dev-profile
+
+  darwin-evaluate:
+    needs: setup
+    if: ${{ fromJson(needs.setup.outputs.darwin_matrix)[0] != null }}
+    runs-on: nixos
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.setup.outputs.darwin_matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: https://github.com/actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Evaluate macOS Configuration (Dry Run)
+        run: nix eval .#darwinConfigurations.${{ matrix.host }}.config.system.build.toplevel.drvPath
