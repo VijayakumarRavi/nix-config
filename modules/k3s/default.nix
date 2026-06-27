@@ -6,10 +6,9 @@
   ...
 }: {
   imports = [
-    ../common
-    ./default.nix
+    ./hardware-configuration.nix
+    ./disk-config.nix
   ];
-
   # Bootloader
   boot = {
     loader = {

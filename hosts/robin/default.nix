@@ -12,7 +12,6 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     inputs.impermanence.nixosModules.impermanence
-    ../../modules/common
     ../../modules/nixos
     ./disk-config.nix
 

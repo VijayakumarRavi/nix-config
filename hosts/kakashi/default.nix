@@ -6,7 +6,7 @@
   ...
 }: {
   imports = [
-    ../../modules/common
+    ../../modules/darwin
     ./homebrew.nix
     ./launchDaemons.nix
     inputs.sops-nix.darwinModules.sops

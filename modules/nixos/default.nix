@@ -7,7 +7,7 @@
   variables,
   ...
 }: {
-  imports = [inputs.sops-nix.nixosModules.sops];
+  imports = [inputs.sops-nix.nixosModules.sops ../common];
 
   # Ensure a clean & sparkling /tmp on fresh boots.
   boot.tmp.cleanOnBoot = true;

@@ -5,9 +5,8 @@
   ...
 }: {
   imports = [
-    ../../modules/nixos/k3s-node.nix
-    ./hardware-configuration.nix
-    ./disk-config.nix
+    ../../modules/nixos
+    ../../modules/k3s
   ];
   networking.interfaces = {
     eth0 = {
