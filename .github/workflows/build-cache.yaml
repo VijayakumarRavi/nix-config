@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   setup:
-    runs-on: ubuntu-latest
+    runs-on: nixos
     outputs:
       linux_matrix: ${{ steps.set-matrix.outputs.linux }}
     steps:
@@ -17,20 +17,6 @@ jobs:
         uses: https://github.com/actions/checkout@v6
         with:
           fetch-depth: 0
-
-      - name: Setup Nix
-        uses: https://github.com/DeterminateSystems/nix-installer-action@v22
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          extra-conf: |
-            fallback = true
-            sandbox = false
-            http-connections = 128
-            max-substitution-jobs = 128
-            accept-flake-config = true
-            extra-platforms = aarch64-linux
-            substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
 
       - name: Generate Job Matrix
         id: set-matrix
@@ -52,7 +38,7 @@ jobs:
   linux-build:
     needs: setup
     if: ${{ fromJson(needs.setup.outputs.linux_matrix)[0] != null }}
-    runs-on: ubuntu-latest
+    runs-on: nixos
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -63,24 +49,6 @@ jobs:
         uses: https://github.com/actions/checkout@v6
         with:
           fetch-depth: 0
-
-      - name: Setup QEMU for ARM builds
-        if: matrix.platform == 'aarch64-linux'
-        uses: https://github.com/docker/setup-qemu-action@v4
-
-      - name: Setup Nix
-        uses: https://github.com/DeterminateSystems/nix-installer-action@v22
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          extra-conf: |
-            fallback = true
-            sandbox = false
-            http-connections = 128
-            max-substitution-jobs = 128
-            accept-flake-config = true
-            extra-platforms = aarch64-linux
-            substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 https://cache.nixos.org/
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=
 
       - name: Setup Attic cache
         uses: https://github.com/ryanccn/attic-action@v0.5.0
