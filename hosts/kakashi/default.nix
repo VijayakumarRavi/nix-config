@@ -26,7 +26,7 @@
     distributedBuilds = true;
     buildMachines = [
       {
-        hostName = "nix-builder";
+        hostName = "${variables.runner_ip}";
         system = "x86_64-linux";
         protocol = "ssh-ng";
         maxJobs = 8;

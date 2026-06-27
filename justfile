@@ -116,7 +116,7 @@ cache-nixiso:
     nix build --accept-flake-config .#nixosConfigurations.nixiso.config.system.build.toplevel && cachix push vijay ./result
 
 # Bootstrap a new NixOS machine using nixos-anywhere, automatically handling sops-nix host keys
-bootstrap machine ip:
+bootstrap machine ip options='--build-on local':
     #!/usr/bin/env bash
     set -euo pipefail
 
@@ -152,4 +152,4 @@ bootstrap machine ip:
     sops updatekeys --yes secrets.yaml
 
     echo "🚀 Running nixos-anywhere..."
-    nix run github:nix-community/nixos-anywhere -- --extra-files "$TEMP" --flake ".#{{ machine }}" --target-host "root@{{ ip }}"
+    nix run github:nix-community/nixos-anywhere -- --extra-files "$TEMP" --flake ".#{{ machine }}" --target-host "root@{{ ip }}" {{ options }}

@@ -88,6 +88,7 @@
     127.0.0.1 localhost
     ::1 localhost
     ${variables.zoro_ip} zoro
+    ${variables.runner_ip} runner
   '';
 
   console = {

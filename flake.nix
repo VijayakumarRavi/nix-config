@@ -91,6 +91,7 @@
       stateVersion = "26.05";
       stateVersionDarwin = 5;
       zoro_ip = "10.0.1.101";
+      runner_ip = "10.0.2.203";
     };
 
     # Supported systems for NixOS and MacOS
@@ -182,6 +183,7 @@
     nixosConfigurations = {
       zoro = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "zoro";
       robin = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "robin";
+      runner = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "runner";
     };
 
     # MacOS configurations
