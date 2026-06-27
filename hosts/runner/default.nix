@@ -161,6 +161,7 @@
         capacity: 3
         envs:
           DOCKER_HOST: "unix:///var/run/docker.sock"
+          PATH: "/run/current-system/sw/bin:/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/usr/local/bin:/usr/bin:/bin"
         timeout: 3h
         shutdown_timeout: 3h
         insecure: false
@@ -214,13 +215,31 @@
   };
 
   # ── Forgejo runner service ────────────────────────────────────────────────
+  # Grant the runner user access to the Nix daemon (overriding the strict allowed-users from common)
+  nix.settings.allowed-users = ["forgejo-runner"];
+  nix.settings.trusted-users = ["forgejo-runner"];
+
+  # Global packages for the runner host (making them available in /run/current-system/sw/bin)
+  environment.systemPackages = with pkgs; [
+    forgejo-runner
+    docker
+    nix
+    bash
+    nodejs
+    curl
+    wget
+    cacert
+    git
+  ];
+
   # We use systemd directly to run the forgejo-runner with the generated config
   systemd.services.forgejo-runner-native = {
     description = "Forgejo Runner";
     after = ["network.target" "docker.service"];
     requires = ["docker.service"];
     wantedBy = ["multi-user.target"];
-    path = [pkgs.forgejo-runner pkgs.docker pkgs.nix pkgs.bash];
+    # Packages are also in systemPackages, but we keep them here for daemon execution
+    path = config.environment.systemPackages;
     serviceConfig = {
       ExecStart = "${pkgs.forgejo-runner}/bin/forgejo-runner daemon --config ${config.sops.templates."runner-config.yaml".path}";
       User = "forgejo-runner";

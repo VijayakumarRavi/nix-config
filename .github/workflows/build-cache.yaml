@@ -21,18 +21,7 @@ jobs:
       - name: Generate Job Matrix
         id: set-matrix
         run: |
-          MATRIX_JSON=$(nix eval --json --impure --expr '
-          let
-            flake = builtins.getFlake (toString ./.);
-            mkList = attrs: builtins.map (name: {
-              host = name;
-              platform = attrs.${name}.config.nixpkgs.system;
-            }) (builtins.attrNames attrs);
-          in
-          {
-            linux = mkList (flake.nixosConfigurations or {});
-          }
-          ')
+          MATRIX_JSON=$(nix eval --json '.#nixosConfigurations' --apply 'attrs: { linux = builtins.map (name: { host = name; platform = attrs.${name}.pkgs.stdenv.hostPlatform.system; }) (builtins.attrNames attrs); }')
           echo "linux=$(echo $MATRIX_JSON | jq -c '.linux')" >> "$GITHUB_OUTPUT"
 
   linux-build:
@@ -58,7 +47,11 @@ jobs:
           token: ${{ secrets.ATTIC_TOKEN }}
 
       - name: Build System
-        run: nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel --system ${{ matrix.platform }}
+        run: |
+          OUT_PATHS=$(nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel --system ${{ matrix.platform }} --print-out-paths)
+          attic push system $OUT_PATHS
 
       - name: Build DevShell
-        run: nix develop .# --profile dev-profile --command true --system ${{ matrix.platform }}
+        run: |
+          nix develop .# --profile dev-profile --command true --system ${{ matrix.platform }}
+          attic push system dev-profile
