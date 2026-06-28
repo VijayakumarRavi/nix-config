@@ -15,6 +15,9 @@
     ./disk-config.nix
   ];
 
+  # Enable QEMU Guest Agent
+  services.qemuGuest.enable = true;
+
   # ── Hardware & Bootloader ──────────────────────────────────────────────────
   boot = {
     initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk"];
