@@ -164,7 +164,7 @@
         job_level: debug
       runner:
         file: .runner
-        capacity: 3
+        capacity: 5
         envs:
           DOCKER_HOST: "unix:///var/run/docker.sock"
         timeout: 3h
@@ -175,7 +175,6 @@
         report_interval: 1s
         labels: [
           "nixos:host",
-          "ubuntu-fat:docker://gitea/runner-images:ubuntu-latest",
           "ubuntu-25.04:docker://ubuntu:25.04",
           "ubuntu-24.04:docker://ubuntu:24.04",
           "ubuntu-22.04:docker://ubuntu:22.04",
@@ -187,7 +186,9 @@
           "node-20-debian-11:docker://node:20-bullseye",
           "docker-cli:docker://code.forgejo.org/oci/docker:cli",
           "dotnet-sdk:docker://mcr.microsoft.com/dotnet/sdk:9.0",
-          "dotnet-sdk-9:docker://mcr.microsoft.com/dotnet/sdk:9.0"
+          "dotnet-sdk-9:docker://mcr.microsoft.com/dotnet/sdk:9.0",
+          "ubuntu-latest:docker://gitea/runner-images:ubuntu-latest",
+          "gitops:docker://ghcr.io/bjw-s-labs/forgejo-runner:ubuntu-24.04"
         ]
       cache:
         enabled: true
