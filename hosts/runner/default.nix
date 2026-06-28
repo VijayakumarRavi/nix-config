@@ -133,8 +133,11 @@
       ipv6 = true;
     };
   };
-  networking.firewall.trustedInterfaces = ["br-+"];
-
+  networking.firewall = {
+    # Allow Forgejo runner cache server and trust the docker bridge
+    allowedTCPPorts = [34303];
+    trustedInterfaces = ["br-+" "docker0"];
+  };
   users.users.builder = {
     isNormalUser = true;
     extraGroups = ["wheel" "builder" "docker"];
@@ -157,14 +160,13 @@
     group = "forgejo-runner";
     content = ''
       log:
-        level: info
-        job_level: info
+        level: debug
+        job_level: debug
       runner:
         file: .runner
         capacity: 3
         envs:
           DOCKER_HOST: "unix:///var/run/docker.sock"
-          PATH: "/run/current-system/sw/bin:/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/usr/local/bin:/usr/bin:/bin"
         timeout: 3h
         shutdown_timeout: 3h
         insecure: false
@@ -189,7 +191,7 @@
         ]
       cache:
         enabled: true
-        port: 0
+        port: 34303
         dir: ""
         external_server: ""
         secret: ""
@@ -218,6 +220,13 @@
   };
 
   # ── Forgejo runner service ────────────────────────────────────────────────
+  # Create /usr/local/bin symlink so the host runner executor (act) can find NixOS binaries
+  # without needing to override the global runner PATH (which breaks Docker jobs).
+  system.activationScripts.usr-local-bin = ''
+    mkdir -p /usr/local
+    ln -sfn /run/current-system/sw/bin /usr/local/bin
+  '';
+
   # Grant the runner user access to the Nix daemon (overriding the strict allowed-users from common)
   nix.settings.allowed-users = ["forgejo-runner"];
   nix.settings.trusted-users = ["forgejo-runner"];
