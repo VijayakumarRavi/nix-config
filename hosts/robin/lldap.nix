@@ -79,11 +79,11 @@ in {
     serviceConfig.ExecStartPost = pkgs.writeShellScript "lldap-healthcheck" ''
       echo "Waiting for LLDAP to be healthy..."
       for i in {1..30}; do
+        sleep 10
         if ${config.services.lldap.package}/bin/lldap healthcheck --config-file ${format.generate "lldap_config.toml" config.services.lldap.settings}; then
           echo "LLDAP is healthy!"
           exit 0
         fi
-        sleep 1
       done
       echo "LLDAP healthcheck failed!"
       exit 1

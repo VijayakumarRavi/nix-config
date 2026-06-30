@@ -13,6 +13,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     inputs.impermanence.nixosModules.impermanence
     ../../modules/nixos
+    ../../modules/monitoring
     ./disk-config.nix
 
     ./proxy.nix
@@ -85,6 +86,7 @@
       "/var/lib/nginx" # Nginx state and log directories
       "/var/lib/private/lldap" # LLDAP data and bootstrapped secrets
       "/var/lib/ente" # Ente state directories
+      "/var/lib/private/fluent-bit" # Fluent Bit log positions
     ];
     files = [
       "/etc/machine-id"
@@ -177,6 +179,31 @@
 
   # Disable PrivateMounts so restic ExecStart can see the snapshot created in ExecStartPre
   systemd.services."restic-backups-apps".serviceConfig.PrivateMounts = lib.mkForce false;
+
+  # ── Monitoring Stack Exporter ───────────────────────────────────────────
+  services.monitoring = {
+    enable = true;
+    role = "exporter";
+    wireguard = {
+      enable = true;
+      address = "10.100.0.1/24";
+      peerPublicKey = "xxhDjxrPrM01BAcK8qhAAWVKdST+O/GS7Y4yhtylh0I="; # Zoro's WG public key
+      privateKeySecret = "wg_monitor_robin_private_key";
+      listenPort = 41641;
+    };
+    exporters = {
+      postgresql.enable = true;
+      pgbackrest.enable = true;
+      restic = {
+        enable = true;
+        repositoryFileSecret = "restic-repository";
+        passwordFileSecret = "restic-password";
+        environmentFileSecret = "restic-env";
+      };
+      nginx.enable = true;
+      fail2ban.enable = true;
+    };
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

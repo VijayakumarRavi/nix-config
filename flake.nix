@@ -90,7 +90,7 @@
       useremail = "im@vijayakumar.xyz";
       stateVersion = "26.05";
       stateVersionDarwin = 5;
-      zoro_ip = "10.0.1.101";
+      zoro_ip = "10.0.2.200";
       runner_ip = "10.0.2.203";
     };
 

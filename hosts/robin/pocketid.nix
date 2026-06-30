@@ -1,7 +1,11 @@
 # Pocket ID — OIDC identity provider with LDAP backend
 # Connects to local PostgreSQL via Unix socket (peer auth)
 # Secrets loaded from sops-nix environment file
-{config, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   # ── Sops secret: environment file with SMTP/LDAP credentials ──────────
   # Add to secrets.yaml (sops secrets.yaml):
   #   pocketid_env: |
@@ -72,6 +76,19 @@
     after = ["postgresql.service" "postgresql-setup.service" "lldap.service"];
     wants = ["postgresql.service" "lldap.service"];
     requires = ["postgresql-setup.service"];
+
+    serviceConfig.ExecStartPost = pkgs.writeShellScript "pocket-id-healthcheck" ''
+      echo "Waiting for Pocket ID to be healthy..."
+      for i in {1..30}; do
+        if ${config.services.pocket-id.package}/bin/pocket-id healthcheck; then
+          echo "Pocket ID is healthy!"
+          exit 0
+        fi
+        sleep 1
+      done
+      echo "Pocket ID healthcheck failed!"
+      exit 1
+    '';
   };
 
   # ── Nginx virtual host ──────────────────────────────────────────────────

@@ -9,5 +9,21 @@
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": false
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["modules/monitoring/grafana-dashboards/.+\\.json$"],
+      "matchStrings": [
+        "\"__dashboard_id\":\\s*\"(?<depName>\\d+)\",\\s*\"__dashboard_revision\":\\s*\"(?<currentValue>\\d+)\""
+      ],
+      "datasourceTemplate": "custom.grafana-dashboards",
+      "versioningTemplate": "loose"
+    }
+  ],
+  "customDatasources": {
+    "grafana-dashboards": {
+      "defaultRegistryUrlTemplate": "https://grafana.com/api/dashboards/{{packageName}}"
+    }
   }
 }

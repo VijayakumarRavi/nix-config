@@ -45,7 +45,6 @@
       };
       tailscale_authkey = {};
       github_oauth_token = {};
-      zoro_hc_url = {};
       robin_hc_url = {};
 
       id_ed25519 = {
