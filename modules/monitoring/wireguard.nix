@@ -35,7 +35,7 @@ in {
     # ── WireGuard interface ─────────────────────────────────────────────
     networking.wireguard.interfaces.wg-monitor = {
       ips = [wgCfg.address];
-      listenPort = wgCfg.listenPort;
+      inherit (wgCfg) listenPort;
       privateKeyFile = config.sops.secrets.${wgCfg.privateKeySecret}.path;
 
       peers = [

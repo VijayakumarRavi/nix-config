@@ -15,12 +15,30 @@ in {
     };
 
     # OAuth Secrets (Pocket ID)
-    sops.secrets.grafana_client_id = { owner = "grafana"; group = "grafana"; };
-    sops.secrets.grafana_client_secret = { owner = "grafana"; group = "grafana"; };
-    sops.secrets.grafana_oauth_api_url = { owner = "grafana"; group = "grafana"; };
-    sops.secrets.grafana_oauth_auth_url = { owner = "grafana"; group = "grafana"; };
-    sops.secrets.grafana_oauth_token_url = { owner = "grafana"; group = "grafana"; };
-    sops.secrets.grafana_signout_redirect_url = { owner = "grafana"; group = "grafana"; };
+    sops.secrets.grafana_client_id = {
+      owner = "grafana";
+      group = "grafana";
+    };
+    sops.secrets.grafana_client_secret = {
+      owner = "grafana";
+      group = "grafana";
+    };
+    sops.secrets.grafana_oauth_api_url = {
+      owner = "grafana";
+      group = "grafana";
+    };
+    sops.secrets.grafana_oauth_auth_url = {
+      owner = "grafana";
+      group = "grafana";
+    };
+    sops.secrets.grafana_oauth_token_url = {
+      owner = "grafana";
+      group = "grafana";
+    };
+    sops.secrets.grafana_signout_redirect_url = {
+      owner = "grafana";
+      group = "grafana";
+    };
 
     # ── Environment file for Grafana (runtime secret injection) ──────────
     sops.templates."grafana-env" = {
@@ -103,7 +121,7 @@ in {
       };
     };
 
-    systemd.services.grafana.serviceConfig.EnvironmentFile = [ config.sops.templates."grafana-env".path ];
+    systemd.services.grafana.serviceConfig.EnvironmentFile = [config.sops.templates."grafana-env".path];
 
     # Write dashboard JSONs to /var/lib/grafana/dashboards
     systemd.tmpfiles.rules = [

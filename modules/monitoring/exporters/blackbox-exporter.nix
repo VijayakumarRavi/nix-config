@@ -19,7 +19,7 @@ in {
       enable = true;
       port = 9115;
       listenAddress = listenAddr;
-      configFile = (builtins.toFile "blackbox.yml" (builtins.toJSON {
+      configFile = builtins.toFile "blackbox.yml" (builtins.toJSON {
         modules = {
           # HTTP probe — check if endpoint returns 2xx
           http_2xx = {
@@ -63,7 +63,7 @@ in {
             timeout = "5s";
           };
         };
-      }));
+      });
     };
   };
 }

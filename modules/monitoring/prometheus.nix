@@ -23,29 +23,34 @@
 
   # Generate a scrape job for each exporter type across all targets
   mkScrapeJob = exporterName: port: let
-    targetsWithExporter = builtins.filter
+    targetsWithExporter =
+      builtins.filter
       (t: builtins.elem exporterName t.exporters)
       cfg.targets;
   in
     lib.optionalAttrs (targetsWithExporter != []) {
       job_name = exporterName;
       scrape_interval = "15s";
-      static_configs = map (t: {
-        targets = ["${t.host}:${toString port}"];
-        labels = {
-          instance = t.name;
-          host = t.name;
-        };
-      }) targetsWithExporter;
+      static_configs =
+        map (t: {
+          targets = ["${t.host}:${toString port}"];
+          labels = {
+            instance = t.name;
+            host = t.name;
+          };
+        })
+        targetsWithExporter;
     };
 
   # Build scrape configs (excluding blackbox which has special handling)
   standardScrapeJobs = lib.filter (j: j != {}) (
-    lib.mapAttrsToList (name: port:
-      if name == "blackbox" || name == "fail2ban"
-      then {}
-      else mkScrapeJob name port
-    ) exporterPorts
+    lib.mapAttrsToList (
+      name: port:
+        if name == "blackbox" || name == "fail2ban"
+        then {}
+        else mkScrapeJob name port
+    )
+    exporterPorts
   );
 
   # ── Blackbox probe scrape configs ─────────────────────────────────────
@@ -68,9 +73,18 @@
         }
       ];
       relabel_configs = [
-        {source_labels = ["__address__"]; target_label = "__param_target";}
-        {source_labels = ["__param_target"]; target_label = "instance";}
-        {target_label = "__address__"; replacement = "10.100.0.1:9115";}
+        {
+          source_labels = ["__address__"];
+          target_label = "__param_target";
+        }
+        {
+          source_labels = ["__param_target"];
+          target_label = "instance";
+        }
+        {
+          target_label = "__address__";
+          replacement = "10.100.0.1:9115";
+        }
       ];
     }
     # External probes from Zoro's blackbox-exporter
@@ -90,9 +104,18 @@
         }
       ];
       relabel_configs = [
-        {source_labels = ["__address__"]; target_label = "__param_target";}
-        {source_labels = ["__param_target"]; target_label = "instance";}
-        {target_label = "__address__"; replacement = "10.100.0.2:9115";}
+        {
+          source_labels = ["__address__"];
+          target_label = "__param_target";
+        }
+        {
+          source_labels = ["__param_target"];
+          target_label = "instance";
+        }
+        {
+          target_label = "__address__";
+          replacement = "10.100.0.2:9115";
+        }
       ];
     }
     # TLS certificate monitoring
@@ -115,9 +138,18 @@
         }
       ];
       relabel_configs = [
-        {source_labels = ["__address__"]; target_label = "__param_target";}
-        {source_labels = ["__param_target"]; target_label = "instance";}
-        {target_label = "__address__"; replacement = "10.100.0.2:9115";}
+        {
+          source_labels = ["__address__"];
+          target_label = "__param_target";
+        }
+        {
+          source_labels = ["__param_target"];
+          target_label = "instance";
+        }
+        {
+          target_label = "__address__";
+          replacement = "10.100.0.2:9115";
+        }
       ];
     }
   ];

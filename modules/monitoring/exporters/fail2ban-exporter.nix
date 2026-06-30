@@ -51,7 +51,7 @@ in {
     # ── Systemd timer to collect fail2ban metrics ─────────────────────
     systemd.services.fail2ban-textfile-collector = {
       description = "Collect fail2ban metrics for Prometheus textfile collector";
-      path = with pkgs; [ gnugrep gawk gnused coreutils ];
+      path = with pkgs; [gnugrep gawk gnused coreutils];
       serviceConfig = {
         Type = "oneshot";
         ExecStart = "${fail2banCollector}";
