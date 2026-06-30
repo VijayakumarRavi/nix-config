@@ -45,7 +45,7 @@
       };
       tailscale_authkey = {};
       github_oauth_token = {};
-      robin_hc_url = {};
+      healthchecks_slug_prefix = {};
 
       id_ed25519 = {
         owner = config.users.users.${variables.username}.name;

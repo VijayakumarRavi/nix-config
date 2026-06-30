@@ -47,7 +47,7 @@
 
   # ── Healthcheck URL helper (same pattern as restic backups) ────────────
   # Reads the URL from sops secret, pings /start before and / or /fail after
-  hcSecretPath = config.sops.secrets.pg_backup_hc_url.path;
+  hcSecretPath = config.sops.secrets.healthchecks_slug_prefix.path;
 
   # Reusable backup script generator
   mkBackupScript = {
@@ -56,10 +56,13 @@
   }: ''
     set -euo pipefail
 
-    HC_URL=$(cat ${hcSecretPath} 2>/dev/null || echo "")
+    HC_PREFIX=$(cat ${hcSecretPath} 2>/dev/null || echo "")
 
-    if [ -n "$HC_URL" ]; then
+    if [ -n "$HC_PREFIX" ]; then
+      HC_URL="https://hc-ping.com/$HC_PREFIX/robin-postgresql-backup"
       ${curl} -fsS -m 10 --retry 3 -o /dev/null "$HC_URL/start" || true
+    else
+      HC_URL=""
     fi
 
     echo "=== pgBackRest ${type} Backup ==="
@@ -181,7 +184,7 @@ in {
 
   # -- Secret declarations --
   sops.secrets = {
-    pg_backup_hc_url = {
+    healthchecks_slug_prefix = {
       owner = "postgres";
       group = "postgres";
     };

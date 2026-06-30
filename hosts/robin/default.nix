@@ -156,7 +156,8 @@
     pruneOpts = ["--keep-hourly 24" "--keep-daily 7" "--keep-weekly 4" "--keep-monthly 6"];
 
     backupPrepareCommand = ''
-      PING_URL=$(cat ${config.sops.secrets.robin_hc_url.path})
+      HC_PREFIX=$(cat ${config.sops.secrets.healthchecks_slug_prefix.path})
+      PING_URL="https://hc-ping.com/$HC_PREFIX/robin-restic-backup"
       ${pkgs.curl}/bin/curl -fsS -m 10 --retry 5 -o /dev/null $PING_URL/start || true
 
       if [ -d /persist-backup-snapshot ]; then
@@ -168,7 +169,8 @@
 
     backupCleanupCommand = ''
       ${pkgs.btrfs-progs}/bin/btrfs subvolume delete /persist-backup-snapshot
-      PING_URL=$(cat ${config.sops.secrets.robin_hc_url.path})
+      HC_PREFIX=$(cat ${config.sops.secrets.healthchecks_slug_prefix.path})
+      PING_URL="https://hc-ping.com/$HC_PREFIX/robin-restic-backup"
       if [ "$EXIT_STATUS" = "0" ]; then
         ${pkgs.curl}/bin/curl -fsS -m 10 --retry 5 -o /dev/null $PING_URL || true
       else

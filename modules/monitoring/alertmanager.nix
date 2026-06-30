@@ -11,7 +11,7 @@ in {
     # ── Sops secrets for Pushover and Healthchecks.io ──────────────────
     sops.secrets.pushover_user_key = {};
     sops.secrets.pushover_api_token = {};
-    sops.secrets.zoro_hc_uuid = {};
+    sops.secrets.healthchecks_slug_prefix = {};
 
     # ── Environment file for Alertmanager (runtime secret injection) ──
     # Interpolated via envsubst into alertmanager.yml at startup.
@@ -19,7 +19,7 @@ in {
       content = ''
         PUSHOVER_USER_KEY=${config.sops.placeholder.pushover_user_key}
         PUSHOVER_API_TOKEN=${config.sops.placeholder.pushover_api_token}
-        ZORO_HC_UUID=${config.sops.placeholder.zoro_hc_uuid}
+        HC_SLUG_PREFIX=${config.sops.placeholder.healthchecks_slug_prefix}
       '';
     };
 
@@ -97,7 +97,7 @@ in {
             name = "deadman";
             webhook_configs = [
               {
-                url = "https://hc-ping.com/$ZORO_HC_UUID";
+                url = "https://hc-ping.com/$HC_SLUG_PREFIX/zoro-dead-mans-switch";
                 send_resolved = false;
               }
             ];
