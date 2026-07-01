@@ -105,6 +105,17 @@ in {
               maxLines = 1000;
             };
           }
+          {
+            name = "Alertmanager";
+            uid = "Alertmanager";
+            type = "alertmanager";
+            access = "proxy";
+            url = "http://127.0.0.1:9093";
+            jsonData = {
+              implementation = "prometheus";
+              handleGrafanaManagedAlerts = true;
+            };
+          }
         ];
       };
 
