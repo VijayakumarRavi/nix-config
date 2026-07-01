@@ -20,6 +20,7 @@
     # Check if fail2ban is running
     if ! ${pkgs.systemd}/bin/systemctl is-active --quiet fail2ban.service; then
       echo "fail2ban_up 0" > "$TMPFILE"
+      chmod 0644 "$TMPFILE"
       mv "$TMPFILE" "$OUTPUT_FILE"
       exit 0
     fi
@@ -44,6 +45,7 @@
       fi
     done
 
+    chmod 0644 "$TMPFILE"
     mv "$TMPFILE" "$OUTPUT_FILE"
   '';
 in {

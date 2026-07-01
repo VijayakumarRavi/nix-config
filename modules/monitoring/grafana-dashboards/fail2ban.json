@@ -1,0 +1,170 @@
+{
+  "title": "Fail2Ban Metrics",
+  "tags": [
+    "fail2ban",
+    "security"
+  ],
+  "timezone": "browser",
+  "refresh": "10s",
+  "schemaVersion": 30,
+  "templating": {
+    "list": [
+      {
+        "name": "instance",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "Prometheus"
+        },
+        "query": "label_values(fail2ban_up, instance)",
+        "refresh": 1,
+        "includeAll": true,
+        "multi": true
+      },
+      {
+        "name": "jail",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "Prometheus"
+        },
+        "query": "label_values(fail2ban_banned_current{instance=~\"$instance\"}, jail)",
+        "refresh": 1,
+        "includeAll": true,
+        "multi": true
+      }
+    ]
+  },
+  "panels": [
+    {
+      "title": "Fail2Ban Service Status",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Prometheus"
+      },
+      "targets": [
+        {
+          "expr": "fail2ban_up{instance=~\"$instance\"}",
+          "legendFormat": "{{instance}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "text": "DOWN",
+                  "color": "red"
+                },
+                "1": {
+                  "text": "UP",
+                  "color": "green"
+                }
+              },
+              "type": "value"
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      }
+    },
+    {
+      "title": "Currently Banned IPs per Jail",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Prometheus"
+      },
+      "targets": [
+        {
+          "expr": "fail2ban_banned_current{instance=~\"$instance\", jail=~\"$jail\"}",
+          "legendFormat": "{{instance}} - {{jail}}"
+        }
+      ]
+    },
+    {
+      "title": "Currently Failed Logins per Jail",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Prometheus"
+      },
+      "targets": [
+        {
+          "expr": "fail2ban_failed_current{instance=~\"$instance\", jail=~\"$jail\"}",
+          "legendFormat": "{{instance}} - {{jail}}"
+        }
+      ]
+    },
+    {
+      "title": "Total Banned IPs (Cumulative)",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 12
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Prometheus"
+      },
+      "targets": [
+        {
+          "expr": "fail2ban_banned_total{instance=~\"$instance\", jail=~\"$jail\"}",
+          "legendFormat": "{{instance}} - {{jail}}"
+        }
+      ]
+    },
+    {
+      "title": "Total Failed Logins (Cumulative)",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Prometheus"
+      },
+      "targets": [
+        {
+          "expr": "fail2ban_failed_total{instance=~\"$instance\", jail=~\"$jail\"}",
+          "legendFormat": "{{instance}} - {{jail}}"
+        }
+      ]
+    }
+  ]
+}

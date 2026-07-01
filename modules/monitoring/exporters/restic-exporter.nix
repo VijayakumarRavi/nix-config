@@ -56,14 +56,37 @@ in {
 
     nixpkgs.overlays = [
       (final: prev: {
-        prometheus-restic-exporter = prev.prometheus-restic-exporter.overrideAttrs (old: {
-          postPatch =
-            (old.postPatch or "")
-            + ''
-              substituteInPlace restic-exporter.py \
-                --replace-fail 'json.loads(result.stdout.decode("utf-8"))' 'json.loads([x for x in result.stdout.decode("utf-8").strip().split("\n") if x.startswith("{") or x.startswith("[")][-1])'
+        prometheus-restic-exporter = with final.python3Packages;
+          buildPythonApplication rec {
+            pname = "prometheus-restic-exporter";
+            version = "2.1.2";
+            pyproject = true;
+
+            src = final.fetchFromGitHub {
+              owner = "ngosang";
+              repo = "restic-exporter";
+              rev = version;
+              hash = "sha256-n56LjQWZuAYB+jQoJT8KDMxmCxWa3zICYjlPq3PXxgQ=";
+            };
+
+            build-system = [setuptools];
+            dependencies = [prometheus-client];
+
+            postPatch = ''
+              substituteInPlace exporter/exporter.py \
+                --replace-fail '"restic"' '"${final.lib.getExe final.restic}"'
             '';
-        });
+
+            postInstall = ''
+              ln -s $out/bin/restic-exporter $out/bin/restic-exporter.py
+            '';
+
+            meta =
+              (prev.prometheus-restic-exporter.meta or {})
+              // {
+                mainProgram = "restic-exporter";
+              };
+          };
       })
     ];
   };

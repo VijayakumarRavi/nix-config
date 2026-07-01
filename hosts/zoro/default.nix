@@ -170,7 +170,7 @@
       {
         host = "10.100.0.2";
         name = "zoro";
-        exporters = ["node" "blackbox" "nginx"];
+        exporters = ["node" "blackbox" "nginx" "systemd"];
       }
     ];
     exporters = {

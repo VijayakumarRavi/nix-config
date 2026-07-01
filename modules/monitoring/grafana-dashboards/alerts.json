@@ -75,7 +75,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(ALERTS{alertstate=\"firing\"})",
+          "expr": "sum(ALERTS{alertstate=\"firing\", alertname!=\"DeadMansSwitch\"}) or vector(0)",
           "legendFormat": "active firing alerts",
           "range": true,
           "refId": "A"
@@ -140,7 +140,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "ALERTS{alertstate=\"firing\"} == 1",
+          "expr": "ALERTS{alertstate=\"firing\", alertname!=\"DeadMansSwitch\"} == 1",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"

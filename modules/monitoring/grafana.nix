@@ -78,6 +78,9 @@ in {
           role_attribute_path = "contains(groups, 'admins')&& 'Admin' || contains(groups, 'editors') && 'Editor' || 'Viewer'";
         };
         analytics.reporting_enabled = false;
+        dashboards = {
+          default_home_dashboard_path = "/etc/grafana-dashboards/overview.json";
+        };
       };
 
       # ── Provisioning Datasources ───────────────────────────────────────
@@ -126,7 +129,7 @@ in {
         providers = [
           {
             name = "Provisioned Dashboards";
-            options.path = "/var/lib/grafana/dashboards";
+            options.path = "/etc/grafana-dashboards";
           }
         ];
       };
@@ -134,19 +137,18 @@ in {
 
     systemd.services.grafana.serviceConfig.EnvironmentFile = [config.sops.templates."grafana-env".path];
 
-    # Write dashboard JSONs to /var/lib/grafana/dashboards
-    systemd.tmpfiles.rules = [
-      "d /var/lib/grafana/dashboards 0755 grafana grafana -"
-      "C+ /var/lib/grafana/dashboards/node.json - - - - ${./grafana-dashboards/node.json}"
-      "C+ /var/lib/grafana/dashboards/postgresql.json - - - - ${./grafana-dashboards/postgresql.json}"
-      "C+ /var/lib/grafana/dashboards/nginx.json - - - - ${./grafana-dashboards/nginx.json}"
-      "C+ /var/lib/grafana/dashboards/loki.json - - - - ${./grafana-dashboards/loki.json}"
-      "C+ /var/lib/grafana/dashboards/pgbackrest.json - - - - ${./grafana-dashboards/pgbackrest.json}"
-      "C+ /var/lib/grafana/dashboards/overview.json - - - - ${./grafana-dashboards/overview.json}"
-      "C+ /var/lib/grafana/dashboards/backups.json - - - - ${./grafana-dashboards/backups.json}"
-      "C+ /var/lib/grafana/dashboards/applications.json - - - - ${./grafana-dashboards/applications.json}"
-      "C+ /var/lib/grafana/dashboards/systemd.json - - - - ${./grafana-dashboards/systemd.json}"
-      "C+ /var/lib/grafana/dashboards/alerts.json - - - - ${./grafana-dashboards/alerts.json}"
-    ];
+    environment.etc = {
+      "grafana-dashboards/node.json".source = ./grafana-dashboards/node.json;
+      "grafana-dashboards/postgresql.json".source = ./grafana-dashboards/postgresql.json;
+      "grafana-dashboards/nginx.json".source = ./grafana-dashboards/nginx.json;
+      "grafana-dashboards/loki.json".source = ./grafana-dashboards/loki.json;
+      "grafana-dashboards/pgbackrest.json".source = ./grafana-dashboards/pgbackrest.json;
+      "grafana-dashboards/overview.json".source = ./grafana-dashboards/overview.json;
+      "grafana-dashboards/backups.json".source = ./grafana-dashboards/backups.json;
+      "grafana-dashboards/applications.json".source = ./grafana-dashboards/applications.json;
+      "grafana-dashboards/systemd.json".source = ./grafana-dashboards/systemd.json;
+      "grafana-dashboards/alerts.json".source = ./grafana-dashboards/alerts.json;
+      "grafana-dashboards/fail2ban.json".source = ./grafana-dashboards/fail2ban.json;
+    };
   };
 }
