@@ -10,9 +10,7 @@
   config,
   lib,
   ...
-}: let
-  cfg = config.services.monitoring;
-in {
+}: {
   imports = [
     ./wireguard.nix
     ./logging.nix
@@ -24,6 +22,7 @@ in {
     ./exporters/systemd-exporter.nix
     ./exporters/blackbox-exporter.nix
     ./exporters/fail2ban-exporter.nix
+    ./exporters/wireguard-exporter.nix
     ./prometheus.nix
     ./loki.nix
     ./alertmanager.nix
@@ -82,6 +81,7 @@ in {
       restic.enable = lib.mkEnableOption "Restic exporter";
       nginx.enable = lib.mkEnableOption "Nginx exporter";
       fail2ban.enable = lib.mkEnableOption "fail2ban exporter";
+      wireguard.enable = lib.mkEnableOption "WireGuard exporter";
       # node-exporter and systemd-exporter are always enabled
     };
 

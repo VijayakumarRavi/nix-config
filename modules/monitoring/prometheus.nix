@@ -19,6 +19,7 @@
     systemd = 9558;
     blackbox = 9115;
     fail2ban = 9100; # Uses node-exporter's textfile collector, not a separate port
+    wireguard = 9586;
   };
 
   # Generate a scrape job for each exporter type across all targets

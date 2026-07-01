@@ -1,11 +1,8 @@
 {
   lib,
-  pkgs,
   config,
-  hostname,
   variables,
   inputs,
-  modulesPath,
   ...
 }: {
   imports = [
@@ -130,7 +127,6 @@
     ];
   };
 
-
   # ── K3s — disabled (re-enable when new nodes available) ─────────────────
   services.k3sCluster.enable = false;
 
@@ -149,12 +145,12 @@
       {
         host = "10.100.0.1";
         name = "robin";
-        exporters = ["node" "postgres" "pgbackrest" "restic" "nginx" "systemd" "blackbox" "fail2ban"];
+        exporters = ["node" "postgres" "pgbackrest" "restic" "nginx" "systemd" "blackbox" "fail2ban" "wireguard"];
       }
       {
         host = "10.100.0.2";
         name = "zoro";
-        exporters = ["node" "blackbox" "nginx" "systemd"];
+        exporters = ["node" "blackbox" "nginx" "systemd" "wireguard"];
       }
       {
         host = variables.runner_ip;

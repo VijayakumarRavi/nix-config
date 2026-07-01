@@ -149,6 +149,7 @@ in {
       "grafana-dashboards/systemd.json".source = ./grafana-dashboards/systemd.json;
       "grafana-dashboards/alerts.json".source = ./grafana-dashboards/alerts.json;
       "grafana-dashboards/fail2ban.json".source = ./grafana-dashboards/fail2ban.json;
+      "grafana-dashboards/wireguard.json".source = ./grafana-dashboards/wireguard.json;
     };
   };
 }
