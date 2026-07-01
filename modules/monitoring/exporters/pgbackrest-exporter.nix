@@ -40,5 +40,36 @@ in {
       # pgbackrest_exporter needs pgbackrest binary in PATH
       path = [pkgs.pgbackrest];
     };
+
+    nixpkgs.overlays = [
+      (final: _prev: {
+        pgbackrest_exporter = final.buildGoModule rec {
+          pname = "pgbackrest_exporter";
+          version = "0.23.0";
+
+          src = final.fetchFromGitHub {
+            owner = "woblerr";
+            repo = "pgbackrest_exporter";
+            rev = "v${version}";
+            hash = "sha256-iT2LwbnghTiZ97dhf7EiaehPIze7DKCjVxv0ihTIb50=";
+          };
+
+          vendorHash = null; # Vendored dependencies are included in the source tree
+
+          ldflags = [
+            "-s"
+            "-w"
+            "-X main.version=${version}"
+          ];
+
+          meta = with final.lib; {
+            description = "Prometheus exporter for pgBackRest";
+            homepage = "https://github.com/woblerr/pgbackrest_exporter";
+            license = licenses.mit;
+            mainProgram = "pgbackrest_exporter";
+          };
+        };
+      })
+    ];
   };
 }

@@ -10,10 +10,9 @@
 }: {
   # ISO settings
   imports = [
-    (modulesPath + "/profiles/qemu-guest.nix")
     inputs.impermanence.nixosModules.impermanence
-    ../../modules/nixos
-    ../../modules/monitoring
+    ../../../modules/nixos
+    ../../../modules/monitoring
     ./disk-config.nix
 
     ./proxy.nix
@@ -23,9 +22,6 @@
     ./ente.nix
     ./fail2ban.nix
   ];
-
-  # Enable QEMU Guest Agent
-  services.qemuGuest.enable = true;
 
   boot = {
     initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk"];

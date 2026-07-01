@@ -51,7 +51,19 @@ in {
               repeat_interval = "5m";
               group_wait = "0s";
             }
-            # Critical alerts -> Pushover high priority
+            # P3/P4 Runner -> Low priority quiet notifications (no sound/vibration)
+            {
+              receiver = "pushover-low";
+              matchers = ["host = runner"];
+              repeat_interval = "12h";
+            }
+            # P2 Local Hub (Zoro) -> Normal priority notifications (never page like P1)
+            {
+              receiver = "pushover-warning";
+              matchers = ["host = zoro"];
+              repeat_interval = "4h";
+            }
+            # P1 Prod / Critical alerts -> Pushover high priority (paging)
             {
               receiver = "pushover-critical";
               matchers = ["severity = critical"];
@@ -76,7 +88,7 @@ in {
                 priority = 1; # High priority — retry until acknowledged
                 retry = "60s";
                 expire = "3600s";
-                title = "🚨 {{ .GroupLabels.alertname }}";
+                title = "🚨 [P1 Prod] {{ .GroupLabels.alertname }}";
                 message = "{{ range .Alerts }}{{ .Annotations.summary }}\n{{ .Annotations.description }}\n{{ end }}";
               }
             ];
@@ -88,7 +100,19 @@ in {
                 user_key = "$PUSHOVER_USER_KEY";
                 token = "$PUSHOVER_API_TOKEN";
                 priority = 0; # Normal priority
-                title = "⚠️ {{ .GroupLabels.alertname }}";
+                title = "⚠️ [P2/Warning] {{ .GroupLabels.alertname }}";
+                message = "{{ range .Alerts }}{{ .Annotations.summary }}\n{{ .Annotations.description }}\n{{ end }}";
+              }
+            ];
+          }
+          {
+            name = "pushover-low";
+            pushover_configs = [
+              {
+                user_key = "$PUSHOVER_USER_KEY";
+                token = "$PUSHOVER_API_TOKEN";
+                priority = -1; # Low priority — silent / no vibration
+                title = "ℹ️ [P3 Runner] {{ .GroupLabels.alertname }}";
                 message = "{{ range .Alerts }}{{ .Annotations.summary }}\n{{ .Annotations.description }}\n{{ end }}";
               }
             ];

@@ -75,7 +75,7 @@ in {
       };
     };
 
-    # ── Firewall: allow Loki from WireGuard ───────────────────────────
-    networking.firewall.allowedTCPPorts = lib.mkIf cfg.wireguard.enable [3100];
+    # ── Firewall: allow Loki ingestion port ───────────────────────────
+    networking.firewall.allowedTCPPorts = [3100];
   };
 }

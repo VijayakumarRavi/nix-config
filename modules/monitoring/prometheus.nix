@@ -154,6 +154,24 @@
     }
   ];
 
+  # ── Self-monitoring scrape job ────────────────────────────────────────
+  # Scrape Prometheus's own internal metrics (TSDB storage, query duration, etc.)
+  prometheusScrapeJob = [
+    {
+      job_name = "prometheus";
+      scrape_interval = "15s";
+      static_configs = [
+        {
+          targets = ["127.0.0.1:9090"];
+          labels = {
+            instance = "zoro";
+            host = "zoro";
+          };
+        }
+      ];
+    }
+  ];
+
   # ── Dead-man's switch ─────────────────────────────────────────────────
   # Prometheus rule that always fires + alertmanager route to HC.io
   deadmanRule = {
@@ -194,6 +212,7 @@ in {
         (pkgs.writeText "fail2ban-rules.json" (builtins.toJSON (import ./alert-rules/fail2ban.nix)))
         (pkgs.writeText "applications-rules.json" (builtins.toJSON (import ./alert-rules/applications.nix)))
         (pkgs.writeText "self-monitoring-rules.json" (builtins.toJSON (import ./alert-rules/self-monitoring.nix)))
+        (pkgs.writeText "observability-rules.json" (builtins.toJSON (import ./alert-rules/observability.nix)))
       ];
 
       # Alertmanager target
@@ -205,7 +224,7 @@ in {
         }
       ];
 
-      scrapeConfigs = standardScrapeJobs ++ blackboxScrapeJobs;
+      scrapeConfigs = standardScrapeJobs ++ blackboxScrapeJobs ++ prometheusScrapeJob;
 
       # Dead-man's switch rule (inline)
       rules = [(builtins.toJSON {groups = [deadmanRule];})];

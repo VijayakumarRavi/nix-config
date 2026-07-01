@@ -9,7 +9,7 @@
   listenAddr =
     if cfg.wireguard.enable
     then lib.head (builtins.match "([^/]+)/.*" cfg.wireguard.address)
-    else "127.0.0.1";
+    else "0.0.0.0";
 in {
   config = lib.mkIf cfg.enable {
     services.prometheus.exporters.systemd = {

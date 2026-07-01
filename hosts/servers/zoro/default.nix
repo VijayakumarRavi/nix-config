@@ -9,11 +9,10 @@
   ...
 }: {
   imports = [
-    (modulesPath + "/profiles/qemu-guest.nix")
     inputs.impermanence.nixosModules.impermanence
-    ../../modules/nixos
-    ../../modules/k3s
-    ../../modules/monitoring
+    ../../../modules/nixos
+    ../../../modules/k3s
+    ../../../modules/monitoring
     ./disk-config.nix
   ];
 
@@ -70,12 +69,6 @@
       ];
     };
   };
-
-  # Disable firewall — Zoro is on local network
-  networking.firewall.enable = false;
-
-  # QEMU Guest Agent
-  services.qemuGuest.enable = true;
 
   # ── Impermanence ────────────────────────────────────────────────────────
   fileSystems."/persist".neededForBoot = true;
@@ -137,18 +130,9 @@
     ];
   };
 
-  # ── Packages ────────────────────────────────────────────────────────────
-  environment.systemPackages = with pkgs; [
-    lm_sensors
-    unzip
-    killall
-  ];
 
   # ── K3s — disabled (re-enable when new nodes available) ─────────────────
   services.k3sCluster.enable = false;
-
-  # ── Auto-clean ──────────────────────────────────────────────────────────
-  programs.nh.clean.dates = "Fri *-*-* 04:00:00";
 
   # ── Monitoring Stack Hub ────────────────────────────────────────────────
   services.monitoring = {
@@ -171,6 +155,11 @@
         host = "10.100.0.2";
         name = "zoro";
         exporters = ["node" "blackbox" "nginx" "systemd"];
+      }
+      {
+        host = variables.runner_ip;
+        name = "runner";
+        exporters = ["node" "systemd"];
       }
     ];
     exporters = {

@@ -144,13 +144,15 @@
     });
 
     # Helper to create a system configuration
-    mkSystem = configurations: system: hostname:
+    mkSystem = configurations: system: hostPath: let
+      hostname = builtins.baseNameOf hostPath;
+    in
       configurations {
         inherit system;
         # Pass all relevant inputs and variables to imported files
         specialArgs = {inherit inputs variables hostname system;};
         modules = [
-          ./hosts/${hostname}
+          ./hosts/${hostPath}
           (
             if system == "aarch64-darwin"
             then home-manager.darwinModules.home-manager
@@ -162,7 +164,7 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               extraSpecialArgs = {inherit inputs variables system;};
-              users.${variables.username}.imports = [./home-manager/hosts/${hostname}.nix];
+              users.${variables.username}.imports = [./home-manager/${hostPath}.nix];
             };
           }
         ];
@@ -181,14 +183,14 @@
 
     # NixOS system configurations
     nixosConfigurations = {
-      zoro = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "zoro";
-      robin = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "robin";
-      runner = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "runner";
+      zoro = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "servers/zoro";
+      robin = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "servers/robin";
+      runner = mkSystem nixpkgs.lib.nixosSystem "x86_64-linux" "servers/runner";
     };
 
     # MacOS configurations
     darwinConfigurations = {
-      kakashi = mkSystem darwin.lib.darwinSystem "aarch64-darwin" "kakashi";
+      kakashi = mkSystem darwin.lib.darwinSystem "aarch64-darwin" "personal/kakashi";
     };
   };
 }

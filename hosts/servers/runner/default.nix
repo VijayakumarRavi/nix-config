@@ -9,14 +9,11 @@
 }: {
   # ISO settings & modules
   imports = [
-    (modulesPath + "/profiles/qemu-guest.nix")
     inputs.impermanence.nixosModules.impermanence
-    ../../modules/nixos
+    ../../../modules/nixos
+    ../../../modules/monitoring
     ./disk-config.nix
   ];
-
-  # Enable QEMU Guest Agent
-  services.qemuGuest.enable = true;
 
   # ── Hardware & Bootloader ──────────────────────────────────────────────────
   boot = {
@@ -125,7 +122,6 @@
   };
 
   # ── Core Services ──────────────────────────────────────────────────────────
-  services.openssh.enable = true;
   virtualisation.docker = {
     enable = true; # Enable native docker suppor
     daemon.settings = {
@@ -134,9 +130,15 @@
     };
   };
   networking.firewall = {
-    # Allow Forgejo runner cache server and trust the docker bridge
-    allowedTCPPorts = [34303];
+    # Allow Forgejo runner cache server, Prometheus exporters, and trust docker bridge
+    allowedTCPPorts = [34303 9100 9558];
     trustedInterfaces = ["br-+" "docker0"];
+  };
+
+  # ── Monitoring Stack Exporter ───────────────────────────────────────────
+  services.monitoring = {
+    enable = true;
+    role = "exporter";
   };
   users.users.builder = {
     isNormalUser = true;

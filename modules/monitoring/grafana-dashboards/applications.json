@@ -91,7 +91,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "probe_success{instance=~\"$instance\", job=~\"blackbox-.*\"}",
+          "expr": "probe_success{instance=~\"$instance\"}",
           "legendFormat": "{{instance}} ({{probe_type}})",
           "range": true,
           "refId": "A"
@@ -174,7 +174,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "probe_duration_seconds{instance=~\"$instance\", job=~\"blackbox-.*\"}",
+          "expr": "probe_duration_seconds{instance=~\"$instance\"}",
           "legendFormat": "{{instance}} ({{probe_type}})",
           "range": true,
           "refId": "A"
@@ -185,7 +185,7 @@
     },
     {
       "id": 4,
-      "title": "SSL Certificate Expiry (Days Remaining)",
+      "title": "SSL Certificate Expiry",
       "type": "stat",
       "gridPos": {
         "h": 4,
@@ -248,7 +248,7 @@
     },
     {
       "id": 5,
-      "title": "HTTP Status Codes Rate",
+      "title": "HTTP Status Code (Last Probe)",
       "type": "timeseries",
       "gridPos": {
         "h": 8,
@@ -263,8 +263,8 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (instance, job, probe_http_status_code) (rate(probe_http_status_code{instance=~\"$instance\"}[5m]))",
-          "legendFormat": "{{instance}} (HTTP {{probe_http_status_code}})",
+          "expr": "probe_http_status_code{instance=~\"$instance\"}",
+          "legendFormat": "{{instance}}",
           "range": true,
           "refId": "A"
         }
@@ -284,7 +284,135 @@
             "showPoints": "never",
             "spanNulls": false
           },
-          "unit": "reqps"
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 102,
+      "type": "row",
+      "title": "⚙️ Host Services Activity & Uptime (Robin & Runner)",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "collapsed": false
+    },
+    {
+      "id": 6,
+      "title": "Service Active Tasks / Threads",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 22
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Prometheus"
+      },
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "systemd_unit_tasks_current{name=~\"ente-.*|pocket-id.*|lldap.*|postgresql.*|nginx.*|forgejo-runner.*|docker.*|restic.*|pgbackrest.*\"} > 0",
+          "legendFormat": "{{instance}} - {{name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "opacity",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "Service Uptime (Days)",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 22
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Prometheus"
+      },
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "(time() - systemd_unit_start_time_seconds{name=~\"ente-.*|pocket-id.*|lldap.*|postgresql.*|nginx.*|forgejo-runner.*|docker.*|restic.*|pgbackrest.*\"}) / 86400 * on(instance, name, job) group_left() (systemd_unit_state{state=\"active\"} == 1)",
+          "legendFormat": "{{instance}} - {{name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "opacity",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false
+          },
+          "unit": "d"
         },
         "overrides": []
       },
@@ -321,7 +449,8 @@
           "type": "prometheus",
           "uid": "Prometheus"
         },
-        "query": "label_values(probe_success, instance)",
+        "query": "query_result(probe_success)",
+        "regex": "/.*instance=\"([^\"]*).*/",
         "refresh": 1,
         "includeAll": true,
         "multi": true,

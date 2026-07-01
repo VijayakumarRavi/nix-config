@@ -6,7 +6,7 @@
   ...
 }: {
   imports = [
-    ../../modules/darwin
+    ../../../modules/darwin
     ./homebrew.nix
     ./launchDaemons.nix
     inputs.sops-nix.darwinModules.sops
@@ -47,7 +47,7 @@
   };
 
   sops = {
-    defaultSopsFile = ../../secrets.yaml;
+    defaultSopsFile = ../../../secrets.yaml;
     validateSopsFiles = false;
 
     age = {

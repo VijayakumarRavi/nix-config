@@ -13,7 +13,7 @@
   lokiHost =
     if cfg.role == "hub"
     then "127.0.0.1"
-    else "10.100.0.2";
+    else if cfg.wireguard.enable then "10.100.0.2" else "zoro";
 in {
   config = lib.mkIf cfg.enable {
     # ── Fluent Bit Service ──────────────────────────────────────────────

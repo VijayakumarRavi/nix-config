@@ -93,38 +93,6 @@
       age # age is a simple, modern and secure file encryption tool.
       sops # Secret key encryption
       yamllint # YAML linter
-
-      # Dev utils
-      jq # JSON query tool
-      yq # jq wrapper for YAML
-      go
-      gcc # c compiler
-      tree # Tree command line tool
-      just # Command runner
-      yarn
-      cmake
-      iperf # Network performance test
-      cachix # Command-line client for Nix binary cache hosting https://cachix.org
-      go-task
-      python3 # Python lang
-      unixtools.watch # Watch command line tool
-      pre-commit # Tool to manage pre-commit hooks
-      python3Packages.pip # install python dependencies
-
-      # Containers
-      kind # local clusters for testing Kubernetes
-      fluxcd # Kubernetes GitOps
-      kubectl # Kubernetes CLI tool
-      kubectx # Switch faster between clusters and namespaces in kubectl
-      kubetail # Bash script to tail Kubernetes logs from multiple pods at the same time
-      talosctl # Talosctl is a command line tool for interacting with Talos clusters
-      helmfile # Deploy Kubernetes Helm Charts
-      opentofu # terraform open source alternative
-      kustomize # Customization of kubernetes YAML configurations
-      kubeconform # Kubernetes manifests validator
-      lazydocker # A simple terminal UI for both docker and docker-compose
-      kubernetes-helm # A package manager for kubernetes
-      inputs.talhelper.packages.${pkgs.stdenv.hostPlatform.system}.default # A tool to help creating Talos kubernetes cluster
     ];
   };
 }

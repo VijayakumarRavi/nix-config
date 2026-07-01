@@ -9,7 +9,6 @@
     ./programs/yazi.nix
     ./programs/htop.nix
     ./programs/git.nix
-    ./programs/k9s.nix
     ./programs/tmux.nix
     ./shell/zsh.nix
     ./shell/starship.nix

@@ -5,9 +5,14 @@
   config,
   inputs,
   variables,
+  modulesPath,
   ...
 }: {
-  imports = [inputs.sops-nix.nixosModules.sops ../common];
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+    inputs.sops-nix.nixosModules.sops
+    ../common
+  ];
 
   # Ensure a clean & sparkling /tmp on fresh boots.
   boot.tmp.cleanOnBoot = true;
@@ -143,6 +148,13 @@
     STARSHIP_CONFIG = "\${HOME}/.config/starship/starship.toml";
   };
 
+  # Common NixOS system packages
+  environment.systemPackages = with pkgs; [
+    lm_sensors
+    unzip
+    killall
+  ];
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs = {
@@ -157,11 +169,15 @@
       flake = "/home/${variables.username}/.nix-config";
       clean = {
         enable = true;
+        dates = lib.mkDefault "Fri *-*-* 04:00:00";
       };
     };
   };
 
   services = {
+    # Enable QEMU Guest Agent by default across NixOS machines
+    qemuGuest.enable = lib.mkDefault true;
+
     # Enable the OpenSSH daemon.
     openssh = {
       enable = true;

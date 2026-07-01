@@ -18,7 +18,7 @@ in {
       port = 9187;
       listenAddress = listenAddr;
       # Connect via Unix socket — no password needed (peer auth)
-      dataSourceName = "user=postgres host=/run/postgresql port=${toString config.services.postgresql.port} dbname=postgres sslmode=disable";
+      dataSourceName = "user=postgres host=/run/postgresql port=${toString config.services.postgresql.settings.port} dbname=postgres sslmode=disable";
       extraFlags = [
         "--auto-discover-databases"
       ];

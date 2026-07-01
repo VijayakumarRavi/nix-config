@@ -1,9 +1,11 @@
 {pkgs, ...}: {
   imports = [
     ../common
-    ../common/terminals/kitty.nix
-    ../common/terminals/wezterm.nix
-    ../common/terminals/alacritty.nix
+    ../apps/dev
+    ../apps/k8s
+    ../apps/terminals/kitty.nix
+    ../apps/terminals/wezterm.nix
+    ../apps/terminals/alacritty.nix
   ];
 
   programs = {
