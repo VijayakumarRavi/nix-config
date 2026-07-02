@@ -45,12 +45,12 @@ in {
       (final: _prev: {
         pgbackrest_exporter = final.buildGoModule rec {
           pname = "pgbackrest_exporter";
-          version = "0.23.0";
+          version = "0.22.0";
 
           src = final.fetchFromGitHub {
             owner = "woblerr";
             repo = "pgbackrest_exporter";
-            rev = "v${version}";
+            rev = "v${version}"; # tags/v*
             hash = "sha256-iT2LwbnghTiZ97dhf7EiaehPIze7DKCjVxv0ihTIb50=";
           };
 
