@@ -193,7 +193,7 @@ jobs:
           merge-multiple: true
 
       - name: Import GPG key
-        uses: https://github.com/crazy-max/ghaction-import-gpg@cb9bde77f209b9df9e1e12ef7dffc105498d2d17 # v6
+        uses: https://github.com/crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
