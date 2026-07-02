@@ -1,14 +1,23 @@
 default:
     just --list --unsorted --list-heading $'Available repo commands\n'
 
-deploy-robin:
-    nixos-rebuild switch --no-reexec -L --flake ".#robin" --accept-flake-config --elevate=sudo --target-host "vijay@robin"
-
-deploy-zoro:
-    nixos-rebuild switch --no-reexec -L --flake ".#zoro" --accept-flake-config --elevate=sudo --target-host "vijay@10.0.2.200"
-
-deploy-runner:
-    nixos-rebuild switch --no-reexec -L --flake ".#runner" --accept-flake-config --elevate=sudo --target-host "vijay@10.0.2.203"
+# Deploy all servers or a specific host (usage: `just deploy` or `just deploy zoro`)
+deploy target="servers":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    hosts=()
+    if [ "{{ target }}" = "servers" ] || [ "{{ target }}" = "all" ]; then
+        hosts=(runner zoro robin)
+    else
+        hosts=("{{ target }}")
+    fi
+    for host in "${hosts[@]}"; do
+        echo ""
+        echo "=========================================================="
+        echo "🚀 Deploying $host..."
+        echo "=========================================================="
+        nixos-rebuild switch --no-reexec -L --flake ".#$host" --accept-flake-config --elevate=sudo --target-host "$host"
+    done
 
 # Nix garbage collect
 gc:

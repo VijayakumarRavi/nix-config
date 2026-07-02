@@ -8,7 +8,7 @@ keys:
   - &host_nami age1sngmeyjqugqxp58eveqsyx5afay58affgexhgamvf2jx8g03h48q3qulhx
   - &host_chopper age1eszjmjjsmn9npdlv23dvv9y9qy769qnut7xp663yflu9qmsgc9lsvnuvrm
   - &host_robin age1d6nykc8jxnvzn7jmfapt249upfkwq4z7s4hy5ly40s4p6y47muestuc8je
-  - &host_runner age13wqwdfjd52asw5d9wtgs4l6echug4dn0ga553vkhvurzg2qx0snq4s3asv
+  - &host_runner age1y7nymxcaaylanpxqkywdfq3ehrpnl0zh7qpgv2gmxtgzapp5mqlqcpey0f
 creation_rules:
   - path_regex: secrets.yaml$
     key_groups:
