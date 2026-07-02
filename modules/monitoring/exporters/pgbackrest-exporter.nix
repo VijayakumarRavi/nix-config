@@ -45,13 +45,13 @@ in {
       (final: _prev: {
         pgbackrest_exporter = final.buildGoModule rec {
           pname = "pgbackrest_exporter";
-          version = "0.22.0";
+          version = "unstable-2026-03-01";
 
           src = final.fetchFromGitHub {
             owner = "woblerr";
             repo = "pgbackrest_exporter";
-            rev = "v0.22.0"; # tags/v*
-            sha256 = "sha256-iT2LwbnghTiZ97dhf7EiaehPIze7DKCjVxv0ihTIb50=";
+            rev = "6dcf556dab95ba4d0956a11a98e81935b0af9c7c"; # tags/v*
+            sha256 = "17bgr0a8mx0vayis035v6wilzs394aqpyqdpyycki1g0p70qngc9";
           };
 
           vendorHash = null; # Vendored dependencies are included in the source tree

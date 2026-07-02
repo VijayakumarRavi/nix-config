@@ -59,14 +59,14 @@ in {
         prometheus-restic-exporter = with final.python3Packages;
           buildPythonApplication rec {
             pname = "prometheus-restic-exporter";
-            version = "2.1.1";
+            version = "unstable-2026-06-25";
             pyproject = true;
 
             src = final.fetchFromGitHub {
               owner = "ngosang";
               repo = "restic-exporter";
-              rev = "2.1.1"; # tags/*
-              sha256 = "sha256-n56LjQWZuAYB+jQoJT8KDMxmCxWa3zICYjlPq3PXxgQ=";
+              rev = "f355547612b2d62d5d7afea42279843bddcb2f9c"; # tags/*
+              sha256 = "0166sxrsnkrrc8135pws2l5ndk0c18zjaa1lz80hdf4r0n6qp7lz";
             };
 
             build-system = [setuptools];

@@ -34,7 +34,7 @@
         src = pkgs.fetchFromGitHub {
           owner = "chisui";
           repo = "zsh-nix-shell";
-          rev = "1834762686241fb3a842d179f1a0712cffa8f7d3"; # tags/v*
+          rev = "8b86281cf9e9ef9f207433dd8b36d157dd48d50a"; # tags/v*
           sha256 = "1lzrn0n4fxfcgg65v0qhnj7wnybybqzs4adz7xsrkgmcsr0ii8b7";
         };
       }
