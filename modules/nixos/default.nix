@@ -17,9 +17,17 @@
   # Ensure a clean & sparkling /tmp on fresh boots.
   boot.tmp.cleanOnBoot = true;
 
+  # Enable dynamic ZRAM compressed memory swap
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 50;
+    priority = 100; # Highest priority: use compressed RAM before disk
+  };
+
   # IP forwarding is required to use a Linux device as a Tailscale subnet router
   boot.kernel.sysctl = {
-    "vm.swappiness" = 60;
+    "vm.swappiness" = lib.mkDefault 180; # Higher swappiness recommended for fast ZRAM
     "net.ipv4.ip_forward" = 1;
     "net.ipv6.conf.all.forwarding" = 1;
   };
@@ -201,6 +209,9 @@
 
     # disable resolved and use dnsproxy
     resolved.enable = false;
+
+    # Enable macOS-style dynamic swapfile creation daemon on disk as a fallback for ZRAM
+    swapspace.enable = true;
   };
 
   system.activationScripts.diff = {
