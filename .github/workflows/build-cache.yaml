@@ -201,7 +201,7 @@ jobs:
           git_commit_gpgsign: true
 
       - name: Push changes
-        uses: https://github.com/stefanzweifel/git-auto-commit-action@b863ae1d477f366b0b67057b0ef0a3004fe2b503 # v5
+        uses: https://github.com/stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7
         with:
           commit_message: '⬆️ chore(nix): update flake inputs and package sources'
           commit_options: -S --no-verify --signoff
